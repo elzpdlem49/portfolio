@@ -458,7 +458,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a693eda6a27f7684186d7283ef0f778d, type: 3}
   m_Name: 
@@ -479,13 +479,14 @@ GameObject:
   - component: {fileID: 1074527206}
   - component: {fileID: 1074527205}
   - component: {fileID: 1074527204}
+  - component: {fileID: 1074527209}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &1074527204
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -532,7 +533,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.1, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1074527206
 MeshRenderer:
@@ -594,11 +595,32 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 27.6, y: 4.4, z: 16.4}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 5, y: 10, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1074527209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074527203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fed1378a01545046a619c1b1233e9b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1455848824}
+  moveSpeed: 5
+  serchRange: 20
+  attackRange: 8
+  attackCooldown: 5
+  m_BossDamage1: 10
+  m_BossDamage2: 20
+  m_BossDamage3: 30
+  isTouch: 0
 --- !u!1 &1076661654
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,14 +860,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146249493}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b86695edf4832f42bc92359cddcaf65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1455848824}
-  moveSpeed: 20
+  moveSpeed: 5
   serchRange: 20
+  attackRange: 5
+  isTouch: 0
   patrolWaypoints:
   - {fileID: 612823340}
   - {fileID: 810017177}
@@ -868,7 +892,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.1, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1455848818
 GameObject:
@@ -1046,7 +1070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1615273297
 Transform:
   m_ObjectHideFlags: 0

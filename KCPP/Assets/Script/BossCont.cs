@@ -63,11 +63,12 @@ public class BossCont : MonoBehaviour
         }
     }
 
-   /* IEnumerator BossFight()
+    /*IEnumerator BossFight()
     {
         while (true)
         {
-            yield return null;
+            yield return StartCoroutine(AttackPattern());
+            yield return new WaitForSeconds(attackCooldown);
         }
     }*/
 
