@@ -9,6 +9,8 @@ public class Enemycontroller : MonoBehaviour
     public float serchRange = 20f;
     Rigidbody enemyRigidbody;
 
+    public bool isTouch;
+
     public Transform[] patrolWaypoints;
     int currentWaypointIndex = 0;
     // Start is called before the first frame update
@@ -18,8 +20,9 @@ public class Enemycontroller : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        
         if (Vector3.Distance(transform.position, player.position) < serchRange)
         {
             FollowPlayer();
@@ -28,6 +31,7 @@ public class Enemycontroller : MonoBehaviour
         {
             Patrol();
         }
+
     }
     void Patrol()
     {
@@ -45,17 +49,21 @@ public class Enemycontroller : MonoBehaviour
     }
     void FollowPlayer()
     {
-        Vector3 direction = (player.position - transform.position).normalized;
+        if (!isTouch)
+        {
+            Vector3 direction = (player.position - transform.position).normalized;
 
-        enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
-        Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
-        toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+            enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
+            Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+            toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.tag == ("Player"))
         {
+            isTouch = true;
             Debug.Log(collision.gameObject.name);
         }
         else if (collision.gameObject.CompareTag("Sword"))
@@ -65,6 +73,13 @@ public class Enemycontroller : MonoBehaviour
         else if (collision.gameObject.tag == "Bullet")
         {
 
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == ("Player"))
+        {
+            isTouch = false;
         }
     }
 }
