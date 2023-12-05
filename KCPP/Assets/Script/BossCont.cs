@@ -9,7 +9,7 @@ public class BossCont : MonoBehaviour
     public float moveSpeed = 10f;
     public float serchRange = 20f;
     public float attackRange = 3f;
-    Rigidbody enemyRigidbody;
+    Rigidbody bossRb;
     public float attackCooldown = 5f;
     bool isAttackCooldown = false;
     public float m_BossDamage1 = 10;
@@ -20,7 +20,7 @@ public class BossCont : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyRigidbody = GetComponent<Rigidbody>();
+        bossRb = GetComponent<Rigidbody>();
         //StartCoroutine(BossFight());
     }
 
@@ -44,10 +44,22 @@ public class BossCont : MonoBehaviour
         if (!isTouch)
         {
             Vector3 direction = (player.position - transform.position).normalized;
+            if (Vector3.Distance(transform.position, player.position) < attackRange)
+            {
+                bossRb.velocity = Vector3.zero;
 
-            enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
-            Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
-            toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+               /* Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+                toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+                enemyRigidbody.MoveRotation(toRotation);*/
+
+                StartCoroutine(AttackPattern());
+            }
+            else
+            {
+                bossRb.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
+                Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+                toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+            }
         }
     }
 

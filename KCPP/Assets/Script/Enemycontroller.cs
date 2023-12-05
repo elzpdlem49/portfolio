@@ -7,6 +7,7 @@ public class Enemycontroller : MonoBehaviour
     public Transform player;
     public float moveSpeed = 10f;
     public float serchRange = 20f;
+    public float attackRange = 5f;
     Rigidbody enemyRigidbody;
 
     public bool isTouch;
@@ -53,9 +54,17 @@ public class Enemycontroller : MonoBehaviour
         {
             Vector3 direction = (player.position - transform.position).normalized;
 
-            enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
-            Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
-            toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+            if (Vector3.Distance(transform.position, player.position) < attackRange)
+            {
+                enemyRigidbody.velocity = Vector3.zero;
+
+            }
+            else
+            {
+                enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
+                Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+                toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+            }
         }
     }
 
