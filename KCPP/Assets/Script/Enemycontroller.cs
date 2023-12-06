@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TextRPG;
+using static TextRPG.PlayerManager;
 
 public class Enemycontroller : MonoBehaviour
 {
+    public TextRPG.Status m_Enemy;
     public Transform player;
     public float moveSpeed = 10f;
     public float serchRange = 20f;
@@ -18,6 +21,7 @@ public class Enemycontroller : MonoBehaviour
     void Start()
     {
         enemyRigidbody = GetComponent<Rigidbody>();
+        m_Enemy = new Status(100, 100, 10, 0);
     }
 
     // Update is called once per frame
@@ -72,6 +76,7 @@ public class Enemycontroller : MonoBehaviour
     {
         if (collision.gameObject.tag == ("Player"))
         {
+            
             isTouch = true;
             Debug.Log(collision.gameObject.name);
         }

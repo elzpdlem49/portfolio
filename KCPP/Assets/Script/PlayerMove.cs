@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TextRPG;
 public class PlayerMove : MonoBehaviour
 {
     Rigidbody m_Rigdbody;
@@ -21,11 +21,27 @@ public class PlayerMove : MonoBehaviour
     float hz;
     float vt;
 
+    public Player m_cPlayer = null;
+    
     // Start is called before the first frame update
     void Start()
     {
+        m_cPlayer = new Player(this.gameObject.name, 100, 100, 10, 0, 0);
         m_Rigdbody = GetComponent<Rigidbody>();
         m_OriginalSpeed = m_speed;
+    }
+
+    public void OnGUI()
+    {
+        //오브젝트의 3d좌표를 2d좌표(스크린좌표)로 변환하여 GUI를 그린다.
+        Vector3 vPos = this.transform.position;
+        Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos); //월드좌표를 스크린좌표로 변환한다.
+        vPosToScreen.y = Screen.height - vPosToScreen.y; //y좌표의 축이 하단을 기준으로 정렬되므로 상단으로 변환한다.
+        int h = 40;
+        int w = 100;
+        Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
+        //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
+        GUI.Box(rectGUI, string.Format("HP:{1}\nMP:{0}", m_cPlayer.m_nMp, m_cPlayer.m_nHp));
     }
 
     // Update is called once per frame

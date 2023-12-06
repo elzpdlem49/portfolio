@@ -2,39 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
+using TextRPG;
 
 public class BossCont : MonoBehaviour
 {
-    public Transform player;
+    public Transform trfPlayer;
+    public TextRPG.Status m_Boss;
     public float moveSpeed = 10f;
     public float serchRange = 20f;
     public float attackRange = 3f;
+
+
     Rigidbody bossRb;
     public float attackCooldown = 5f;
     bool isAttackCooldown = false;
-    public float m_BossDamage1 = 10;
-    public float m_BossDamage2 = 20;
-    public float m_BossDamage3 = 30;
+    public int m_BossDamage1 = 10;
+    public int m_BossDamage2 = 20;
+    public int m_BossDamage3 = 30;
 
     public bool isTouch;
     // Start is called before the first frame update
     void Start()
     {
         bossRb = GetComponent<Rigidbody>();
+        m_Boss = new Status(1000, 1000, 10, 10);
         //StartCoroutine(BossFight());
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.position) < attackRange && !isAttackCooldown)
+        if (Vector3.Distance(transform.position, trfPlayer.position) < attackRange && !isAttackCooldown)
         {
             StartCoroutine(AttackPattern());
         }
     }
     void FixedUpdate()
     {
-        if (Vector3.Distance(transform.position, player.position) < serchRange)
+        if (Vector3.Distance(transform.position, trfPlayer.position) < serchRange)
         {
             FollowPlayer();
         }
@@ -43,8 +48,8 @@ public class BossCont : MonoBehaviour
     {
         if (!isTouch)
         {
-            Vector3 direction = (player.position - transform.position).normalized;
-            if (Vector3.Distance(transform.position, player.position) < attackRange)
+            Vector3 direction = (trfPlayer.position - transform.position).normalized;
+            if (Vector3.Distance(transform.position, trfPlayer.position) < attackRange)
             {
                 bossRb.velocity = Vector3.zero;
 
@@ -96,18 +101,21 @@ public class BossCont : MonoBehaviour
     IEnumerator AttackPattern1()
     {
         Debug.Log("Executing Attack Pattern 1");
+        //m_cPlayer.m_nHp -= m_BossDamage1;
         yield return null;
     }
 
     IEnumerator AttackPattern2()
     {
         Debug.Log("Executing Attack Pattern 2");
+        //m_cPlayer.m_nHp -= m_BossDamage2;
         yield return null;
     }
 
     IEnumerator AttackPattern3()
     {
         Debug.Log("Executing Attack Pattern 3");
+        //m_cPlayer.m_nHp -= m_BossDamage3;
         yield return null;
     }
 
