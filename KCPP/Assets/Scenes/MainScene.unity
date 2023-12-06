@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &185865703
 Transform:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 185865702}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.204, z: 0.783}
+  m_LocalPosition: {x: 0, y: 0.46, z: 0.783}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552f7e71a6b0c6041abeb84659eca0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotPower: 1000
+  shotPower: 3000
   prefabBullet: {fileID: 8433633563492385482, guid: 39fda10ab025a9d4bafd940bf4036676, type: 3}
 --- !u!1 &397380887
 GameObject:
@@ -512,7 +512,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &1074527205
 BoxCollider:
@@ -612,7 +612,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fed1378a01545046a619c1b1233e9b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1455848824}
+  trfPlayer: {fileID: 1455848824}
+  m_Boss:
+    nHP: 0
+    nMP: 0
+    nStr: 0
+    nDef: 0
   moveSpeed: 5
   serchRange: 20
   attackRange: 8
@@ -865,6 +870,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b86695edf4832f42bc92359cddcaf65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Enemy:
+    nHP: 0
+    nMP: 0
+    nStr: 0
+    nDef: 0
   player: {fileID: 1455848824}
   moveSpeed: 5
   serchRange: 20
@@ -1052,6 +1062,16 @@ MonoBehaviour:
   isDashing: 0
   isGrounded: 0
   isRolling: 0
+  m_cPlayer:
+    m_strName: 
+    m_sStatus:
+      nHP: 0
+      nMP: 0
+      nStr: 0
+      nDef: 0
+    m_nHp: 0
+    m_nMp: 0
+    m_nGold: 0
 --- !u!1 &1615273296
 GameObject:
   m_ObjectHideFlags: 0
