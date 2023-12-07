@@ -4,6 +4,9 @@ using UnityEngine;
 using TextRPG;
 public class PlayerMove : MonoBehaviour
 {
+    public static PlayerMove Instance;
+    [SerializeField] 
+    public Player m_cPlayer;
     Rigidbody m_Rigdbody;
     Vector3 m_Move;
     Vector3 m_Run;
@@ -21,14 +24,13 @@ public class PlayerMove : MonoBehaviour
     float hz;
     float vt;
 
-    public Player m_cPlayer = null;
-    
     // Start is called before the first frame update
     void Start()
     {
         m_cPlayer = new Player(this.gameObject.name, 100, 100, 10, 0, 0);
         m_Rigdbody = GetComponent<Rigidbody>();
         m_OriginalSpeed = m_speed;
+        Instance = this;
     }
 
     public void OnGUI()
