@@ -612,12 +612,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fed1378a01545046a619c1b1233e9b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trfPlayer: {fileID: 1455848824}
   m_Boss:
-    nHP: 0
-    nMP: 0
-    nStr: 0
-    nDef: 0
+    m_strName: 
+    m_sStatus:
+      nHP: 0
+      nMP: 0
+      nStr: 0
+      nDef: 0
+    m_nHp: 0
+    m_nMp: 0
+    m_nGold: 0
+  trfPlayer: {fileID: 1455848824}
   moveSpeed: 5
   serchRange: 20
   attackRange: 8
@@ -871,10 +876,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Enemy:
-    nHP: 0
-    nMP: 0
-    nStr: 0
-    nDef: 0
+    m_strName: 
+    m_sStatus:
+      nHP: 0
+      nMP: 0
+      nStr: 0
+      nDef: 0
+    m_nHp: 0
+    m_nMp: 0
+    m_nGold: 0
   player: {fileID: 1455848824}
   moveSpeed: 5
   serchRange: 20
@@ -1052,16 +1062,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81333e2952ebf2649a593e353c6af585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 8
-  m_RunSpeed: 12
-  m_JumpForce: 5
-  m_dashForce: 15
-  m_DashCoolTime: 0.5
-  m_OriginalSpeed: 0
-  isRuning: 0
-  isDashing: 0
-  isGrounded: 0
-  isRolling: 0
   m_cPlayer:
     m_strName: 
     m_sStatus:
@@ -1072,6 +1072,16 @@ MonoBehaviour:
     m_nHp: 0
     m_nMp: 0
     m_nGold: 0
+  m_speed: 8
+  m_RunSpeed: 12
+  m_JumpForce: 5
+  m_dashForce: 15
+  m_DashCoolTime: 0.5
+  m_OriginalSpeed: 0
+  isRuning: 0
+  isDashing: 0
+  isGrounded: 0
+  isRolling: 0
 --- !u!1 &1615273296
 GameObject:
   m_ObjectHideFlags: 0
