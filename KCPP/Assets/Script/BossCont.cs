@@ -10,15 +10,13 @@ public class BossCont : MonoBehaviour
     [SerializeField]
     public Player m_Boss;
     public Transform trfPlayer;
-    //public TextRPG.Status m_Boss;
     public float moveSpeed = 10f;
     public float serchRange = 20f;
     public float attackRange = 3f;
 
 
     Rigidbody bossRb;
-    public float attackCooldown = 10000f;
-    bool isAttackCooldown = false;
+    public float attackCooldown = 5;
     public int m_BossDamage1 = 1;
     public int m_BossDamage2 = 2;
     public int m_BossDamage3 = 3;
@@ -47,10 +45,10 @@ public class BossCont : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Vector3.Distance(transform.position, trfPlayer.position) < attackRange && !isAttackCooldown)
+        /*if (Vector3.Distance(transform.position, trfPlayer.position) < attackRange)
         {
             StartCoroutine(AttackPattern());
-        }
+        }*/
     }
     void FixedUpdate()
     {
@@ -137,10 +135,8 @@ public class BossCont : MonoBehaviour
 
     IEnumerator AttackPattern()
     {
-        isAttackCooldown = true;
-        Debug.Log("Boss is attacking!");
-        int random = Random.Range(0, 3);
-
+        /*int random = Random.Range(0, 3);
+        
         switch (random)
         {
             case 0:
@@ -152,12 +148,9 @@ public class BossCont : MonoBehaviour
             case 2:
                 AttackPattern3();
                 break;
-        }
-        
-        // Introduce an additional delay specific to the attack patterns
-        yield return new WaitForSecondsRealtime(attackCooldown);
-
-        isAttackCooldown = false; // Reset isAttackCooldown after the delay
+        }*/
+        AttackPattern1();
+        yield return new WaitForSeconds(attackCooldown);
     }
     void AttackPattern1()
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TextRPG;
-using static TextRPG.PlayerManager;
+//using static TextRPG.PlayerManager;
 using Unity.VisualScripting;
 
 public class Enemycontroller : MonoBehaviour
@@ -93,8 +93,10 @@ public class Enemycontroller : MonoBehaviour
     {
         if (collision.gameObject.tag == ("Player"))
         {
-            PlayerMove.Instance.m_cPlayer.m_nHp -= m_Enemy.m_sStatus.nStr;
+            PlayerMove.Instance.m_cPlayer.m_nHp -= m_Enemy.m_sStatus.nStr; //애니메이션
             isTouch = true;
+            if(PlayerMove.Instance.m_cPlayer.Death())
+                Destroy(collision.gameObject);
             Debug.Log(collision.gameObject.name);
         }
         else if (collision.gameObject.CompareTag("Sword"))

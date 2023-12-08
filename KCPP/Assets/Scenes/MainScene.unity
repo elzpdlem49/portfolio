@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552f7e71a6b0c6041abeb84659eca0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotPower: 3000
+  shotPower: 100
   prefabBullet: {fileID: 8433633563492385482, guid: 39fda10ab025a9d4bafd940bf4036676, type: 3}
 --- !u!1 &397380887
 GameObject:
@@ -482,7 +482,7 @@ GameObject:
   - component: {fileID: 1074527209}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -624,7 +624,7 @@ MonoBehaviour:
     m_nGold: 0
   trfPlayer: {fileID: 1455848824}
   moveSpeed: 5
-  serchRange: 20
+  serchRange: 30
   attackRange: 8
   attackCooldown: 5
   m_BossDamage1: 10
