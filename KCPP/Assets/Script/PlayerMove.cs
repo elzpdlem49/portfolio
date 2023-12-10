@@ -66,7 +66,10 @@ public class PlayerMove : MonoBehaviour
         {
             isRuning = false;
         }
-
+        if(Input.GetMouseButtonDown(2))
+        {
+            FindAndLookAtEnemy();
+        }
     }
 
     private void FixedUpdate()
@@ -129,5 +132,43 @@ public class PlayerMove : MonoBehaviour
 
         m_speed = m_OriginalSpeed;
         isDashing = false;
+    }
+    void FindAndLookAtEnemy()
+    {
+        // Assume your enemies are tagged with "Enemy", you can change it accordingly
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if (enemies.Length > 0)
+        {
+            // Find the nearest enemy
+            GameObject nearestEnemy = GetNearestEnemy(enemies);
+
+            // Look at the enemy
+            if (nearestEnemy != null)
+            {
+                Vector3 directionToEnemy = nearestEnemy.transform.position - transform.position;
+                directionToEnemy.y = 0; // Ensure the rotation is only horizontal
+                Quaternion toRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
+                transform.rotation = toRotation;
+            }
+        }
+    }
+    GameObject GetNearestEnemy(GameObject[] enemies)
+    {
+        GameObject nearestEnemy = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = enemy;
+            }
+        }
+
+        return nearestEnemy;
     }
 }  
