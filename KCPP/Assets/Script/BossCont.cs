@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using TextRPG;
+using Unity.VisualScripting;
 
 public class BossCont : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class BossCont : MonoBehaviour
     public int m_BossDamage2 = 2;
     public int m_BossDamage3 = 3;
 
+    public bool isCooldown;
     public bool isTouch;
     // Start is called before the first frame update
     void Start()
@@ -135,8 +137,13 @@ public class BossCont : MonoBehaviour
 
     IEnumerator AttackPattern()
     {
-        /*int random = Random.Range(0, 3);
-        
+        if(isCooldown)
+        {
+            yield break;
+        }
+        isCooldown = true;
+        int random = Random.Range(0, 3);
+
         switch (random)
         {
             case 0:
@@ -148,9 +155,9 @@ public class BossCont : MonoBehaviour
             case 2:
                 AttackPattern3();
                 break;
-        }*/
-        AttackPattern1();
+        }
         yield return new WaitForSeconds(attackCooldown);
+        isCooldown=false;
     }
     void AttackPattern1()
     {

@@ -5,13 +5,51 @@ using UnityEngine;
 public class Follow : MonoBehaviour
 {
     public Transform player;
-    public Vector3 offset = new Vector3(0f, 10f, -10f);
+    //public Vector3 offset = new Vector3(0f, 10f, -10f);
     public float smoothSpeed = 5f;
-    // Start is called before the first frame update
+
+    public float mouseSensitivity = 400f;
+
+    private float MouseY;
+    private float MouseX;
+    bool isMouseRotate = false;
+    
+   
+    void Update()
+    {
+        CheckMouseInput();
+        Rotate();
+    }
+    void CheckMouseInput()
+    {
+        isMouseRotate = Input.GetMouseButton(1);
+    }
+    private void Rotate()
+    {
+        if(isMouseRotate)
+        {
+            MouseX -= Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
+            MouseY += Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            MouseX = Mathf.Clamp(MouseX, -1f, 70f);
+            transform.localRotation = Quaternion.Euler(MouseX, MouseY, 0f);
+        }
+        
+    }
+
     void LateUpdate()
     {
-        Vector3 desiredPosition = player.position + offset;
+        Vector3 desiredPosition = player.position - transform.forward * 10f; // Adjust the distance as needed
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
         transform.LookAt(player.position);
+    }
+
+    public void EnableMouseRotation()
+    {
+        isMouseRotate = false;
+    }
+
+    public void DisableMouseRotation()
+    {
+        isMouseRotate = true;
     }
 }

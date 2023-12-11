@@ -24,6 +24,8 @@ public class PlayerMove : MonoBehaviour
     float hz;
     float vt;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,22 +68,25 @@ public class PlayerMove : MonoBehaviour
         {
             isRuning = false;
         }
-        if(Input.GetMouseButtonDown(2))
-        {
-            FindAndLookAtEnemy();
-        }
+        
     }
-
+    
     private void FixedUpdate()
     {
         hz = Input.GetAxis("Horizontal");
         vt = Input.GetAxis("Vertical");
 
-        m_Move = new Vector3(hz, 0f, vt).normalized * m_speed * Time.deltaTime;
+        /*m_Move = new Vector3(hz, 0f, vt).normalized * m_speed * Time.deltaTime;
         m_Run = new Vector3(hz, 0f, vt).normalized * m_RunSpeed * Time.deltaTime;
         //transform.Translate(m_Move);
-        m_Rigdbody.MovePosition(transform.position + m_Move);
-        
+        m_Rigdbody.MovePosition(transform.position + m_Move);*/
+        Vector3 cameraForward = Camera.main.transform.forward;
+        cameraForward.y = 0f;
+        Vector3 moveDirection = (hz * Camera.main.transform.right + vt * cameraForward).normalized;
+
+        m_Move = moveDirection * m_speed * Time.deltaTime;
+        m_Run = moveDirection * m_RunSpeed * Time.deltaTime;
+
 
         if (m_Move.magnitude > 0.1f)
         {
@@ -132,43 +137,5 @@ public class PlayerMove : MonoBehaviour
 
         m_speed = m_OriginalSpeed;
         isDashing = false;
-    }
-    void FindAndLookAtEnemy()
-    {
-        // Assume your enemies are tagged with "Enemy", you can change it accordingly
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        if (enemies.Length > 0)
-        {
-            // Find the nearest enemy
-            GameObject nearestEnemy = GetNearestEnemy(enemies);
-
-            // Look at the enemy
-            if (nearestEnemy != null)
-            {
-                Vector3 directionToEnemy = nearestEnemy.transform.position - transform.position;
-                directionToEnemy.y = 0; // Ensure the rotation is only horizontal
-                Quaternion toRotation = Quaternion.LookRotation(directionToEnemy, Vector3.up);
-                transform.rotation = toRotation;
-            }
-        }
-    }
-    GameObject GetNearestEnemy(GameObject[] enemies)
-    {
-        GameObject nearestEnemy = null;
-        float nearestDistance = float.MaxValue;
-
-        foreach (GameObject enemy in enemies)
-        {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
-
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearestEnemy = enemy;
-            }
-        }
-
-        return nearestEnemy;
     }
 }  
