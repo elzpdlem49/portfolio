@@ -16,7 +16,6 @@ public class Gun : MonoBehaviour
     }
     public void Shot()
     {
-        Debug.Log("Shot");
         GameObject Bullet = Instantiate(prefabBullet);
         Bullet.transform.position = this.gameObject.transform.position;
         Bullet.GetComponent<Rigidbody>().AddForce(transform.forward * shotPower);

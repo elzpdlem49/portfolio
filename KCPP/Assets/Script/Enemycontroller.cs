@@ -95,9 +95,8 @@ public class Enemycontroller : MonoBehaviour
         {
             PlayerMove.Instance.m_cPlayer.m_nHp -= m_Enemy.m_sStatus.nStr; //애니메이션
             isTouch = true;
-            if(PlayerMove.Instance.m_cPlayer.Death())
-                Destroy(collision.gameObject);
-            Debug.Log(collision.gameObject.name);
+            if (PlayerMove.Instance.m_cPlayer.Death())
+            { }
         }
         else if (collision.gameObject.CompareTag("Sword"))
         {
