@@ -45,12 +45,6 @@ public class GameManager : MonoBehaviour
     {
         SetGUIScene((E_GUI_STATE)stateNumber);
     }
-    /* public void EventUpdateStatus(int playerIdx = 0)
-     {
-         Player player = m_listPlayer[playerIdx].m_cPlayer;
-         if (player != null)
-             m_guiHPBar.SetBar(player.m_nHp, player.m_sStatus.nHP);
-     }*/
     public void ShowScenec(E_GUI_STATE state)
     {
         for (int i = 0; i < m_listGUIScenes.Count; i++)
