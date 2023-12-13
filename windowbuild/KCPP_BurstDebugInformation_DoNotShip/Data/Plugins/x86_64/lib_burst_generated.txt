@@ -12,6 +12,7 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --assembly-defines=Unity.VisualEffectGraph.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
 --assembly-defines=Unity.AI.Navigation;
+--assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.HighDefinition.Config.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -29,9 +30,9 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --assembly-defines=Unity.VisualScripting.State;
 --assembly-defines=Cinemachine;
 --assembly-defines=Unity.RenderPipelines.HighDefinition.Runtime;
+--assembly-defines=WinfromPlugin;
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
---assembly-defines=WinfromPlugin;
 --assembly-defines=Accessibility;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
@@ -62,7 +63,7 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --linker-options=PdbAltPath="KCPP_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\Burst
---key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.12f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
+--key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.14f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Library\Burst
 --output=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
@@ -97,6 +98,7 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --assembly-defines=Unity.VisualEffectGraph.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
 --assembly-defines=Unity.AI.Navigation;
+--assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.HighDefinition.Config.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -114,9 +116,9 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --assembly-defines=Unity.VisualScripting.State;
 --assembly-defines=Cinemachine;
 --assembly-defines=Unity.RenderPipelines.HighDefinition.Runtime;
+--assembly-defines=WinfromPlugin;
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
---assembly-defines=WinfromPlugin;
 --assembly-defines=Accessibility;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
@@ -147,80 +149,7 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --linker-options=PdbAltPath="KCPP_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\Burst
---key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.12f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
---decode-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Library\Burst
---output=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
---pdb-search-paths=Temp/ManagedSymbols/
-
---method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.ZBinningJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.ZBinningJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--77fc393cb521ac129b1392d4eb94d29a
---method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.TileRangeExpansionJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.TileRangeExpansionJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--adceb2156d08d59afc9749dc2521fd2b
---method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.TilingJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.TilingJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--a6f5259e22ed809ef3937424c4bd686d
---platform=Windows
---backend=burst-llvm-15
---target=X64_SSE2
---global-safety-checks-setting=Off
---disable-safety-checks
---meta-data-generation=False
---dump=Function
---float-precision=Standard
---target-framework=NetFramework
---float-mode=Fast
---assembly-defines=UnityEngine;
---assembly-defines=Assembly-CSharp;
---assembly-defines=Unity.VisualEffectGraph.Runtime;
---assembly-defines=Unity.RenderPipelines.Core.Runtime;
---assembly-defines=Unity.AI.Navigation;
---assembly-defines=Unity.VisualScripting.Flow;
---assembly-defines=Unity.RenderPipelines.HighDefinition.Config.Runtime;
---assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
---assembly-defines=Unity.TextMeshPro;
---assembly-defines=Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary;
---assembly-defines=Unity.RenderPipelines.Universal.Runtime;
---assembly-defines=Unity.Burst;
---assembly-defines=Unity.VisualScripting.Core;
---assembly-defines=Unity.RenderPipeline.Universal.ShaderLibrary;
---assembly-defines=Unity.Timeline;
---assembly-defines=Unity.InputSystem;
---assembly-defines=Unity.InputSystem.ForUI;
---assembly-defines=Unity.Mathematics;
---assembly-defines=Unity.RenderPipelines.Universal.Shaders;
---assembly-defines=Unity.VisualScripting.State;
---assembly-defines=Cinemachine;
---assembly-defines=Unity.RenderPipelines.HighDefinition.Runtime;
---assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
---assembly-defines=Unity.Burst.Unsafe;
---assembly-defines=WinfromPlugin;
---assembly-defines=Accessibility;
---assembly-defines=System.Runtime;
---assembly-defines=netstandard;
---assembly-defines=Mono.Posix;
---assembly-defines=Mono.Security;
---assembly-defines=Mono.WebBrowser;
---assembly-defines=System.ComponentModel.Composition;
---assembly-defines=System.Configuration;
---assembly-defines=System.Core;
---assembly-defines=System.Data.DataSetExtensions;
---assembly-defines=System.Data;
---assembly-defines=System.Drawing;
---assembly-defines=System.EnterpriseServices;
---assembly-defines=System.IO.Compression.FileSystem;
---assembly-defines=System.IO.Compression;
---assembly-defines=System.Net.Http;
---assembly-defines=System.Numerics;
---assembly-defines=System.Runtime.Serialization.Formatters.Soap;
---assembly-defines=System.Runtime.Serialization;
---assembly-defines=System.Security;
---assembly-defines=System.ServiceModel.Internals;
---assembly-defines=System.Transactions;
---assembly-defines=System.Windows.Forms;
---assembly-defines=System.Xml.Linq;
---assembly-defines=System.Xml;
---assembly-defines=System;
---assembly-defines=mscorlib;
---linker-options=PdbAltPath="KCPP_Data/Plugins/x86_64/lib_burst_generated.pdb"
---generate-link-xml=Temp\burst.link.xml
---temp-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\Burst
---key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.12f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
+--key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.14f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Library\Burst
 --output=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
@@ -241,6 +170,7 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --assembly-defines=Unity.VisualEffectGraph.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.Runtime;
 --assembly-defines=Unity.AI.Navigation;
+--assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=Unity.RenderPipelines.HighDefinition.Config.Runtime;
 --assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
@@ -258,9 +188,9 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --assembly-defines=Unity.VisualScripting.State;
 --assembly-defines=Cinemachine;
 --assembly-defines=Unity.RenderPipelines.HighDefinition.Runtime;
+--assembly-defines=WinfromPlugin;
 --assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
 --assembly-defines=Unity.Burst.Unsafe;
---assembly-defines=WinfromPlugin;
 --assembly-defines=Accessibility;
 --assembly-defines=System.Runtime;
 --assembly-defines=netstandard;
@@ -291,7 +221,7 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --linker-options=PdbAltPath="KCPP_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\Burst
---key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.12f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
+--key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.14f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Library\Burst
 --output=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
@@ -311,4 +241,78 @@ Library: C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEditor.Rendering.HighDefinition.WaterAmplitudeEvaluator+ReductionStep, Unity.RenderPipelines.HighDefinition.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEditor.Rendering.HighDefinition.WaterAmplitudeEvaluator+ReductionStep&, Unity.RenderPipelines.HighDefinition.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--b76d483722f248ee9913b04da206318d
 --method=Unity.Jobs.IJobParallelForExtensions+ParallelForJobStruct`1[[UnityEngine.Rendering.HighDefinition.WaterCPUSimulation+PhillipsSpectrumInitialization, Unity.RenderPipelines.HighDefinition.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.HighDefinition.WaterCPUSimulation+PhillipsSpectrumInitialization&, Unity.RenderPipelines.HighDefinition.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--bb18db5126ee43f952fa01d21301f8d7
 --method=Unity.Burst.Intrinsics.X86, Unity.Burst, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::DoGetCSRTrampoline()--89425a97f3f500fa810ad03f0c382542
+--platform=Windows
+--backend=burst-llvm-15
+--target=X64_SSE2
+--global-safety-checks-setting=Off
+--disable-safety-checks
+--meta-data-generation=False
+--dump=Function
+--float-precision=Standard
+--target-framework=NetFramework
+--float-mode=Fast
+--assembly-defines=UnityEngine;
+--assembly-defines=Assembly-CSharp;
+--assembly-defines=Unity.VisualEffectGraph.Runtime;
+--assembly-defines=Unity.RenderPipelines.Core.Runtime;
+--assembly-defines=Unity.AI.Navigation;
+--assembly-defines=Unity.RenderPipelines.Universal.Config.Runtime;
+--assembly-defines=Unity.VisualScripting.Flow;
+--assembly-defines=Unity.RenderPipelines.HighDefinition.Config.Runtime;
+--assembly-defines=Unity.RenderPipelines.Core.ShaderLibrary;
+--assembly-defines=Unity.TextMeshPro;
+--assembly-defines=Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary;
+--assembly-defines=Unity.RenderPipelines.Universal.Runtime;
+--assembly-defines=Unity.Burst;
+--assembly-defines=Unity.VisualScripting.Core;
+--assembly-defines=Unity.RenderPipeline.Universal.ShaderLibrary;
+--assembly-defines=Unity.Timeline;
+--assembly-defines=Unity.InputSystem;
+--assembly-defines=Unity.InputSystem.ForUI;
+--assembly-defines=Unity.Mathematics;
+--assembly-defines=Unity.RenderPipelines.Universal.Shaders;
+--assembly-defines=Unity.VisualScripting.State;
+--assembly-defines=Cinemachine;
+--assembly-defines=Unity.RenderPipelines.HighDefinition.Runtime;
+--assembly-defines=WinfromPlugin;
+--assembly-defines=Unity.VisualScripting.Antlr3.Runtime;
+--assembly-defines=Unity.Burst.Unsafe;
+--assembly-defines=Accessibility;
+--assembly-defines=System.Runtime;
+--assembly-defines=netstandard;
+--assembly-defines=Mono.Posix;
+--assembly-defines=Mono.Security;
+--assembly-defines=Mono.WebBrowser;
+--assembly-defines=System.ComponentModel.Composition;
+--assembly-defines=System.Configuration;
+--assembly-defines=System.Core;
+--assembly-defines=System.Data.DataSetExtensions;
+--assembly-defines=System.Data;
+--assembly-defines=System.Drawing;
+--assembly-defines=System.EnterpriseServices;
+--assembly-defines=System.IO.Compression.FileSystem;
+--assembly-defines=System.IO.Compression;
+--assembly-defines=System.Net.Http;
+--assembly-defines=System.Numerics;
+--assembly-defines=System.Runtime.Serialization.Formatters.Soap;
+--assembly-defines=System.Runtime.Serialization;
+--assembly-defines=System.Security;
+--assembly-defines=System.ServiceModel.Internals;
+--assembly-defines=System.Transactions;
+--assembly-defines=System.Windows.Forms;
+--assembly-defines=System.Xml.Linq;
+--assembly-defines=System.Xml;
+--assembly-defines=System;
+--assembly-defines=mscorlib;
+--linker-options=PdbAltPath="KCPP_Data/Plugins/x86_64/lib_burst_generated.pdb"
+--generate-link-xml=Temp\burst.link.xml
+--temp-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\Burst
+--key-folder=C:/Program Files/Unity/Hub/Editor/2022.3.14f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
+--decode-folder=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Library\Burst
+--output=C:\Users\Administrator\Desktop\KCH\portfolio\KCPP\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
+--pdb-search-paths=Temp/ManagedSymbols/
+
+--method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.ZBinningJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.ZBinningJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--77fc393cb521ac129b1392d4eb94d29a
+--method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.TileRangeExpansionJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.TileRangeExpansionJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--adceb2156d08d59afc9749dc2521fd2b
+--method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.TilingJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.TilingJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--a6f5259e22ed809ef3937424c4bd686d
 
