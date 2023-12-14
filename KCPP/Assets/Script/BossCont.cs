@@ -24,6 +24,10 @@ public class BossCont : MonoBehaviour
 
     public bool isCooldown;
     public bool isTouch;
+
+    bool isCharging; // 돌진 중인지 여부를 나타내는 플래그
+    public float chargeDuration = 1.5f; // 돌진 지속 시간
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,11 +78,16 @@ public class BossCont : MonoBehaviour
 
                 StartCoroutine(AttackPattern());
             }
-            else
+            else if (Vector3.Distance(transform.position, trfPlayer.position) < serchRange)
             {
                 bossRb.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
                 Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
                 toRotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 5f);
+            }
+            else
+            {
+                // 돌진 시작
+                StartCoroutine(ChargeAtPlayer(direction));
             }
         }
     }
@@ -153,7 +162,7 @@ public class BossCont : MonoBehaviour
                 AttackPattern2();
                 break;
             case 2:
-                AttackPattern3();
+                yield return StartCoroutine(ChargeAttack());
                 break;
         }
         /*if (PlayerMove.Instance.m_cPlayer.Death())
@@ -174,33 +183,62 @@ public class BossCont : MonoBehaviour
         Debug.Log("Executing Attack Pattern 2");
         PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage2;
     }
+    IEnumerator ChargeAttack()
+    {
+        if (isCharging)
+        {
+            yield break; // Prevent multiple charges at the same time
+        }
 
-    void AttackPattern3()
-    {
-        Debug.Log("Executing Attack Pattern 3");
-        PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage3;
-    }
-   /* private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == ("Player"))
-        {
-            isTouch = true;
-            Debug.Log(collision.gameObject.name);
-        }
-        else if (collision.gameObject.CompareTag("Sword"))
-        {
-            Debug.Log("Sword");
-        }
-        else if (collision.gameObject.tag == "Bullet")
-        {
+        Debug.Log("Charging at the player!");
 
-        }
+        Vector3 chargeDirection = (trfPlayer.position - transform.position).normalized;
+
+        // Perform the charge attack
+        yield return StartCoroutine(ChargeAtPlayer(chargeDirection));
     }
-    private void OnCollisionExit(Collision collision)
+    IEnumerator ChargeAtPlayer(Vector3 chargeDirection)
     {
-        if (collision.gameObject.tag == ("Player"))
-        {
-            isTouch = false;
-        }
-    }*/
+        isCharging = true;
+
+        // 이동 속도를 높여 돌진
+        bossRb.velocity = chargeDirection * (moveSpeed * 2f);
+
+        // 돌진 지속 시간만큼 대기
+        yield return new WaitForSeconds(chargeDuration);
+
+        // 돌진이 끝나면 플래그를 초기화
+        isCharging = false;
+
+        // 플레이어를 다시 추적하도록 이동 속도를 원래로 복구
+        bossRb.velocity = Vector3.zero;
+        bossRb.angularVelocity = Vector3.zero; // 각속도 초기화
+
+        // 플레이어를 향해 바라보기
+        Quaternion toRotation = Quaternion.LookRotation(chargeDirection, Vector3.up);
+        bossRb.MoveRotation(toRotation);
+    }
+    /* private void OnCollisionEnter(Collision collision)
+     {
+         if (collision.gameObject.tag == ("Player"))
+         {
+             isTouch = true;
+             Debug.Log(collision.gameObject.name);
+         }
+         else if (collision.gameObject.CompareTag("Sword"))
+         {
+             Debug.Log("Sword");
+         }
+         else if (collision.gameObject.tag == "Bullet")
+         {
+
+         }
+     }
+     private void OnCollisionExit(Collision collision)
+     {
+         if (collision.gameObject.tag == ("Player"))
+         {
+             isTouch = false;
+         }
+     }*/
 }

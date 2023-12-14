@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(this.gameObject.name + " OnCollisionEnter: " + collision.gameObject.name);
+        //Debug.Log(this.gameObject.name + " OnCollisionEnter: " + collision.gameObject.name);
         if (collision.gameObject.tag == "Enemy")
         {
             Enemycontroller.Instance.m_Enemy.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
