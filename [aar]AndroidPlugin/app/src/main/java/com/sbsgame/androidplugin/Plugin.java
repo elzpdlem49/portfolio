@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.widget.Toast;
 
 public class Plugin {
+
     //플러그인 작동 테스트용 함수
     int GetInt()
     {

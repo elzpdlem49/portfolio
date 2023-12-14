@@ -28,7 +28,7 @@ public class BossCont : MonoBehaviour
     void Start()
     {
         bossRb = GetComponent<Rigidbody>();
-        m_Boss = new Player(name, 1000, 1000, 10, 9);
+        m_Boss = new Player(name, 100, 100, 10, 9);
         Instance = this;
         //StartCoroutine(BossFight());
     }
@@ -156,6 +156,10 @@ public class BossCont : MonoBehaviour
                 AttackPattern3();
                 break;
         }
+        /*if (PlayerMove.Instance.m_cPlayer.Death())
+        {
+            Destroy(PlayerMove.Instance.gameObject);
+        }*/
         yield return new WaitForSeconds(attackCooldown);
         isCooldown=false;
     }
@@ -176,7 +180,7 @@ public class BossCont : MonoBehaviour
         Debug.Log("Executing Attack Pattern 3");
         PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage3;
     }
-    private void OnCollisionEnter(Collision collision)
+   /* private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == ("Player"))
         {
@@ -198,5 +202,5 @@ public class BossCont : MonoBehaviour
         {
             isTouch = false;
         }
-    }
+    }*/
 }
