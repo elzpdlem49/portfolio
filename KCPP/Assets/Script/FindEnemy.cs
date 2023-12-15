@@ -86,12 +86,12 @@ public class FindEnemy : MonoBehaviour
         isCameraFixed = !isCameraFixed;
         if (isCameraFixed)
         {
-            cameraFollow.EnableMouseRotation();
+            cameraFollow.DisableMouseRotation();
             FindAndLookAtEnemy();
         }
         else
         {
-            cameraFollow.DisableMouseRotation();
+            cameraFollow.EnableMouseRotation();
         }
     }
 }

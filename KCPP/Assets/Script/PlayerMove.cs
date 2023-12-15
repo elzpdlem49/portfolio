@@ -74,26 +74,17 @@ public class PlayerMove : MonoBehaviour
         m_Move = moveDirection * m_speed * Time.deltaTime;
         m_Run = moveDirection * m_RunSpeed * Time.deltaTime;
 
-
         if (m_Move.magnitude > 0.1f)
         {
             Quaternion toRotation = Quaternion.LookRotation(m_Move, Vector3.up);
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
-
         }
-
-        if (m_Move.magnitude > 0.1f )
-        {
-            Quaternion toRotation = Quaternion.LookRotation(m_Move, Vector3.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
-        }
-        if(isRuning)
+        if (isRuning)
         {
             Runing();
         }
         else
             m_Rigdbody.MovePosition(transform.position + m_Move); // 플레이어 이동 
-       
     }
     void Runing()
     {
@@ -124,7 +115,5 @@ public class PlayerMove : MonoBehaviour
 
         m_speed = m_OriginalSpeed;
         isDashing = false;
-    }
-
-    
+    }  
 }  

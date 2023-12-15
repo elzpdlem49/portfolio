@@ -12,17 +12,21 @@ public class Follow : MonoBehaviour
 
     private float MouseY;
     private float MouseX;
-    bool isMouseRotate = false;
-    
-   
+    public bool isMouseRotate = false;
+
+
+    private void Start()
+    {
+        MouseX = transform.rotation.eulerAngles.x;
+        MouseY = transform.rotation.eulerAngles.y;
+    }
     void Update()
     {
         CheckMouseInput();
-        Rotate();
     }
     void CheckMouseInput()
     {
-        isMouseRotate = Input.GetMouseButton(1);
+        Input.GetMouseButton(1);
     }
     private void Rotate()
     {
@@ -33,11 +37,11 @@ public class Follow : MonoBehaviour
             MouseX = Mathf.Clamp(MouseX, -1f, 70f);
             transform.localRotation = Quaternion.Euler(MouseX, MouseY, 0f);
         }
-        
     }
 
     void LateUpdate()
     {
+        Rotate();
         Vector3 desiredPosition = player.position - transform.forward * 10f; // Adjust the distance as needed
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
         transform.LookAt(player.position);
