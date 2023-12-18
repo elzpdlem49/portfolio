@@ -12,7 +12,7 @@ public class Follow : MonoBehaviour
 
     private float MouseY;
     private float MouseX;
-    public bool isMouseRotate = false;
+    public bool isMouseRotate = true;
 
 
     private void Start()
@@ -20,13 +20,13 @@ public class Follow : MonoBehaviour
         MouseX = transform.rotation.eulerAngles.x;
         MouseY = transform.rotation.eulerAngles.y;
     }
-    void Update()
-    {
-        CheckMouseInput();
-    }
+    
     void CheckMouseInput()
     {
-        Input.GetMouseButton(1);
+        if(Input.GetMouseButton(1))
+        {
+            Rotate();
+        }
     }
     private void Rotate()
     {
@@ -41,19 +41,19 @@ public class Follow : MonoBehaviour
 
     void LateUpdate()
     {
-        Rotate();
-        Vector3 desiredPosition = player.position - transform.forward * 10f; // Adjust the distance as needed
+        CheckMouseInput();
+        Vector3 desiredPosition = player.position - transform.forward * 5f;
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
         transform.LookAt(player.position);
     }
 
     public void EnableMouseRotation()
     {
-        isMouseRotate = false;
+        isMouseRotate = true;
     }
 
     public void DisableMouseRotation()
     {
-        isMouseRotate = true;
+        isMouseRotate = false;
     }
 }

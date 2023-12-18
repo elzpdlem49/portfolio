@@ -116,8 +116,9 @@ GameObject:
   - component: {fileID: 7623950768068872565}
   - component: {fileID: 169658323736018720}
   - component: {fileID: 3712729768911677289}
-  - component: {fileID: 1839827724914843071}
+  - component: {fileID: 9122982660809904669}
   - component: {fileID: 7408803400024226860}
+  - component: {fileID: 324997358983973006}
   - component: {fileID: 1150700426135512213}
   - component: {fileID: 3626645544076948370}
   m_Layer: 0
@@ -137,7 +138,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5144, y: 2.8046, z: 0.4425}
-  m_LocalScale: {x: 2.200629, y: 3.6795483, z: 1.885}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4716002474977319388}
@@ -151,7 +152,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3099956651846221349}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300002, guid: 5917c0e93d180a842b61d1ebc62a195c, type: 3}
 --- !u!23 &3712729768911677289
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -194,8 +195,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1839827724914843071
-BoxCollider:
+--- !u!136 &9122982660809904669
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -212,9 +213,11 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!54 &7408803400024226860
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -242,6 +245,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!95 &324997358983973006
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099956651846221349}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 5917c0e93d180a842b61d1ebc62a195c, type: 3}
+  m_Controller: {fileID: 9100000, guid: 8323a4da35e6a5f42ae26224f6d9acc1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1150700426135512213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,16 +288,17 @@ MonoBehaviour:
     m_nHp: 0
     m_nMp: 0
     m_nGold: 0
-  m_speed: 8
+  m_speed: 4
   m_RunSpeed: 12
   m_JumpForce: 5
   m_dashForce: 15
   m_DashCoolTime: 0.5
   m_OriginalSpeed: 0
+  isWalking: 0
   isRuning: 0
   isDashing: 0
   isGrounded: 0
-  isRolling: 0
+  anim: {fileID: 0}
 --- !u!114 &3626645544076948370
 MonoBehaviour:
   m_ObjectHideFlags: 0
