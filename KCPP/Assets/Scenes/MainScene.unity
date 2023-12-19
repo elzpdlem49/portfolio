@@ -1492,22 +1492,21 @@ MonoBehaviour:
     m_nHp: 0
     m_nMp: 0
     m_nGold: 0
+  m_Walk: {x: 0, y: 0, z: 0}
   m_speed: 1
   m_RunSpeed: 3
   m_SprintSpeed: 7
   m_JumpForce: 5
   m_dashForce: 15
-  m_DashCoolTime: 0.5
+  m_RollCoolTime: 0.5
   m_OriginalSpeed: 0
-  isWalking: 0
-  isRuning: 0
-  isRunorWalk: 0
-  isSprinting: 0
-  isDashing: 0
-  isJumping: 0
-  isDodging: 0
+  lastSpacebarPressTime: 0
+  isRunorWalk: 1
   isGrounded: 0
+  isRolling: 0
+  m_Jumping: 0
   anim: {fileID: 0}
+  count: 0
 --- !u!54 &764973810
 Rigidbody:
   m_ObjectHideFlags: 0

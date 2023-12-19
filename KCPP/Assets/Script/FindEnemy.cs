@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class FindEnemy : MonoBehaviour
 {
+    public static FindEnemy Instance;
     public bool isCameraFixed = false;
     public Follow cameraFollow;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
