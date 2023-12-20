@@ -150,14 +150,14 @@ public class PlayerMove : MonoBehaviour
                 else if (m_Walk.magnitude > 0.01f && isRunorWalk)
                 {
                     m_eCurrentState = PlayerState.Running;
-                    anim.SetBool("isRun", true);
                     anim.SetBool("RunatWalk", true);
+                    anim.SetBool("isWalk", false);
                 }
                 else if (Input.GetKey(KeyCode.Space))
                 {
+                    lastSpacebarPressTime = Time.time;
                     m_eCurrentState = PlayerState.Sprinting;
-                    //anim.SetBool("isSprint", true);
-                    anim.SetTrigger("isSprintT");
+                    anim.SetBool("isSprint", true);
                 }
                 else if (isRolling)
                 {
@@ -176,8 +176,8 @@ public class PlayerMove : MonoBehaviour
                 else if (m_Walk.magnitude > 0.01f && !isRunorWalk)
                 {
                     m_eCurrentState = PlayerState.Walking;
-                    anim.SetBool("isWalk", true);
                     anim.SetBool("RunatWalk", false);
+                    anim.SetBool("isRun", false);
                 }
                 else if (Input.GetKey(KeyCode.Space))
                 {
@@ -239,18 +239,18 @@ public class PlayerMove : MonoBehaviour
             case PlayerState.Walking:
                 // "Walking" 상태에서의 움직임 처리
                 Walk();
-                //anim.SetBool("isWalk", true);
+                anim.SetBool("isWalk", true);
                 break;
 
             case PlayerState.Running:
                 // "Running" 상태에서의 움직임 처리
                 Runing();
-                //anim.SetBool("isRun", true);
+                anim.SetBool("isRun", true);
                 break;
 
             case PlayerState.Sprinting:
                 Sprint();
-                //anim.SetBool("isSprint", true);
+                anim.SetBool("isSprint", true);
                 break;
 
             default:

@@ -11,12 +11,23 @@ public class Enemycontroller : MonoBehaviour
     [SerializeField] 
     public Player m_Enemy;
     public Transform player;
-    public float moveSpeed = 10f;
-    public float serchRange = 20f;
-    public float attackRange = 5f;
+    public float moveSpeed = 1f;
+    public float serchRange = 5f;
+    public float attackRange = 1f;
     Rigidbody enemyRigidbody;
-
+    public Animator anim;
     public bool isTouch;
+
+    
+
+    public enum EnemyState
+    {
+        Idle,
+        Patrol,
+        FollowPlayer,
+        Attack
+    }
+    public EnemyState m_eCurrentState;
 
     public Transform[] patrolWaypoints;
     int currentWaypointIndex = 0;
@@ -26,34 +37,71 @@ public class Enemycontroller : MonoBehaviour
         enemyRigidbody = GetComponent<Rigidbody>();
         m_Enemy = new Player(name, 100, 100, 10, 0);
         Instance = this;
+        anim = GetComponent<Animator>();
+        m_eCurrentState = EnemyState.Patrol;
     }
-    public void OnGUI()
+    private void Update()
     {
-        //오브젝트의 3d좌표를 2d좌표(스크린좌표)로 변환하여 GUI를 그린다.
-        Vector3 vPos = this.transform.position;
-        Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos); //월드좌표를 스크린좌표로 변환한다.
-        vPosToScreen.y = Screen.height - vPosToScreen.y; //y좌표의 축이 하단을 기준으로 정렬되므로 상단으로 변환한다.
-        int h = 40;
-        int w = 100;
-        Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
-        //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
-        GUI.Box(rectGUI, string.Format("HP:{1}\nMP:{0}", m_Enemy.m_nMp, m_Enemy.m_nHp));
+        
     }
 
-    
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        if (Vector3.Distance(transform.position, player.position) < serchRange)
+        EnemyAIState();
+        /*if (Vector3.Distance(transform.position, player.position) < serchRange)
         {
             FollowPlayer();
         }
         else
         {
             Patrol();
-        }
+        }*/
 
+    }
+    void SetState()
+    {
+        switch(m_eCurrentState)
+        {
+            case EnemyState.Idle:
+                break;
+            case EnemyState.Patrol:
+                Patrol();
+                anim.SetBool("isWalk", true);
+                break;
+            case EnemyState.FollowPlayer:
+                FollowPlayer();
+                anim.SetBool("isRun", true);
+                break;
+            case EnemyState.Attack:
+                break;
+        }
+    }
+    void EnemyAIState()
+    {
+        switch(m_eCurrentState)
+        {
+            case EnemyState.Patrol:
+                if ((Vector3.Distance(transform.position, player.position) < serchRange))
+                {
+                    m_eCurrentState = EnemyState.FollowPlayer;
+                    anim.SetBool("isWalk", false);
+                }
+                break;
+            case EnemyState.FollowPlayer:
+                if (!(Vector3.Distance(transform.position, player.position) < serchRange))
+                {
+                    m_eCurrentState = EnemyState.Patrol;
+                    anim.SetBool("isRun", false);
+                }
+                
+                    break;
+            case EnemyState.Attack:
+
+                break;
+            default:
+                break;
+        }
     }
     void Patrol()
     {
@@ -115,5 +163,17 @@ public class Enemycontroller : MonoBehaviour
         {
             isTouch = false;
         }
+    }
+    public void OnGUI()
+    {
+        //오브젝트의 3d좌표를 2d좌표(스크린좌표)로 변환하여 GUI를 그린다.
+        Vector3 vPos = this.transform.position;
+        Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos); //월드좌표를 스크린좌표로 변환한다.
+        vPosToScreen.y = Screen.height - vPosToScreen.y; //y좌표의 축이 하단을 기준으로 정렬되므로 상단으로 변환한다.
+        int h = 40;
+        int w = 100;
+        Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
+        //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
+        GUI.Box(rectGUI, string.Format("HP:{1}\nMP:{0}", m_Enemy.m_nMp, m_Enemy.m_nHp));
     }
 }
