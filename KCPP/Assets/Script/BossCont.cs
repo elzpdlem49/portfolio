@@ -10,10 +10,10 @@ public class BossCont : MonoBehaviour
     public static BossCont Instance;
     [SerializeField]
     public Player m_Boss;
-    public Transform trfPlayer;
-    public float moveSpeed = 10f;
-    public float serchRange = 20f;
-    public float attackRange = 3f;
+    public PlayerMove player;
+    public float moveSpeed = 2f;
+    public float serchRange = 10f;
+    public float attackRange = 4f;
 
 
     Rigidbody bossRb;
@@ -21,12 +21,22 @@ public class BossCont : MonoBehaviour
     public int m_BossDamage1 = 1;
     public int m_BossDamage2 = 2;
     public int m_BossDamage3 = 3;
+    public float disToPlayer;
 
     public bool isCooldown;
     public bool isTouch;
 
-    bool isCharging; // 돌진 중인지 여부를 나타내는 플래그
-    public float chargeDuration = 1.5f; // 돌진 지속 시간
+    bool isRushing; // 돌진 중인지 여부를 나타내는 플래그
+    public float chargeDuration = 1.5f;
+    public float pushBackForce = 10f; // 돌진 지속 시간
+
+    public enum BossState
+    {
+        Idle,
+        FollowPlayer,
+        Attack
+    }
+    public BossState m_eCurrentState;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +44,7 @@ public class BossCont : MonoBehaviour
         bossRb = GetComponent<Rigidbody>();
         m_Boss = new Player(name, 100, 100, 10, 9);
         Instance = this;
+        m_eCurrentState = BossState.Idle;
         //StartCoroutine(BossFight());
     }
     public void OnGUI()
@@ -51,24 +62,62 @@ public class BossCont : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        /*if (Vector3.Distance(transform.position, trfPlayer.position) < attackRange)
-        {
-            StartCoroutine(AttackPattern());
-        }*/
+        UpdateBossState();
+        disToPlayer = Vector3.Distance(transform.position, player.transform.position);
     }
     void FixedUpdate()
     {
-        if (Vector3.Distance(transform.position, trfPlayer.position) < serchRange)
+        SetBossState();
+    }
+    void SetBossState()
+    {
+        switch(m_eCurrentState)
         {
-            FollowPlayer();
+            case BossState.Idle:
+
+                break;
+            case BossState.FollowPlayer:
+                FollowPlayer();
+                break;
+            case BossState.Attack:
+                StartCoroutine(AttackPattern());
+                break;
+        }
+    }
+    void UpdateBossState()
+    {
+        switch(m_eCurrentState)
+        {
+            case BossState.Idle:
+                if(disToPlayer < serchRange)
+                {
+                    m_eCurrentState = BossState.FollowPlayer;
+                }
+                break;
+            case BossState.FollowPlayer:
+                if(disToPlayer > serchRange)
+                {
+                    m_eCurrentState = BossState.Idle;
+                }
+                else if (disToPlayer < attackRange)
+                {
+                    m_eCurrentState = BossState.Attack;
+                }
+                break;
+            case BossState.Attack:
+                if(disToPlayer > attackRange)
+                {
+                    m_eCurrentState = BossState.FollowPlayer;
+                }
+                break;
         }
     }
     void FollowPlayer()
     {
         if (!isTouch)
         {
-            Vector3 direction = (trfPlayer.position - transform.position).normalized;
-            if (Vector3.Distance(transform.position, trfPlayer.position) < attackRange)
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+            if (disToPlayer < attackRange)
             {
                 bossRb.velocity = Vector3.zero;
                 // 바라보는 방향
@@ -78,7 +127,7 @@ public class BossCont : MonoBehaviour
 
                 StartCoroutine(AttackPattern());
             }
-            else if (Vector3.Distance(transform.position, trfPlayer.position) < serchRange)
+            else if (disToPlayer < serchRange)
             {
                 bossRb.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
                 Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -87,63 +136,10 @@ public class BossCont : MonoBehaviour
             else
             {
                 // 돌진 시작
-                StartCoroutine(ChargeAtPlayer(direction));
+                StartCoroutine(RushAtPlayer(direction));
             }
         }
     }
-
-    /*IEnumerator BossFight()
-    {
-        while (true)
-        {
-            yield return StartCoroutine(AttackPattern());
-            yield return new WaitForSeconds(attackCooldown);
-        }
-    }*/
-
-    /*IEnumerator AttackPattern()
-    {
-        isAttackCooldown = true;
-        Debug.Log("Boss is attacking!");
-        int random = Random.Range(0, 3);
-
-        switch (random)
-        {
-            case 0:
-                yield return StartCoroutine(AttackPattern1());
-                break;
-            case 1:
-                yield return StartCoroutine(AttackPattern2());
-                break;
-            case 2:
-                yield return StartCoroutine(AttackPattern3());
-                break;
-        }
-
-        yield return new WaitForSeconds(attackCooldown);
-        isAttackCooldown = false;
-    }
-    IEnumerator AttackPattern1()
-    {
-        Debug.Log("Executing Attack Pattern 1");
-        PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage1;
-        yield return new WaitForSeconds(attackCooldown); ;
-    }
-
-    IEnumerator AttackPattern2()
-    {
-        Debug.Log("Executing Attack Pattern 2");
-        PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage2;
-        yield return new WaitForSeconds(attackCooldown); ;
-    }
-
-    IEnumerator AttackPattern3()
-    {
-        Debug.Log("Executing Attack Pattern 3");
-        PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage3;
-        yield return new WaitForSeconds(attackCooldown); ;
-    }*/
-
     IEnumerator AttackPattern()
     {
         if(isCooldown)
@@ -153,7 +149,7 @@ public class BossCont : MonoBehaviour
         isCooldown = true;
         int random = Random.Range(0, 3);
 
-        switch (random)
+        switch (2)
         {
             case 0:
                 AttackPattern1();
@@ -161,14 +157,10 @@ public class BossCont : MonoBehaviour
             case 1:
                 AttackPattern2();
                 break;
-           /* case 2:
+            case 2:
                 yield return StartCoroutine(ChargeAttack());
-                break;*/
+                break;
         }
-        /*if (PlayerMove.Instance.m_cPlayer.Death())
-        {
-            Destroy(PlayerMove.Instance.gameObject);
-        }*/
         yield return new WaitForSeconds(attackCooldown);
         isCooldown=false;
     }
@@ -185,60 +177,49 @@ public class BossCont : MonoBehaviour
     }
     IEnumerator ChargeAttack()
     {
-        if (isCharging)
+        if (isRushing)
         {
             yield break; // Prevent multiple charges at the same time
         }
 
         Debug.Log("Charging at the player!");
 
-        Vector3 chargeDirection = (trfPlayer.position - transform.position).normalized;
+        Vector3 chargeDirection = (player.transform.position - transform.position).normalized;
 
         // Perform the charge attack
-        yield return StartCoroutine(ChargeAtPlayer(chargeDirection));
+        yield return StartCoroutine(RushAtPlayer(chargeDirection));
     }
-    IEnumerator ChargeAtPlayer(Vector3 chargeDirection)
+    IEnumerator RushAtPlayer(Vector3 rushDirection) // ChargeAtPlayer를 RushAtPlayer로 변경
     {
-        isCharging = true;
+        isRushing = true;
 
-        // 이동 속도를 높여 돌진
-        bossRb.velocity = chargeDirection * (moveSpeed * 2f);
+        // 플레이어를 향해 돌진하는 속도 설정
+        bossRb.velocity = rushDirection * (moveSpeed * 2f);
 
-        // 돌진 지속 시간만큼 대기
+        // 돌진 지속 시간 동안 대기
         yield return new WaitForSeconds(chargeDuration);
 
-        // 돌진이 끝나면 플래그를 초기화
-        isCharging = false;
+        // 돌진 플래그 초기화
+        isRushing = false;
 
-        // 플레이어를 다시 추적하도록 이동 속도를 원래로 복구
+        // 속도 초기화
         bossRb.velocity = Vector3.zero;
-        bossRb.angularVelocity = Vector3.zero; // 각속도 초기화
+        bossRb.angularVelocity = Vector3.zero;
 
-        // 플레이어를 향해 바라보기
-        Quaternion toRotation = Quaternion.LookRotation(chargeDirection, Vector3.up);
+        // 플레이어를 향해 회전
+        Quaternion toRotation = Quaternion.LookRotation(rushDirection, Vector3.up);
         bossRb.MoveRotation(toRotation);
     }
-    /* private void OnCollisionEnter(Collision collision)
-     {
-         if (collision.gameObject.tag == ("Player"))
-         {
-             isTouch = true;
-             Debug.Log(collision.gameObject.name);
-         }
-         else if (collision.gameObject.CompareTag("Sword"))
-         {
-             Debug.Log("Sword");
-         }
-         else if (collision.gameObject.tag == "Bullet")
-         {
+    void OnCollisionEnter(Collision collision)
+    {
+        if (isRushing && collision.gameObject.CompareTag("Player"))
+        {
+            // 플레이어를 밀어냄
+            Vector3 pushBackDirection = (collision.transform.position - transform.position).normalized;
+            collision.rigidbody.AddForce(pushBackDirection * pushBackForce, ForceMode.Impulse);
 
-         }
-     }
-     private void OnCollisionExit(Collision collision)
-     {
-         if (collision.gameObject.tag == ("Player"))
-         {
-             isTouch = false;
-         }
-     }*/
+            // 플레이어에게 피해 입힘
+            PlayerMove.Instance.m_cPlayer.m_nHp -= m_Boss.m_sStatus.nStr * m_BossDamage3;
+        }
+    }
 }

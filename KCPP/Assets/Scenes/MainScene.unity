@@ -3315,6 +3315,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 764973809}
     - target: {fileID: -4638790629517989956, guid: e860861f15201e64cabef2b51c9d0cab, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4638790629517989956, guid: e860861f15201e64cabef2b51c9d0cab, type: 3}
       propertyPath: patrolWaypoints.Array.data[0]
       value: 
       objectReference: {fileID: 612823340}
@@ -3446,15 +3450,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2197457282012392462, guid: d239bb244cf107a429fe474e59f57018, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.6
+      value: 9.83
       objectReference: {fileID: 0}
     - target: {fileID: 2197457282012392462, guid: d239bb244cf107a429fe474e59f57018, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.4
+      value: 0.56
       objectReference: {fileID: 0}
     - target: {fileID: 2197457282012392462, guid: d239bb244cf107a429fe474e59f57018, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.4
+      value: 9.55
       objectReference: {fileID: 0}
     - target: {fileID: 2197457282012392462, guid: d239bb244cf107a429fe474e59f57018, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3488,18 +3492,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
-    - target: {fileID: 5553736232641246187, guid: d239bb244cf107a429fe474e59f57018, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 6823355779588635084, guid: d239bb244cf107a429fe474e59f57018, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 764973809}
     - target: {fileID: 6823355779588635084, guid: d239bb244cf107a429fe474e59f57018, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6823355779588635084, guid: d239bb244cf107a429fe474e59f57018, type: 3}
       propertyPath: trfPlayer
       value: 
       objectReference: {fileID: 4759723182888145}
+    - target: {fileID: 6823355779588635084, guid: d239bb244cf107a429fe474e59f57018, type: 3}
+      propertyPath: serchRange
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6823355779588635084, guid: d239bb244cf107a429fe474e59f57018, type: 3}
+      propertyPath: attackRange
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3513,8 +3525,8 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1076661658}
   - {fileID: 397380888}
-  - {fileID: 6773182040494468766}
   - {fileID: 1407334337}
   - {fileID: 1149382669}
   - {fileID: 4295344186874694199}
   - {fileID: 1512429832353171825}
+  - {fileID: 6773182040494468766}
