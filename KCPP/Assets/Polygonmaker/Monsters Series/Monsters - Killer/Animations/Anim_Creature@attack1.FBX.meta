@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e9bb24f453c4b8a479f78da1bc5f4f92
 ModelImporter:
-  serializedVersion: 19301
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -629,12 +629,12 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: 
+    removeConstantScaleCurves: 0
+    motionNodeName: <Root Transform>
     rigImportErrors: 
-    rigImportWarnings: "Avatar Rig Configuration mis-match. Bone length in configuration
-      does not match position in animation file:\n\t'jaw' : position error = 17.589682
-      mm\n\t'eyeR' : position error = 2.880012 mm\n\t'eyeL' : position error = 2.532029
-      mm\n"
+    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
+      copied configuration does not match position in animation file:\n\t'eyeR' :
+      position error = 61.859924 mm\n\t'eyeL' : position error = 59.670326 mm\n"
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -651,8 +651,8 @@ ModelImporter:
     clipAnimations:
     - serializedVersion: 16
       name: attack1
-      takeName: attack1
-      internalID: 0
+      takeName: Take 001
+      internalID: 1827226128182048838
       firstFrame: 180
       lastFrame: 205
       wrapMode: 0
@@ -664,7 +664,7 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 1
+      loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
@@ -674,209 +674,9 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Character Base
-        weight: 1
-      - path: root
-        weight: 1
-      - path: root/ik_foot_root
-        weight: 1
-      - path: root/ik_foot_root/ik_foot_l
-        weight: 1
-      - path: root/ik_foot_root/ik_foot_r
-        weight: 1
-      - path: root/ik_hand_root
-        weight: 1
-      - path: root/ik_hand_root/ik_hand_gun
-        weight: 1
-      - path: root/ik_hand_root/ik_hand_gun/ik_hand_l
-        weight: 1
-      - path: root/ik_hand_root/ik_hand_gun/ik_hand_r
-        weight: 1
-      - path: root/pelvis
-        weight: 1
-      - path: root/pelvis/belly
-        weight: 1
-      - path: root/pelvis/cloth_back_1
-        weight: 1
-      - path: root/pelvis/cloth_back_1/cloth_back_2
-        weight: 1
-      - path: root/pelvis/cloth_back_1/cloth_back_2/cloth_back_3
-        weight: 1
-      - path: root/pelvis/cloth_front_1
-        weight: 1
-      - path: root/pelvis/cloth_front_1/cloth_front_2
-        weight: 1
-      - path: root/pelvis/cloth_front_1/cloth_front_2/cloth_front_3
-        weight: 1
-      - path: root/pelvis/cloth_l_1
-        weight: 1
-      - path: root/pelvis/cloth_l_1/cloth_l_2
-        weight: 1
-      - path: root/pelvis/cloth_l_1/cloth_l_2/cloth_l_3
-        weight: 1
-      - path: root/pelvis/cloth_r_1
-        weight: 1
-      - path: root/pelvis/cloth_r_1/cloth_r_2
-        weight: 1
-      - path: root/pelvis/cloth_r_1/cloth_r_2/cloth_r_3
-        weight: 1
-      - path: root/pelvis/spine_01
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/breast_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/breast_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l/index_02_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/index_01_l/index_02_l/index_03_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/middle_01_l/middle_02_l/middle_03_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l/pinky_02_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/pinky_01_l/pinky_02_l/pinky_03_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l/ring_02_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/ring_01_l/ring_02_l/ring_03_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/thumb_01_l/thumb_02_l/thumb_03_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/hand_l/WeaponsL
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/lowerarm_l/lowerarm_twist_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_l/upperarm_l/upperarm_twist_01_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r/index_02_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/index_01_r/index_02_r/index_03_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/middle_01_r/middle_02_r/middle_03_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r/pinky_02_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/pinky_01_r/pinky_02_r/pinky_03_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r/ring_02_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/ring_01_r/ring_02_r/ring_03_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/thumb_01_r/thumb_02_r/thumb_03_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/hand_r/WeaponsR
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/lowerarm_r/lowerarm_twist_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/clavicle_r/upperarm_r/upperarm_twist_01_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/ear_l
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/ear_r
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/eyeL
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/eyeR
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/hair1
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/hair1/hair2
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/hair1/hair2/hair3
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/hair1/hair2/hair3/hair4
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/hair1/hair2/hair3/hair4/hair5
-        weight: 1
-      - path: root/pelvis/spine_01/spine_02/spine_03/neck_01/head/jaw
-        weight: 1
-      - path: root/pelvis/tail1
-        weight: 1
-      - path: root/pelvis/tail1/tail2
-        weight: 1
-      - path: root/pelvis/tail1/tail2/tail3
-        weight: 1
-      - path: root/pelvis/tail1/tail2/tail3/tail4
-        weight: 1
-      - path: root/pelvis/tail1/tail2/tail3/tail4/tail5
-        weight: 1
-      - path: root/pelvis/tail1/tail2/tail3/tail4/tail5/tail6
-        weight: 1
-      - path: root/pelvis/tail1/tail2/tail3/tail4/tail5/tail6/tail7
-        weight: 1
-      - path: root/pelvis/thigh_l
-        weight: 1
-      - path: root/pelvis/thigh_l/calf_l
-        weight: 1
-      - path: root/pelvis/thigh_l/calf_l/foot_l
-        weight: 1
-      - path: root/pelvis/thigh_l/calf_l/foot_l/ball_l
-        weight: 1
-      - path: root/pelvis/thigh_r
-        weight: 1
-      - path: root/pelvis/thigh_r/calf_r
-        weight: 1
-      - path: root/pelvis/thigh_r/calf_r/foot_r
-        weight: 1
-      - path: root/pelvis/thigh_r/calf_r/foot_r/ball_r
-        weight: 1
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: bdf9c12183f0a3e47946368833550809, type: 2}
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
@@ -886,27 +686,35 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
     meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -1436,8 +1244,7 @@ ModelImporter:
     - name: upperarm_twist_01_l
       parentName: upperarm_l
       position: {x: -0.00000045776366, y: -0.00000039100647, z: 0.004999771}
-      rotation: {x: 0.00000024028154, y: -0.0000001043081, z: 0.0000000060536203,
-        w: 1}
+      rotation: {x: 0.00000024028154, y: -0.0000001043081, z: 0.0000000060536203, w: 1}
       scale: {x: 1, y: 0.999999, z: 1}
     - name: lowerarm_l
       parentName: upperarm_l
@@ -1542,8 +1349,7 @@ ModelImporter:
     - name: upperarm_twist_01_r
       parentName: upperarm_r
       position: {x: 0.000000076293944, y: -0.000000028610229, z: 0.004999542}
-      rotation: {x: 0.00000024260962, y: -0.00000011920915, z: -0.0000000102445075,
-        w: 1}
+      rotation: {x: 0.00000024260962, y: -0.00000011920915, z: -0.0000000102445075, w: 1}
       scale: {x: 1.000001, y: 1, z: 0.999999}
     - name: lowerarm_r
       parentName: upperarm_r
@@ -1633,8 +1439,7 @@ ModelImporter:
     - name: lowerarm_twist_01_r
       parentName: lowerarm_r
       position: {x: 0.000013046264, y: 0.00000047683716, z: 0.1400043}
-      rotation: {x: 0.00000014156056, y: 0.000000014901167, z: -0.00000001490117,
-        w: 1}
+      rotation: {x: 0.00000014156056, y: 0.000000014901167, z: -0.00000001490117, w: 1}
       scale: {x: 1, y: 1.000003, z: 0.999998}
     - name: neck_01
       parentName: spine_03
@@ -1688,12 +1493,14 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 500fbc4e67a5e6f4daa2940320584f3f,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

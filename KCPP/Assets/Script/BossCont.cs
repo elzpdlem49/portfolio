@@ -161,9 +161,9 @@ public class BossCont : MonoBehaviour
             case 1:
                 AttackPattern2();
                 break;
-            /*case 2:
-                yield return StartCoroutine(ChargeAttack());*/
-                break;
+           /* case 2:
+                yield return StartCoroutine(ChargeAttack());
+                break;*/
         }
         /*if (PlayerMove.Instance.m_cPlayer.Death())
         {

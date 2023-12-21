@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -125,8 +125,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 2
+  m_Radius: 0.46
+  m_Height: 1.82
   m_Direction: 1
   m_Center: {x: 0, y: 0.85, z: 0}
 --- !u!114 &-4638790629517989956
@@ -151,12 +151,13 @@ MonoBehaviour:
     m_nHp: 0
     m_nMp: 0
     m_nGold: 0
-  player: {fileID: 6653016748426235892, guid: bed99057d645ce74aa6f89f36fcb205c, type: 3}
+  player: {fileID: 0}
   moveSpeed: 1
-  serchRange: 5
-  attackRange: 1
+  serchRange: 8
+  attackRange: 2
   anim: {fileID: 0}
   isTouch: 0
+  disToPlayer: 0
   m_eCurrentState: 1
   patrolWaypoints:
   - {fileID: 0}
