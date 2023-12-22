@@ -8,6 +8,7 @@ public class FindEnemy : MonoBehaviour
     public bool isCameraFixed = false;
     public Follow cameraFollow;
 
+    private GameObject currentEnemy;
     private void Awake()
     {
         Instance = this;
@@ -24,6 +25,10 @@ public class FindEnemy : MonoBehaviour
         if (Input.GetMouseButtonDown(2))
         {
             ToggleCam();
+        }
+        if (isCameraFixed)
+        {
+            FindAndLookAtEnemy();
         }
     }
     void FindAndLookAtEnemy()

@@ -20,25 +20,6 @@ public class Follow : MonoBehaviour
         MouseX = transform.rotation.eulerAngles.x;
         MouseY = transform.rotation.eulerAngles.y;
     }
-    
-    void CheckMouseInput()
-    {
-        if(Input.GetMouseButton(1))
-        {
-            Rotate();
-        }
-    }
-    private void Rotate()
-    {
-        if(isMouseRotate)
-        {
-            MouseX -= Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
-            MouseY += Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
-            MouseX = Mathf.Clamp(MouseX, -1f, 70f);
-            transform.localRotation = Quaternion.Euler(MouseX, MouseY, 0f);
-        }
-    }
-
     void LateUpdate()
     {
         CheckMouseInput();
@@ -46,7 +27,23 @@ public class Follow : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
         transform.LookAt(player.position);
     }
-
+    void CheckMouseInput()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            Rotate();
+        }
+    }
+    private void Rotate()
+    {
+        if (isMouseRotate)
+        {
+            MouseX -= Input.GetAxisRaw("Mouse X") * mouseSensitivity * Time.deltaTime;
+            MouseY += Input.GetAxisRaw("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            MouseX = Mathf.Clamp(MouseX, -1f, 70f);
+            transform.localRotation = Quaternion.Euler(MouseX, MouseY, 0f);
+        }
+    }
     public void EnableMouseRotation()
     {
         isMouseRotate = true;

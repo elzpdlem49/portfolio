@@ -11,7 +11,7 @@ public class PlayerMove : MonoBehaviour
     public Player m_cPlayer;
     Rigidbody m_Rigdbody;
     public Vector3 m_Walk;
-
+    public int count = 0;
     public float m_speed = 1f;
     public float m_RunSpeed = 3f;
     public float m_SprintSpeed = 7f;
@@ -25,6 +25,7 @@ public class PlayerMove : MonoBehaviour
     public bool isGrounded;
     public bool isRolling;
     public bool m_Jumping = false;
+    public bool isSprinting = false;
 
     float hz;
     float vt;
@@ -32,18 +33,31 @@ public class PlayerMove : MonoBehaviour
     
     public Animator anim;
 
-    private enum PlayerState
+    public enum PlayerState
     {
         Idle,
         Walking,
         Running,
-        Rolling,
         Sprinting,
-        Jumping
+        Rolling,
+        Jumping,
+        Parrying,
+        FindEnemy
     }
 
-    private PlayerState m_eCurrentState;
+    public PlayerState m_eCurrentState;
 
+    public enum FindState
+    {
+        Idle,
+        Forward,
+        Left,
+        Right,
+        Backward,
+        Rolling,
+        
+    }
+    public FindState eFindCrurrentState;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +77,8 @@ public class PlayerMove : MonoBehaviour
         {
             ToggleRun();
         }
+        isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
+        isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
     }
     void ToggleRun()
     {
@@ -79,24 +95,30 @@ public class PlayerMove : MonoBehaviour
         Vector3 moveDirection = (hz * Camera.main.transform.right + vt * cameraForward).normalized;
 
         m_Walk = moveDirection * m_speed * Time.deltaTime;
-
-        if (m_Walk.magnitude > 0.01f)
+        if(!FindEnemy.Instance.isCameraFixed)
         {
-            Quaternion toRotation = Quaternion.LookRotation(m_Walk, Vector3.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
+            if (m_Walk.magnitude > 0.01f)
+            {
+                Quaternion toRotation = Quaternion.LookRotation(m_Walk, Vector3.up);
+                transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
+            }
         }
+        
     }
     void Walk()
     {
-        m_Rigdbody.MovePosition(transform.position + m_Walk); // 플레이어 이동 
+        m_Rigdbody.MovePosition(transform.position + m_Walk);
+        anim.SetBool("isWalk", true);
     }
     void Runing()
     {
         m_Rigdbody.MovePosition(transform.position + m_Walk * m_RunSpeed);
+        anim.SetBool("isRun", true);
     }
     void Sprint()
     {
         m_Rigdbody.MovePosition(transform.position + m_Walk * m_SprintSpeed);
+        anim.SetBool("isSprint", true);
     }
     private void OnCollisionStay(Collision collision)
     {
@@ -110,22 +132,45 @@ public class PlayerMove : MonoBehaviour
     IEnumerator Roll()
     {
         isRolling = true;
-        m_speed = m_dashForce;
-
+        Debug.Log("RollCor");
+        anim.SetBool("isRoll", true);
         //m_Rigdbody.AddForce(m_Walk.normalized * m_dashForce, ForceMode.Impulse);
 
         yield return new WaitForSeconds(m_RollCoolTime);
-
-        m_speed = m_OriginalSpeed;
+        anim.SetBool("isRoll", false);
+        //m_speed = m_OriginalSpeed;
         isRolling = false;
     }
-    public int count = 0;
+    
+    void FindEnemyState()
+    {
+        
+        switch (eFindCrurrentState)
+        {
+            case FindState.Idle:
+                if(hz > 0)
+                {
+                    eFindCrurrentState = FindState.Forward;
+                }
+                break;
+            case FindState.Forward:
+                anim.SetBool("isForward", true);
+                break;
+            case FindState.Backward:
+                break;
+            case FindState.Left:
+                break;
+            case FindState.Right: 
+                break;
+            default:
+                break;
+        }
+    }
     void HandleInput()
     {
         switch (m_eCurrentState)
         {
             case PlayerState.Idle:
-                // "Idle" 상태에서의 입력 처리
                 if (m_Walk.magnitude > 0.01f && !isRunorWalk)
                 {
                     m_eCurrentState = PlayerState.Walking;
@@ -138,10 +183,18 @@ public class PlayerMove : MonoBehaviour
                     anim.SetBool("isRun", true);
                     anim.SetBool("RunatWalk", true);
                 }
+                else if (isRolling)
+                {
+                    m_eCurrentState = PlayerState.Rolling;
+                }
+                else if(FindEnemy.Instance.isCameraFixed)
+                {
+                    m_eCurrentState = PlayerState.FindEnemy;
+                    anim.SetBool("isFind", true);
+                }
                 break;
 
             case PlayerState.Walking:
-                // "Walking" 상태에서의 입력 처리
                 if (m_Walk.magnitude < 0.01f)
                 {
                     m_eCurrentState = PlayerState.Idle;
@@ -153,7 +206,7 @@ public class PlayerMove : MonoBehaviour
                     anim.SetBool("RunatWalk", true);
                     anim.SetBool("isWalk", false);
                 }
-                else if (Input.GetKey(KeyCode.Space))
+                else if (isSprinting)
                 {
                     lastSpacebarPressTime = Time.time;
                     m_eCurrentState = PlayerState.Sprinting;
@@ -162,7 +215,7 @@ public class PlayerMove : MonoBehaviour
                 else if (isRolling)
                 {
                     m_eCurrentState= PlayerState.Rolling;
-                    anim.SetBool("isRoll", true) ;
+                    
                 }
                 break;
 
@@ -179,7 +232,7 @@ public class PlayerMove : MonoBehaviour
                     anim.SetBool("RunatWalk", false);
                     anim.SetBool("isRun", false);
                 }
-                else if (Input.GetKey(KeyCode.Space))
+                else if (isSprinting)
                 {
                     lastSpacebarPressTime = Time.time;
                     m_eCurrentState = PlayerState.Sprinting;
@@ -188,7 +241,6 @@ public class PlayerMove : MonoBehaviour
                 else if (isRolling)
                 {
                     m_eCurrentState = PlayerState.Rolling;
-                    anim.SetBool("isRoll", true);
                 }
                 break;
 
@@ -207,7 +259,6 @@ public class PlayerMove : MonoBehaviour
                 }
                 else if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    
                     count = (count + 1) % 2;
                     if (count == 1)
                     {
@@ -215,14 +266,32 @@ public class PlayerMove : MonoBehaviour
                         anim.SetTrigger("Jump");
                     }
                 }
-                else if (!Input.GetKey(KeyCode.Space) && Time.time - lastSpacebarPressTime > 2f)
+                else if (!Input.GetKey(KeyCode.Space) && Time.time - lastSpacebarPressTime > 1f && !isRunorWalk)
+                {
+                    m_eCurrentState = PlayerState.Walking;
+                    anim.SetBool("isSprint", false);
+                }
+                else if (!Input.GetKey(KeyCode.Space) && Time.time - lastSpacebarPressTime > 1f && isRunorWalk)
                 {
                     m_eCurrentState = PlayerState.Running;
                     anim.SetBool("isSprint", false);
-                    anim.SetBool("isRun", true);
                 }
                 break;
-
+            case PlayerState.Rolling:
+                if(!isRolling)
+                {
+                    m_eCurrentState = PlayerState.Idle;
+                }
+                break;
+            case PlayerState.Parrying:
+                break;
+            case PlayerState.FindEnemy:
+                if (!FindEnemy.Instance.isCameraFixed)
+                {
+                    m_eCurrentState = PlayerState.Idle;
+                    anim.SetBool("isFind", false);
+                }
+                break;
             default:
                 break;
         }
@@ -230,29 +299,27 @@ public class PlayerMove : MonoBehaviour
    
     void HandleMovement()
     {
-        // 현재 상태에 따른 움직임 처리
         switch (m_eCurrentState)
         {
             case PlayerState.Idle:
                 break;
-
             case PlayerState.Walking:
-                // "Walking" 상태에서의 움직임 처리
                 Walk();
-                anim.SetBool("isWalk", true);
                 break;
-
             case PlayerState.Running:
-                // "Running" 상태에서의 움직임 처리
                 Runing();
-                anim.SetBool("isRun", true);
                 break;
-
             case PlayerState.Sprinting:
                 Sprint();
-                anim.SetBool("isSprint", true);
                 break;
-
+            case PlayerState.Rolling:
+                StartCoroutine(Roll());
+                break;
+            case PlayerState.Parrying:
+                break;
+            case PlayerState.FindEnemy:
+                FindEnemyState();
+                break;
             default:
                 break;
         }
