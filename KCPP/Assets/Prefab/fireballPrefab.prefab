@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1891803577214795700}
   - component: {fileID: 6693755394742792976}
   - component: {fileID: 309862885307541408}
+  - component: {fileID: 5180650800793985154}
   m_Layer: 0
   m_Name: fireballPrefab
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5627158, y: -0.23962674, z: 0.18025}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -133,3 +134,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5180650800793985154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3022621252404082874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e285b386a47cf4499c63429f4c8df7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireballSpeed: 10

@@ -1669,13 +1669,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: fireballPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 6693755394742792976, guid: 3c63530d01a39c34dbf24fbe6b46d94e, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8153102378110667049, guid: 3c63530d01a39c34dbf24fbe6b46d94e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.86
       objectReference: {fileID: 0}
     - target: {fileID: 8153102378110667049, guid: 3c63530d01a39c34dbf24fbe6b46d94e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 8153102378110667049, guid: 3c63530d01a39c34dbf24fbe6b46d94e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2617,17 +2621,25 @@ MonoBehaviour:
   attackRange: 10
   damage: 10
   fireballPrefab: {fileID: 3022621252404082874, guid: 3c63530d01a39c34dbf24fbe6b46d94e, type: 3}
-  lavaShieldPrefab: {fileID: 0}
   fireballSpeed: 10
   fireballDuration: 3
   m_fAngle: 90
   m_fSite: 3
   m_Range: 1
-  shieldCooldown: 3
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 8192
   m_objTarget: {fileID: 1365019474}
+  m_Annie:
+    m_strName: 
+    m_sStatus:
+      nHP: 0
+      nMP: 0
+      nStr: 0
+      nDef: 0
+    m_nHp: 0
+    m_nMp: 0
+    m_nGold: 0
   stunStack: 0
   skillCooldownInterval: 3
 --- !u!136 &1695749842

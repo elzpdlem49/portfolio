@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TextRPG;
+using static TextRPG.PlayerManager;
+using System.Security.Cryptography;
 
 public class Annie : MonoBehaviour
 {
@@ -10,17 +13,19 @@ public class Annie : MonoBehaviour
     public float attackRange = 2f;
     public int damage = 10;
     public GameObject fireballPrefab;
-    public GameObject lavaShieldPrefab;
     public float fireballSpeed = 10f;
     public float fireballDuration = 3f;
     public float m_fAngle = 90;
     public float m_fSite = 3;
     public float m_Range = 1;
-    public float shieldCooldown = 3f;
 
     public LayerMask m_LayerMask;
     public GameObject m_objTarget = null;
     bool m_isHit;
+    [SerializeField]
+    Player m_Annie;
+
+    public static Annie instance;
     public enum Skill
     {
         Fireball,
@@ -38,6 +43,14 @@ public class Annie : MonoBehaviour
     public float skillCooldownInterval = 3f; // 원하는 쿨다운 간격 값 설정
     private float nextSkillCooldown;
 
+    private void Awake()
+    {
+        Annie.instance = this;
+    }
+    private void Start()
+    {
+        m_Annie = new Player(this.gameObject.name, 100, 100, 10, 0, 0);
+    }
     // 매 프레임마다 호출되는 Update 메서드
     void Update()
     {
@@ -112,25 +125,15 @@ public class Annie : MonoBehaviour
             stunStack++;
         }
     }
-
-    // 이전과 동일한 방식으로 Annie의 각 스킬을 구현
-
     void Fireball()
     {
-        // 여기에 파이어볼 로직을 구현합니다
         Debug.Log("Annie AI: 파이어볼 시전 중");
 
-        // 파이어볼 프로젝타일을 생성합니다 (Unity 편집기에서 미리 제작된 프리팹을 할당해야 합니다)
         GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
 
-        // 플레이어 쪽으로 이동하는 방향을 계산합니다
-        Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
+        Fireball fireBall = fireball.GetComponent<Fireball>();
 
-        // 파이어볼에 이동을 시뮬레이션하기 위해 힘을 가합니다
-        fireball.GetComponent<Rigidbody>().AddForce(direction * fireballSpeed, ForceMode.Impulse);
-
-        // 선택 사항: 일정 시간이 지난 후 파이어볼을 파괴할 수 있도록 타이머를 설정합니다
-        Destroy(fireball, fireballDuration);
+        fireBall.SetTarget(m_objTarget);
     }
     void Incineration()
     {
@@ -184,35 +187,23 @@ public class Annie : MonoBehaviour
     {
         m_objTarget = target;
     }
-
     void ActivateLavaShield()
     {
-        Debug.Log("Annie AI: Activating Lava Shield");
+        Debug.Log("Annie AI: 라바 실드 활성화 중");
 
-        // Implement lava shield logic here
+        // 라바 실드 로직을 여기에 구현합니다
         StartCoroutine(LavaShieldCoroutine());
     }
 
     IEnumerator LavaShieldCoroutine()
     {
-        // Assuming you have a lava shield prefab, instantiate it here
-        GameObject lavaShield = Instantiate(lavaShieldPrefab, transform.position, Quaternion.identity);
+        m_Annie.m_nHp +=  10;
 
-        // Apply the shield effect to the player or AI (adjust as needed)
-        // For example, you might enable a "Shield" component on the player or AI
+        // 방패 지속 시간 동안 반사 데미지를 입힙니다
+        yield return new WaitForSeconds(3f); // 방패 지속 시간
 
-        // Reflect damage during the shield duration
-        yield return new WaitForSeconds(3f); // Shield duration
-
-        // After 3 seconds, destroy the shield or deactivate the "Shield" component
-        Destroy(lavaShield);
-
-        // Optionally, you can add a cooldown period before the shield can be activated again
-        yield return new WaitForSeconds(shieldCooldown);
-
-        // Add any additional logic or cooldown handling here
+        m_Annie.m_nHp -=  10;
     }
-
     void Summon()
     {
         Debug.Log("Annie AI: 소환 중");
