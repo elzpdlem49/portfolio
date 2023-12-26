@@ -257,7 +257,7 @@ public class PlayerMove : MonoBehaviour
                     m_eCurrentState = PlayerState.Idle;
                     anim.SetBool("isSprint", false);
                 }
-                else if (Input.GetKeyDown(KeyCode.Space))
+                else if (Input.GetKeyDown(KeyCode.Space)) // 점프 스택 증가 초기화
                 {
                     count = (count + 1) % 2;
                     if (count == 1)
