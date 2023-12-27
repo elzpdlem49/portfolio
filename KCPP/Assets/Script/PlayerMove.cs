@@ -29,8 +29,16 @@ public class PlayerMove : MonoBehaviour
 
     float hz;
     float vt;
+    private bool m_isHit; // New variable to track if the player is hit
 
-    
+    public bool IsHit
+    {
+        get { return m_isHit; }
+    }
+    public void OnHit()
+    {
+        m_isHit = true;
+    }
     public Animator anim;
 
     public enum PlayerState
@@ -61,7 +69,7 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_cPlayer = new Player(this.gameObject.name, 100, 100, 10, 0, 0);
+        m_cPlayer = new Player(name, 100, 100, 10, 0, 0);
         m_Rigdbody = GetComponent<Rigidbody>();
         m_OriginalSpeed = m_speed;
         Instance = this;

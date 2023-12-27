@@ -35,11 +35,13 @@ public class FindEnemy : MonoBehaviour
     {
         int enemyLayer = LayerMask.NameToLayer("Enemy");
         int bossLayer = LayerMask.NameToLayer("Boss");
+        int annieLayer = LayerMask.NameToLayer("Annie");
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject[] bosses = GameObject.FindGameObjectsWithTag("Boss");
+        GameObject[] annies = GameObject.FindGameObjectsWithTag("Annie");
 
-        if (enemies.Length > 0 || bosses.Length > 0)
+        if (enemies.Length > 0 || bosses.Length > 0 || annies.Length > 0)
         {
             GameObject nearestEnemy = GetNearestEnemy(enemies, bosses, enemyLayer, bossLayer);
 

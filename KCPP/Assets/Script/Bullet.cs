@@ -22,5 +22,11 @@ public class Bullet : MonoBehaviour
             if(BossCont.Instance.m_Boss.Death())
                 Destroy(collision.gameObject);
         }
+        if (collision.gameObject.tag == "Annie")
+        {
+            Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
+            if (Annie.Instance.m_Annie.Death())
+                Destroy(collision.gameObject);
+        }
     }
 }

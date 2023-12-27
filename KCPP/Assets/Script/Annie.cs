@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TextRPG;
-using static TextRPG.PlayerManager;
-using System.Security.Cryptography;
 
 public class Annie : MonoBehaviour
 {
+    public static Annie Instance;
     public float moveSpeed = 5f;
     public float detectionRange = 10f;
     public float attackRange = 2f;
@@ -16,16 +15,20 @@ public class Annie : MonoBehaviour
     public float fireballSpeed = 10f;
     public float fireballDuration = 3f;
     public float m_fAngle = 90;
+    public float m_fRadius = 3;
     public float m_fSite = 3;
     public float m_Range = 1;
+    public float fireballRange = 5f;
+    public float incinerationRange = 3f;
 
     public LayerMask m_LayerMask;
     public GameObject m_objTarget = null;
     bool m_isHit;
+    Rigidbody m_rigidbody;
     [SerializeField]
-    Player m_Annie;
+    public Player m_Annie;
 
-    public static Annie instance;
+    
     public enum Skill
     {
         Fireball,
@@ -38,24 +41,25 @@ public class Annie : MonoBehaviour
 
     public int stunStack = 0;
 
-    // 각 스킬에 대한 쿨다운
+    
     private Dictionary<Skill, float> skillCooldowns = new Dictionary<Skill, float>();
-    public float skillCooldownInterval = 3f; // 원하는 쿨다운 간격 값 설정
+    public float skillCooldownInterval = 3f; 
     private float nextSkillCooldown;
 
     private void Awake()
     {
-        Annie.instance = this;
+        
     }
     private void Start()
     {
-        m_Annie = new Player(this.gameObject.name, 100, 100, 10, 0, 0);
+        m_Annie = new Player(name, 100, 100, 10, 0, 0);
+        m_rigidbody = GetComponent<Rigidbody>();
+        Instance = this;
     }
     // 매 프레임마다 호출되는 Update 메서드
-    void Update()
+    void FixedUpdate()
     {
-        // 플레이어가 감지 범위 내에 있는지 확인
-        Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
+        //Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
         if (Vector3.Distance(transform.position, m_objTarget.transform.position) <= detectionRange)
         {
             // 플레이어 쪽으로 이동
@@ -67,46 +71,62 @@ public class Annie : MonoBehaviour
                 UseRandomSkillWithCooldown();
             }
         }
-
         // 스킬 쿨다운 업데이트
         UpdateCooldowns();
     }
 
     void MoveTowardsPlayer()
     {
-        // 플레이어 쪽으로 이동하는 방향 계산
         Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
 
-        // 플레이어 쪽으로 이동
+        float yOffset = 1.6f;
         transform.Translate(direction * moveSpeed * Time.deltaTime);
-        transform.LookAt(transform.position);
+        transform.LookAt(m_objTarget.transform.position + Vector3.up * yOffset);
     }
 
     void UseRandomSkillWithCooldown()
     {
-        // 일반 스킬 쿨다운이 지났는지 확인
         if (Time.time >= nextSkillCooldown)
         {
-            // Annie의 스킬 중에서 랜덤으로 선택
             Skill randomSkill = skills[Random.Range(0, skills.Length)];
 
-            // 선택한 스킬 사용
-            UseSkill(randomSkill);
+            float skillRange = GetSkillRange(randomSkill);
 
-            // 일반 스킬 쿨다운을 설정
-            nextSkillCooldown = Time.time + skillCooldownInterval;
+            if (Vector3.Distance(transform.position, m_objTarget.transform.position) <= skillRange)
+            {
+                UseSkill(randomSkill);
+                nextSkillCooldown = Time.time + skillCooldownInterval;
+            }
         }
     }
-
+    float GetSkillRange(Skill skill)
+    {
+        switch (skill)
+        {
+            case Skill.Fireball:
+                return fireballRange;
+            case Skill.Incineration:
+                return incinerationRange;
+            case Skill.LavaShield:
+                return fireballRange;
+            case Skill.Summon:
+                return fireballRange;
+            default:
+                return 0f;
+        }
+    }
     void UseSkill(Skill skill)
     {
         switch (skill)
         {
             case Skill.Fireball:
                 Fireball();
+                Debug.Log("Annie AI: 파이어볼 시전 중");
                 break;
             case Skill.Incineration:
                 Incineration();
+                Debug.Log("Annie AI: 화염 소각 시전 중");
+                PlayerMove.Instance.m_cPlayer.m_nHp -= 5;
                 break;
             case Skill.LavaShield:
                 ActivateLavaShield();
@@ -116,7 +136,7 @@ public class Annie : MonoBehaviour
                 break;
         }
 
-        if (stunStack == 4)
+        if (stunStack == 4 && skill != Skill.LavaShield)
         {
             Stun();
         }
@@ -127,8 +147,6 @@ public class Annie : MonoBehaviour
     }
     void Fireball()
     {
-        Debug.Log("Annie AI: 파이어볼 시전 중");
-
         GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
 
         Fireball fireBall = fireball.GetComponent<Fireball>();
@@ -137,8 +155,6 @@ public class Annie : MonoBehaviour
     }
     void Incineration()
     {
-        Debug.Log("Annie AI: 화염 소각 시전 중");
-
         float fHalfAngle = m_fAngle / 2;
         Vector3 vPos = transform.position;
         Vector3 vForward = transform.forward;
@@ -170,9 +186,9 @@ public class Annie : MonoBehaviour
             if (fTargetAngle < fHalfAngle)
             {
                 Debug.DrawLine(vPos, vTargetPos, Color.green);
-                //m_objTarget = collider.gameObject;
+                m_objTarget = collider.gameObject;
                 SetTarget(collider.gameObject);
-                
+
             }
             else
             {
@@ -187,23 +203,42 @@ public class Annie : MonoBehaviour
     {
         m_objTarget = target;
     }
+    private void OnDrawGizmos()
+    {
+        Incineration();
+        Gizmos.DrawWireSphere(transform.position, m_fRadius);
+    }
     void ActivateLavaShield()
     {
         Debug.Log("Annie AI: 라바 실드 활성화 중");
 
-        // 라바 실드 로직을 여기에 구현합니다
         StartCoroutine(LavaShieldCoroutine());
     }
 
     IEnumerator LavaShieldCoroutine()
     {
-        m_Annie.m_nHp +=  10;
+        m_Annie.m_nHp += 10;
 
-        // 방패 지속 시간 동안 반사 데미지를 입힙니다
-        yield return new WaitForSeconds(3f); // 방패 지속 시간
+        float shieldDuration = 3f;
+        float elapsedTime = 0f;
 
-        m_Annie.m_nHp -=  10;
+        while (elapsedTime < shieldDuration)
+        {
+            yield return null;
+
+            if (PlayerMove.Instance.IsHit)
+            {
+                PlayerMove.Instance.m_cPlayer.m_nHp -= 1;
+                PlayerMove.Instance.OnHit();
+            }
+
+            elapsedTime += Time.deltaTime;
+        }
+
+        Debug.Log("Annie AI: 라바 실드 비활성화 중");
+        m_Annie.m_nHp -= 10;
     }
+
     void Summon()
     {
         Debug.Log("Annie AI: 소환 중");
