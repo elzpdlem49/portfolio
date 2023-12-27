@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TextRPG;
+using static PlayerMove;
 
 public class Annie : MonoBehaviour
 {
     public static Annie Instance;
+    [SerializeField]
+    public Player m_Annie;
+
     public float moveSpeed = 5f;
     public float detectionRange = 10f;
     public float attackRange = 2f;
@@ -20,15 +24,15 @@ public class Annie : MonoBehaviour
     public float m_Range = 1;
     public float fireballRange = 5f;
     public float incinerationRange = 3f;
-
+    
     public LayerMask m_LayerMask;
     public GameObject m_objTarget = null;
     bool m_isHit;
     Rigidbody m_rigidbody;
-    [SerializeField]
-    public Player m_Annie;
 
-    
+    private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
+    private float stunEndTime;
+
     public enum Skill
     {
         Fireball,
@@ -55,6 +59,7 @@ public class Annie : MonoBehaviour
         m_Annie = new Player(name, 100, 100, 10, 0, 0);
         m_rigidbody = GetComponent<Rigidbody>();
         Instance = this;
+        m_rigidbody.isKinematic = true;
     }
     // 매 프레임마다 호출되는 Update 메서드
     void FixedUpdate()
@@ -148,7 +153,7 @@ public class Annie : MonoBehaviour
     void Fireball()
     {
         GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
-
+        
         Fireball fireBall = fireball.GetComponent<Fireball>();
 
         fireBall.SetTarget(m_objTarget);
@@ -244,15 +249,31 @@ public class Annie : MonoBehaviour
         Debug.Log("Annie AI: 소환 중");
         // 소환 로직을 여기에 구현
     }
-
+    public bool controlEnabled = true;
     void Stun()
     {
         Debug.Log("Annie AI: 스턴!");
-        // 스턴 로직을 여기에 구현
-        // 예를 들어, AI의 이동을 중지하거나 일정 시간 동안 스킬 사용을 비활성화할 수 있습니다.
-        stunStack = 0; // 스턴 후 스택 초기화
+        StartCoroutine(StunCoroutine());
+        stunStack = 0;
     }
+    IEnumerator StunCoroutine()
+    {
+        controlEnabled = false;
+        PlayerMove.Instance.m_eCurrentState = PlayerState.Idle; // 스턴 중에 플레이어 상태를 아이들로 설정합니다.
 
+        Debug.Log("플레이어: 스턴 중!");
+        stunEndTime = Time.time + stunDuration; // 스턴이 끝나는 시간을 계산합니다.
+
+        while (Time.time < stunEndTime)
+        {
+            yield return null;
+        }
+
+        // 스턴 기간이 끝나면 플레이어 컨트롤을 다시 활성화합니다.
+        controlEnabled = true;
+
+        Debug.Log("플레이어: 스턴 종료!");
+    }
     // 스킬 쿨다운을 업데이트하는 도우미 메서드
     void UpdateCooldowns()
     {

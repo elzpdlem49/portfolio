@@ -80,13 +80,16 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleInput();
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Annie.Instance.controlEnabled)
         {
-            ToggleRun();
+            HandleInput();
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                ToggleRun();
+            }
+            isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
+            isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
         }
-        isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
-        isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
     }
     void ToggleRun()
     {
@@ -95,20 +98,23 @@ public class PlayerMove : MonoBehaviour
     
     private void FixedUpdate()
     {
-        HandleMovement();
-        hz = Input.GetAxis("Horizontal");
-        vt = Input.GetAxis("Vertical");
-        Vector3 cameraForward = Camera.main.transform.forward;
-        cameraForward.y = 0f;
-        Vector3 moveDirection = (hz * Camera.main.transform.right + vt * cameraForward).normalized;
-
-        m_Walk = moveDirection * m_speed * Time.deltaTime;
-        if(!FindEnemy.Instance.isCameraFixed)
+        if (Annie.Instance.controlEnabled)
         {
-            if (m_Walk.magnitude > 0.01f)
+            HandleMovement();
+            hz = Input.GetAxis("Horizontal");
+            vt = Input.GetAxis("Vertical");
+            Vector3 cameraForward = Camera.main.transform.forward;
+            cameraForward.y = 0f;
+            Vector3 moveDirection = (hz * Camera.main.transform.right + vt * cameraForward).normalized;
+
+            m_Walk = moveDirection * m_speed * Time.deltaTime;
+            if (!FindEnemy.Instance.isCameraFixed)
             {
-                Quaternion toRotation = Quaternion.LookRotation(m_Walk, Vector3.up);
-                transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
+                if (m_Walk.magnitude > 0.01f)
+                {
+                    Quaternion toRotation = Quaternion.LookRotation(m_Walk, Vector3.up);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
+                }
             }
         }
         
@@ -331,5 +337,15 @@ public class PlayerMove : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    void DisableContralos()
+    {
+        Annie.Instance.controlEnabled = false;
+    }
+
+    void EnableControls()
+    {
+        Annie.Instance.controlEnabled = true;
     }
 }  

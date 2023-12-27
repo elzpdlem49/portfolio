@@ -6,21 +6,23 @@ using TextRPG;
 public class Fireball : MonoBehaviour
 {
     public float fireballSpeed = 10f;
-
+    private Rigidbody rb;
     private GameObject target;
     Annie m_Annie;
-    void Update()
+    void Start()
     {
-        // 플레이어가 설정되었을 때만 플레이어 방향으로 날아가도록 합니다
+        rb = GetComponent<Rigidbody>();
+        Launch();
+    }
+    void FixedUpdate()
+    {
         if (target != null)
         {
             Vector3 direction = (target.transform.position - transform.position).normalized;
-            
-            transform.Translate(direction * fireballSpeed * Time.deltaTime);
+
+            rb.velocity = direction * fireballSpeed;
         }
     }
-
-    // 플레이어를 추적하기 위한 메서드
     public void SetTarget(GameObject newTarget)
     {
         target = newTarget;
@@ -31,6 +33,19 @@ public class Fireball : MonoBehaviour
         {
             PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
 
+            Destroy(gameObject);
+        }
+    }
+    void Launch()
+    {
+        if (target != null)
+        {
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            rb.velocity = direction * fireballSpeed;
+        }
+        else
+        {
+            // If there is no target, destroy the fireball
             Destroy(gameObject);
         }
     }
