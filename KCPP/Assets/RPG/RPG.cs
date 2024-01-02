@@ -31,7 +31,6 @@ namespace TextRPG
             nMP = status.nMP;
             nStr = status.nStr;
             nDef = status.nDef;
-
         }
 
         public Status Add(Status b)
@@ -304,6 +303,7 @@ namespace TextRPG
         public int m_nHp;
         public int m_nMp;
         public int m_nExp;
+        
 
         public int m_nGold;
 
@@ -426,12 +426,13 @@ namespace TextRPG
             }
         }
 
-       
-        public Player(string name,int hp,int mp, int str, int def, int gold = 999999999)
+
+        public Player(string name, int hp, int mp, int exp, int str, int def, int gold = 999999999)
         {
             m_sStatus = new Status(hp, mp, str, def);
             m_nHp = hp;
             m_nMp = mp;
+            m_nExp = exp;
             m_strName = name;
             m_nGold = gold;
 

@@ -7,11 +7,21 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("# Player Info")]
+    public int playerId;
+    public float health;
+    public int maxhealth = 100;
+    public int level;
+    public int kill;
+    public int exp;
+    public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
+
     public List<GameObject> m_listGUIScenes;
     public enum E_GUI_STATE { TITLE, THEEND, GAMEOVER, PLAY }
     public E_GUI_STATE m_curGUIState;
 
     public StatusBar m_guiHPBar;
+    public StatusBar m_guiEXPBar;
     public void EventStart()
     {
         SetGUIScene(E_GUI_STATE.PLAY);
@@ -42,8 +52,11 @@ public class GameManager : MonoBehaviour
         if(player != null )
         {
             m_guiHPBar.SetBar(player.m_nHp, player.m_sStatus.nHP);
+
+            m_guiEXPBar.SetBar(player.m_nExp, player.m_sStatus.nEXP);
         }
     }
+
    
     
     public void EventChageScene(int stateNumber)
