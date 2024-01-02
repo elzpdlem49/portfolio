@@ -155,27 +155,61 @@ public class PlayerMove : MonoBehaviour
         //m_speed = m_OriginalSpeed;
         isRolling = false;
     }
-    
+
     void FindEnemyState()
     {
-        
         switch (eFindCrurrentState)
         {
             case FindState.Idle:
-                if(hz > 0)
+                if (hz > 0)
                 {
                     eFindCrurrentState = FindState.Forward;
                 }
+                else if (hz < 0)
+                {
+                    eFindCrurrentState = FindState.Backward;
+                }
+                else if (vt > 0)
+                {
+                    eFindCrurrentState = FindState.Right;
+                }
+                else if (vt < 0)
+                {
+                    eFindCrurrentState = FindState.Left;
+                }
                 break;
+
             case FindState.Forward:
                 anim.SetBool("isForward", true);
+                anim.SetBool("isLeft", false); // 추가
+                anim.SetBool("isRight", false); // 추가
+                anim.SetBool("isBackward", false); // 추가
                 break;
-            case FindState.Backward:
-                break;
+
             case FindState.Left:
+                anim.SetBool("isLeft", true);
+                anim.SetBool("isForward", false); // 추가
+                anim.SetBool("isRight", false); // 추가
+                anim.SetBool("isBackward", false); // 추가
                 break;
-            case FindState.Right: 
+
+            case FindState.Right:
+                anim.SetBool("isRight", true);
+                anim.SetBool("isForward", false); // 추가
+                anim.SetBool("isLeft", false); // 추가
+                anim.SetBool("isBackward", false); // 추가
                 break;
+
+            case FindState.Backward:
+                anim.SetBool("isBackward", true);
+                anim.SetBool("isForward", false); // 추가
+                anim.SetBool("isLeft", false); // 추가
+                anim.SetBool("isRight", false); // 추가
+                break;
+
+            case FindState.Rolling:
+                break;
+
             default:
                 break;
         }
@@ -259,7 +293,6 @@ public class PlayerMove : MonoBehaviour
                 break;
 
             case PlayerState.Jumping:
-                // "Jumping" 상태에서의 입력 처리
                 if (isGrounded)
                 {
                     m_eCurrentState = PlayerState.Idle;
@@ -271,7 +304,7 @@ public class PlayerMove : MonoBehaviour
                     m_eCurrentState = PlayerState.Idle;
                     anim.SetBool("isSprint", false);
                 }
-                else if (Input.GetKeyDown(KeyCode.Space)) // 점프 스택 증가 초기화
+                else if (Input.GetKeyDown(KeyCode.Space)) 
                 {
                     count = (count + 1) % 2;
                     if (count == 1)
@@ -337,15 +370,5 @@ public class PlayerMove : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    void DisableContralos()
-    {
-        Annie.Instance.controlEnabled = false;
-    }
-
-    void EnableControls()
-    {
-        Annie.Instance.controlEnabled = true;
     }
 }  

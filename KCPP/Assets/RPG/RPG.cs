@@ -14,13 +14,15 @@ namespace TextRPG
         public int nMP;
         public int nStr;
         public int nDef;
+        public int nEXP;
 
-        public Status(int nHP = 0, int nMP = 0, int nStr = 0, int nDef = 0)
+        public Status(int nHP = 0, int nMP = 0, int nStr = 0, int nDef = 0, int nEXP = 0)
         {
             this.nHP = nHP;
             this.nMP = nMP;
             this.nStr = nStr;
             this.nDef = nDef;
+            this.nEXP = nEXP;
         }
 
         public Status(Status status)
@@ -29,6 +31,7 @@ namespace TextRPG
             nMP = status.nMP;
             nStr = status.nStr;
             nDef = status.nDef;
+
         }
 
         public Status Add(Status b)
@@ -300,6 +303,7 @@ namespace TextRPG
         public Status m_sStatus;
         public int m_nHp;
         public int m_nMp;
+        public int m_nExp;
 
         public int m_nGold;
 

@@ -274,7 +274,7 @@ public class Annie : MonoBehaviour
 
         Debug.Log("플레이어: 스턴 종료!");
     }
-    // 스킬 쿨다운을 업데이트하는 도우미 메서드
+
     void UpdateCooldowns()
     {
         foreach (var skill in skillCooldowns.Keys.ToList())
