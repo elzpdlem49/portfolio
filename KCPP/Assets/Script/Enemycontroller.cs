@@ -38,7 +38,7 @@ public class Enemycontroller : MonoBehaviour
     void Start()
     {
         enemyRigidbody = GetComponent<Rigidbody>();
-        m_Enemy = new Player(name, 100, 100, 10, 0);
+        m_Enemy = new Player(name, 100, 100, 0, 10, 0);
         Instance = this;
         anim = GetComponent<Animator>();
         m_eCurrentState = EnemyState.Patrol;

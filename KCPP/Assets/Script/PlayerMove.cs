@@ -10,7 +10,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] 
     public Player m_cPlayer;
     Rigidbody m_Rigdbody;
-    public Vector3 m_Walk;
+    Vector3 m_Walk;
     public int count = 0;
     public float m_speed = 1f;
     public float m_RunSpeed = 3f;

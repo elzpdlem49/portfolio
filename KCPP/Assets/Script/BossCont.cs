@@ -42,7 +42,7 @@ public class BossCont : MonoBehaviour
     void Start()
     {
         bossRb = GetComponent<Rigidbody>();
-        m_Boss = new Player(name, 100, 100, 10, 9);
+        m_Boss = new Player(name, 100, 100, 0, 10, 9);
         Instance = this;
         m_eCurrentState = BossState.Idle;
         //StartCoroutine(BossFight());

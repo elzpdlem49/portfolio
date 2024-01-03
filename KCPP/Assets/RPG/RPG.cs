@@ -14,15 +14,13 @@ namespace TextRPG
         public int nMP;
         public int nStr;
         public int nDef;
-        public int nEXP;
 
-        public Status(int nHP = 0, int nMP = 0, int nStr = 0, int nDef = 0, int nEXP = 0)
+        public Status(int nHP = 0, int nMP = 0, int nStr = 0, int nDef = 0)
         {
             this.nHP = nHP;
             this.nMP = nMP;
             this.nStr = nStr;
             this.nDef = nDef;
-            this.nEXP = nEXP;
         }
 
         public Status(Status status)
@@ -248,7 +246,7 @@ namespace TextRPG
 
         public void Init()
         {
-            m_listPlayer.Add(new Player("P",100,100,10,0,0)); //0
+            m_listPlayer.Add(new Player("P",100,100,0,10,0)); //0
             m_listPlayer.Add(new Player("유령", 100, 100, 10, 0, 0)); //0
             m_listPlayer.Add(new Player("가고일", 100, 100, 10, 0, 0)); //0
         }
@@ -303,6 +301,8 @@ namespace TextRPG
         public int m_nHp;
         public int m_nMp;
         public int m_nExp;
+        public int m_nLevel;
+        public int[] m_nNextExp { get; private set; } = { 3, 5, 10, 100, 150 };
         
 
         public int m_nGold;
@@ -433,6 +433,7 @@ namespace TextRPG
             m_nHp = hp;
             m_nMp = mp;
             m_nExp = exp;
+            m_nLevel = 1;
             m_strName = name;
             m_nGold = gold;
 
@@ -441,7 +442,15 @@ namespace TextRPG
                 m_llistEqument.Add(null);
             }
         }
-
+        public static void GetExp(int experience)
+        {
+            PlayerMove.Instance.m_cPlayer.m_nExp += experience;
+            while (PlayerMove.Instance.m_cPlayer.m_nExp >= PlayerMove.Instance.m_cPlayer.m_nNextExp[
+                Math.Min(PlayerMove.Instance.m_cPlayer.m_nLevel - 1, PlayerMove.Instance.m_cPlayer.m_nNextExp.Length - 1)])
+            {
+                PlayerMove.Instance.m_cPlayer.m_nLevel++;
+            }
+        }
         public void Demeged(int demage)
         {
             this.m_nHp -= demage; 
