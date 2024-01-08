@@ -5,7 +5,6 @@ using TextRPG;
 //using static TextRPG.PlayerManager;
 using Unity.VisualScripting;
 using UnityEngine.AI;
-using static AIContllor;
 
 public class Enemycontroller : MonoBehaviour
 {

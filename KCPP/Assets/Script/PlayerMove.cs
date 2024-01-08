@@ -50,7 +50,8 @@ public class PlayerMove : MonoBehaviour
         Rolling,
         Jumping,
         Parrying,
-        FindEnemy
+        FindEnemy,
+        Attack1
     }
 
     public PlayerState m_eCurrentState;

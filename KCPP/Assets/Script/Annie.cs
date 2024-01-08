@@ -29,6 +29,7 @@ public class Annie : MonoBehaviour
     public GameObject m_objTarget = null;
     bool m_isHit;
     Rigidbody m_rigidbody;
+    Animator m_anim;
 
     private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
     private float stunEndTime;
@@ -60,6 +61,7 @@ public class Annie : MonoBehaviour
         m_rigidbody = GetComponent<Rigidbody>();
         Instance = this;
         m_rigidbody.isKinematic = true;
+        m_anim = GetComponent<Animator>();
     }
     // 매 프레임마다 호출되는 Update 메서드
     void FixedUpdate()
@@ -86,7 +88,7 @@ public class Annie : MonoBehaviour
 
         float yOffset = 1.6f;
         transform.Translate(direction * moveSpeed * Time.deltaTime);
-        transform.LookAt(m_objTarget.transform.position + Vector3.up * yOffset);
+        transform.LookAt(m_objTarget.transform.position);
     }
 
     void UseRandomSkillWithCooldown()
@@ -126,19 +128,22 @@ public class Annie : MonoBehaviour
         {
             case Skill.Fireball:
                 Fireball();
+                m_anim.SetTrigger("Fireball");
                 Debug.Log("Annie AI: 파이어볼 시전 중");
                 break;
             case Skill.Incineration:
                 Incineration();
+                m_anim.SetTrigger("Incineration");
                 Debug.Log("Annie AI: 화염 소각 시전 중");
                 PlayerMove.Instance.m_cPlayer.m_nHp -= 5;
                 break;
             case Skill.LavaShield:
+                m_anim.SetTrigger("LavaShield");
                 ActivateLavaShield();
                 break;
-            case Skill.Summon:
+            /*case Skill.Summon:
                 Summon();
-                break;
+                break;*/
         }
 
         if (stunStack == 4 && skill != Skill.LavaShield)
@@ -284,5 +289,18 @@ public class Annie : MonoBehaviour
                 skillCooldowns.Remove(skill);
             }
         }
+    }
+    public void OnGUI()
+    {
+        //오브젝트의 3d좌표를 2d좌표(스크린좌표)로 변환하여 GUI를 그린다.
+        Vector3 vPos = this.transform.position;
+        Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos); //월드좌표를 스크린좌표로 변환한다.
+        vPosToScreen.y = Screen.height - vPosToScreen.y; //y좌표의 축이 하단을 기준으로 정렬되므로 상단으로 변환한다.
+        int h = 50;
+        int w = 100;
+        
+        Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
+        //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
+        GUI.Box(rectGUI, string.Format("{2}\nHP:{1}\nMP:{0}", m_Annie.m_nMp, m_Annie.m_nHp, stunStack));
     }
 }

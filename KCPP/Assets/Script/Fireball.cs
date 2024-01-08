@@ -5,13 +5,14 @@ using TextRPG;
 
 public class Fireball : MonoBehaviour
 {
-    public float fireballSpeed = 10f;
+    public float fireballSpeed = 1f;
     private Rigidbody rb;
     private GameObject target;
     Annie m_Annie;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        transform.position += Vector3.up * 1.0f;
         Launch();
     }
     void FixedUpdate()

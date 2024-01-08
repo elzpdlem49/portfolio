@@ -7,7 +7,7 @@ public class Gun : MonoBehaviour
     public float shotPower = 500f;
     public GameObject prefabBullet;
     
-    private void Update()
+    private void LateUpdate()
     {
         if (Input.GetMouseButtonDown(0))
         {

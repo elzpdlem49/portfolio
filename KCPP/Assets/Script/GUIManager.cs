@@ -7,7 +7,7 @@ using TMPro;
 
 public class GUIManager : MonoBehaviour
 {
-    public enum InfoType { Level };
+    public enum InfoType { Level, StunStack};
     public InfoType type;
 
     TextMeshProUGUI m_Text;
@@ -24,6 +24,9 @@ public class GUIManager : MonoBehaviour
         {
             case InfoType.Level:
                 m_Text.text = string.Format("Lv.{0:F0}", PlayerMove.Instance.m_cPlayer.m_nLevel);
+                break;
+            case InfoType.StunStack:
+                m_Text.text = string.Format("{0}", Annie.Instance.stunStack);
                 break;
         }
         
