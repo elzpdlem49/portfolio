@@ -5,13 +5,13 @@ using TextRPG;
 //using static TextRPG.PlayerManager;
 using Unity.VisualScripting;
 using UnityEngine.AI;
+using UnityEditor;
 
 public class Enemycontroller : MonoBehaviour
 {
     public static Enemycontroller Instance;
     [SerializeField] 
     public Player m_Enemy;
-    public PlayerMove player;
     public float moveSpeed = 1f;
     public float serchRange = 5f;
     public float attackRange = 1f;
@@ -21,7 +21,7 @@ public class Enemycontroller : MonoBehaviour
     public bool isTouch;
     public bool isCooldown = false;
     public float disToPlayer;
-
+    public GameObject m_objTarget = null;
     public enum EnemyState
     {
         Idle,
@@ -50,19 +50,8 @@ public class Enemycontroller : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        disToPlayer = Vector3.Distance(transform.position, player.transform.position);
+        disToPlayer = Vector3.Distance(transform.position, m_objTarget.transform.position);
         SetAIState();
-
-
-        /*if (Vector3.Distance(transform.position, player.position) < serchRange)
-        {
-            FollowPlayer();
-        }
-        else
-        {
-            Patrol();
-        }*/
-
     }
     void SetAIState()
     {
@@ -152,7 +141,7 @@ public class Enemycontroller : MonoBehaviour
     {
         //if (!isTouch)
         {
-            Vector3 direction = (player.transform.position -transform.position).normalized;
+            Vector3 direction = (m_objTarget.transform.position -transform.position).normalized;
             enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
             Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
             toRotation = Quaternion.Slerp(transform.rotation, toRotation, Time.deltaTime * 3f);
@@ -210,7 +199,15 @@ public class Enemycontroller : MonoBehaviour
         int w = 100;
         Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
         //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
-        GUI.Box(rectGUI, string.Format("HP:{1}\nMP:{0}", m_Enemy.m_nMp, m_Enemy.m_nHp));
+        GUI.Box(rectGUI, string.Format("HP:{0}\n", m_Enemy.m_nHp));
+    }
+    public void TakeDamage(int damage)
+    {
+        m_Enemy.m_nHp -= damage;
     }
     
+    public bool Death()
+    {
+        return m_Enemy.m_nHp <= 0;
+    }
 }

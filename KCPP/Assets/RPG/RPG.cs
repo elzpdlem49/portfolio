@@ -241,14 +241,14 @@ namespace TextRPG
     [Serializable]
     public class PlayerManager//Gargoyle
     {
-        public enum E_PLAYER { P, GHOST, GARGOYLE  }
+        public enum E_PLAYER { P, minion, Annie  }
         List<Player> m_listPlayer = new List<Player>();
 
         public void Init()
         {
             m_listPlayer.Add(new Player("P",100,100,0,10,0)); //0
-            m_listPlayer.Add(new Player("유령", 100, 100, 10, 0, 0)); //0
-            m_listPlayer.Add(new Player("가고일", 100, 100, 10, 0, 0)); //0
+            m_listPlayer.Add(new Player("미니언", 100, 100, 0, 10, 0)); //0
+            m_listPlayer.Add(new Player("애니", 100, 100, 0, 10, 0)); //0
         }
 
         //public void Save()

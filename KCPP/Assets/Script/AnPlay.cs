@@ -25,7 +25,6 @@ public class AnPlayer : MonoBehaviour
     public LayerMask m_LayerMask;
     public GameObject m_objTarget = null;
     bool m_isHit;
-    Rigidbody m_rigidbody;
     Animator m_anim;
 
     private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
@@ -39,8 +38,8 @@ public class AnPlayer : MonoBehaviour
         Summon
     }
 
-    private Skill[] skills = { Skill.Fireball, Skill.Incineration, Skill.LavaShield, Skill.Summon };
-
+   
+   
     public int stunStack = 0;
 
 
@@ -54,13 +53,11 @@ public class AnPlayer : MonoBehaviour
     }
     private void Start()
     {
-        m_rigidbody = GetComponent<Rigidbody>();
         Instance = this;
-        m_rigidbody.isKinematic = true;
         m_anim = GetComponent<Animator>();
     }
     // 매 프레임마다 호출되는 Update 메서드
-    void FixedUpdate()
+    void Update()
     {
         UseSkill();
     }
@@ -80,48 +77,37 @@ public class AnPlayer : MonoBehaviour
                 return 0f;
         }
     }
-    void UseSkill(Skill skill)
+    void UseSkill()
     {
-        switch (skill)
+        if (Input.GetMouseButtonDown(0))
         {
-            case Skill.Fireball:
-                if(Input.GetMouseButton(0))
-                {
-                    Fireball();
-                    m_anim.SetTrigger("Fireball");
-                    Debug.Log("Annie AI: 파이어볼 시전 중");
-                }
-                break;
-            case Skill.Incineration:
-                if (Input.GetMouseButton(1))
-                {
-                    Incineration();
-                    m_anim.SetTrigger("Incineration");
-                    Debug.Log("Annie AI: 화염 소각 시전 중");
-                    PlayerMove.Instance.m_cPlayer.m_nHp -= 5;
-                }
-                break;
-            case Skill.LavaShield:
-                if (Input.GetKeyDown("Fire3"))
-                {
-                    m_anim.SetTrigger("LavaShield");
-                    ActivateLavaShield();
-                }
-                break;
-                /*case Skill.Summon:
-                    Summon();
-                    break;*/
+            //Fireball();
+            m_anim.SetTrigger("Fireball");
+            Debug.Log("Annie P: 파이어볼 시전 중");
+            stunStack++;
         }
 
-        if (stunStack == 4 && skill != Skill.LavaShield)
+        if (Input.GetMouseButtonDown(1))
+        {
+            Incineration();
+            m_anim.SetTrigger("Incineration");
+            Debug.Log("Annie P: 화염 소각 시전 중");
+            stunStack++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            m_anim.SetTrigger("LavaShield");
+            ActivateLavaShield();
+            stunStack++;
+        }
+        if (stunStack == 4 != Input.GetKey(KeyCode.LeftShift))
         {
             Stun();
         }
-        else
-        {
-            stunStack++;
-        }
+        
     }
+    
     void Fireball()
     {
         GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
@@ -146,7 +132,7 @@ public class AnPlayer : MonoBehaviour
         Debug.DrawLine(vPos, vLeftPos, Color.red);
         Debug.DrawLine(vPos, vRightPos, Color.red);
         Debug.DrawRay(vPos, vForward * m_fSite, Color.yellow);
-        int nLayer = 1 << LayerMask.NameToLayer("PlayerLayer");
+        int nLayer = 1 << LayerMask.NameToLayer("Enemy");
         Collider[] colliders =
             Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
 
@@ -162,9 +148,19 @@ public class AnPlayer : MonoBehaviour
             //Debug.Log(collider.gameObject.name + " TargetAngle:" + fTargetAngle + "/" + fHalfAngle + "(" + fRightAngle + "/" + fLeftAngle + ")");
             if (fTargetAngle < fHalfAngle)
             {
-                Debug.DrawLine(vPos, vTargetPos, Color.green);
-                m_objTarget = collider.gameObject;
-                SetTarget(collider.gameObject);
+                float distanceToTarget = Vector3.Distance(transform.position, vTargetPos);
+                if (distanceToTarget <= attackRange)
+                {
+                    Debug.DrawLine(vPos, vTargetPos, Color.green);
+                    m_objTarget = collider.gameObject;
+                    SetTarget(collider.gameObject);
+
+                }
+                else
+                {
+                    Debug.DrawLine(vPos, vTargetPos, Color.red); // 타겟이 공격 범위 밖에 있는 경우
+                    m_objTarget = null; // 공격 범위 밖에 있으면 타겟을 리셋합니다.
+                }
 
             }
             else
@@ -187,7 +183,7 @@ public class AnPlayer : MonoBehaviour
     }
     void ActivateLavaShield()
     {
-        Debug.Log("Annie AI: 라바 실드 활성화 중");
+        Debug.Log("Annie P: 라바 실드 활성화 중");
 
         StartCoroutine(LavaShieldCoroutine());
     }
@@ -203,47 +199,40 @@ public class AnPlayer : MonoBehaviour
         {
             yield return null;
 
-            if (PlayerMove.Instance.IsHit)
-            {
-                PlayerMove.Instance.m_cPlayer.m_nHp -= 1;
-                PlayerMove.Instance.OnHit();
-            }
-
             elapsedTime += Time.deltaTime;
         }
 
-        Debug.Log("Annie AI: 라바 실드 비활성화 중");
+        Debug.Log("Annie P: 라바 실드 비활성화 중");
         PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
     }
 
     void Summon()
     {
-        Debug.Log("Annie AI: 소환 중");
+        Debug.Log("Annie : 소환 중");
         // 소환 로직을 여기에 구현
     }
     public bool controlEnabled = true;
     void Stun()
     {
-        Debug.Log("Annie AI: 스턴!");
+        Debug.Log("Annie : 스턴!");
         StartCoroutine(StunCoroutine());
         stunStack = 0;
     }
     IEnumerator StunCoroutine()
     {
         controlEnabled = false;
-        PlayerMove.Instance.m_eCurrentState = PlayerState.Idle; // 스턴 중에 플레이어 상태를 아이들로 설정합니다.
+        Enemycontroller.Instance.m_eCurrentState = Enemycontroller.EnemyState.Idle;
 
-        Debug.Log("플레이어: 스턴 중!");
+        Debug.Log(": 스턴 중!");
         stunEndTime = Time.time + stunDuration; // 스턴이 끝나는 시간을 계산합니다.
 
         while (Time.time < stunEndTime)
         {
             yield return null;
         }
-
         // 스턴 기간이 끝나면 플레이어 컨트롤을 다시 활성화합니다.
         controlEnabled = true;
 
-        Debug.Log("플레이어: 스턴 종료!");
+        Debug.Log(": 스턴 종료!");
     }
 }

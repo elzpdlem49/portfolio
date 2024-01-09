@@ -10,11 +10,17 @@ public class Bullet : MonoBehaviour
         //Debug.Log(this.gameObject.name + " OnCollisionEnter: " + collision.gameObject.name);
         if (collision.gameObject.tag == "Enemy")
         {
-            Enemycontroller.Instance.m_Enemy.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
-            if (Enemycontroller.Instance.m_Enemy.Death())
+            Enemycontroller enemy = collision.gameObject.GetComponent<Enemycontroller>();
+
+            if (enemy != null)
             {
-                Destroy(collision.gameObject);
-                Player.GetExp(3);
+                enemy.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
+
+                if (enemy.Death())
+                {
+                    Destroy(collision.gameObject);
+                    Player.GetExp(3);
+                }
             }
         }
         Destroy(this.gameObject);

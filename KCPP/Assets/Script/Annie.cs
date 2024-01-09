@@ -60,7 +60,6 @@ public class Annie : MonoBehaviour
         m_Annie = new Player(name, 100, 100, 10, 0, 0);
         m_rigidbody = GetComponent<Rigidbody>();
         Instance = this;
-        m_rigidbody.isKinematic = true;
         m_anim = GetComponent<Animator>();
     }
     // 매 프레임마다 호출되는 Update 메서드
@@ -84,11 +83,15 @@ public class Annie : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-        Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
+        /*Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
 
-        float yOffset = 1.6f;
         transform.Translate(direction * moveSpeed * Time.deltaTime);
-        transform.LookAt(m_objTarget.transform.position);
+        transform.LookAt(m_objTarget.transform.position);*/
+        Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
+        m_rigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);
+        Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+        toRotation = Quaternion.Slerp(transform.rotation, toRotation, Time.deltaTime * 3f);
+        m_rigidbody.MoveRotation(toRotation);
     }
 
     void UseRandomSkillWithCooldown()

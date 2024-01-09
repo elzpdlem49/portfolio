@@ -413,7 +413,7 @@ MonoBehaviour:
     m_nExp: 0
     m_nLevel: 0
     m_nGold: 0
-  player: {fileID: 0}
+  player: {fileID: 8596031932210274545, guid: 2bd4862ea8fab934ab3176958a5df427, type: 3}
   moveSpeed: 1
   serchRange: 8
   attackRange: 2
@@ -422,7 +422,8 @@ MonoBehaviour:
   isTouch: 0
   isCooldown: 0
   disToPlayer: 0
+  m_objTarget: {fileID: 6981101070117256624, guid: 2bd4862ea8fab934ab3176958a5df427, type: 3}
   m_eCurrentState: 1
   patrolWaypoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4996351142207739389, guid: 7d522eb57014aa04ab5b665df370d1b9, type: 3}
+  - {fileID: 799924468547740257, guid: 348e8f0802c68a34ab639aaad8944afd, type: 3}

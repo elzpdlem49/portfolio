@@ -6,8 +6,8 @@ public class Spawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public Transform[] spawnPoints;
-    public int poolSize = 10;
-    public float spawnInterval = 2.0f;
+    public int poolSize = 5;
+    public float spawnInterval = 5.0f;
 
     public List<GameObject> enemyPool = new List<GameObject>();
 

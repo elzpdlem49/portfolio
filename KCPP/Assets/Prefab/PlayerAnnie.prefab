@@ -60,7 +60,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.79
+      value: 3.46
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalPosition.y
@@ -68,7 +68,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.03
+      value: -3.61
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalRotation.w
@@ -415,6 +415,9 @@ PrefabInstance:
       addedObject: {fileID: 8596031932210274545}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7580886865175843792}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 4694545618640058780}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       insertIndex: -1
@@ -515,7 +518,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &8596031932210274545
 MonoBehaviour:
@@ -558,6 +561,37 @@ MonoBehaviour:
   anim: {fileID: 0}
   m_eCurrentState: 0
   eFindCrurrentState: 0
+--- !u!114 &7580886865175843792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6981101070117256624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776ed6f189460564bb84663b80be72b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRange: 10
+  attackRange: 2
+  damage: 10
+  fireballPrefab: {fileID: 3022621252404082874, guid: 3c63530d01a39c34dbf24fbe6b46d94e, type: 3}
+  fireballSpeed: 10
+  fireballDuration: 3
+  m_fAngle: 90
+  m_fRadius: 3
+  m_fSite: 3
+  m_Range: 1
+  fireballRange: 5
+  incinerationRange: 3
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  m_objTarget: {fileID: 0}
+  stunStack: 0
+  skillCooldownInterval: 3
+  controlEnabled: 1
 --- !u!114 &4694545618640058780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,7 +613,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6981101070117256624}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6cc5386c2be0901498590474fdc2a567, type: 3}
   m_Name: 

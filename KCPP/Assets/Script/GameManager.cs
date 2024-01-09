@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public StatusBar m_guiHPBar;
     public StatusBar m_guiEXPBar;
+
     public void EventStart()
     {
         SetGUIScene(E_GUI_STATE.PLAY);
@@ -98,14 +99,14 @@ public class GameManager : MonoBehaviour
                 break;
             case E_GUI_STATE.PLAY:
                 EventUpdateStatus();
-               /* if (Input.GetKeyDown(KeyCode.I))
-                {
-                    PopupIventroy();
-                }*/
-
+                /* if (Input.GetKeyDown(KeyCode.I))
+                 {
+                     PopupIventroy();
+                 }*/
                 break;
         }
     }
+   
     public List<PlayerMove> m_listPlayer;
 
     static GameManager m_cInstance;

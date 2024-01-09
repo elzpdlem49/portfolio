@@ -70,7 +70,7 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_cPlayer = new Player(name, 100, 100, 0, 10, 0, 0);
+        m_cPlayer = new Player(name, 1000, 100, 0, 10, 0, 0);
         m_Rigdbody = GetComponent<Rigidbody>();
         m_OriginalSpeed = m_speed;
         Instance = this;
@@ -91,6 +91,7 @@ public class PlayerMove : MonoBehaviour
             isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
             isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
         }
+
     }
     void ToggleRun()
     {
