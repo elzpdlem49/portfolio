@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 3022621252404082874}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5627158, y: -0.23962674, z: 0.18025}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 0.20536314, y: -0.19643402, z: 0.18025}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -147,3 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireballSpeed: 3
+  target: {fileID: 0}
+  targetType: 0

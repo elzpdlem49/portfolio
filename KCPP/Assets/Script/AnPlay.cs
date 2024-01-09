@@ -81,7 +81,7 @@ public class AnPlayer : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //Fireball();
+            Fireball();
             m_anim.SetTrigger("Fireball");
             Debug.Log("Annie P: 파이어볼 시전 중");
             stunStack++;
@@ -110,11 +110,16 @@ public class AnPlayer : MonoBehaviour
     
     void Fireball()
     {
-        GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
+        float offset = 1f;
+
+        Vector3 spawnPosition = transform.position + transform.forward * offset;
+
+        GameObject fireball = Instantiate(fireballPrefab, spawnPosition, Quaternion.identity);
 
         Fireball fireBall = fireball.GetComponent<Fireball>();
 
-        fireBall.SetTarget(m_objTarget);
+        fireBall.SetTarget(m_objTarget, global::Fireball.TargetType.Enemy);
+        fireBall.SetTarget(m_objTarget, global::Fireball.TargetType.Annie);
     }
     void Incineration()
     {

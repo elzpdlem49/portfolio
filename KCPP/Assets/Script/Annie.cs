@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using TextRPG;
 using static PlayerMove;
+using static Enemycontroller;
+using Unity.VisualScripting;
 
 public class Annie : MonoBehaviour
 {
@@ -30,10 +32,17 @@ public class Annie : MonoBehaviour
     bool m_isHit;
     Rigidbody m_rigidbody;
     Animator m_anim;
-
+    public float disToPlayer;
     private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
     private float stunEndTime;
 
+    public enum AnnieState
+    {
+        Idle,
+        FollowPlayer,
+        Attack
+    }
+    public AnnieState m_eCurrentState;
     public enum Skill
     {
         Fireball,
@@ -62,23 +71,16 @@ public class Annie : MonoBehaviour
         Instance = this;
         m_anim = GetComponent<Animator>();
     }
+
+    private void Update()
+    {
+        UpdateAIState();
+    }
     // 매 프레임마다 호출되는 Update 메서드
     void FixedUpdate()
-    {
-        //Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
-        if (Vector3.Distance(transform.position, m_objTarget.transform.position) <= detectionRange)
-        {
-            // 플레이어 쪽으로 이동
-            MoveTowardsPlayer();
-
-            // 플레이어가 공격 범위 내에 있는지 확인
-            if (Vector3.Distance(transform.position, m_objTarget.transform.position) <= attackRange)
-            {
-                UseRandomSkillWithCooldown();
-            }
-        }
-        // 스킬 쿨다운 업데이트
-        UpdateCooldowns();
+    { 
+        disToPlayer = Vector3.Distance(transform.position, m_objTarget.transform.position);
+        SetAIState();
     }
 
     void MoveTowardsPlayer()
@@ -94,6 +96,51 @@ public class Annie : MonoBehaviour
         m_rigidbody.MoveRotation(toRotation);
     }
 
+    void SetAIState()
+    {
+        switch (m_eCurrentState)
+        {
+            case AnnieState.Idle:
+                break;
+            case AnnieState.FollowPlayer:
+                MoveTowardsPlayer();
+                m_anim.SetBool("isWalk", true);
+                break;
+            case AnnieState.Attack:
+                UseRandomSkillWithCooldown();
+                UpdateCooldowns();
+                break;
+        }
+    }
+    void UpdateAIState()
+    {
+        switch (m_eCurrentState)
+        {
+            case AnnieState.Idle:
+                if (disToPlayer < detectionRange)
+                {
+                    m_eCurrentState = AnnieState.FollowPlayer;
+                }
+                break;
+            case AnnieState.FollowPlayer:
+                if (disToPlayer < attackRange)
+                {
+                    m_eCurrentState = AnnieState.Attack;
+                    m_anim.SetBool("isWalk", false);
+                }
+                break;
+            case AnnieState.Attack:
+                if (disToPlayer > attackRange)
+                {
+                    m_eCurrentState = AnnieState.FollowPlayer;
+                    //m_anim.SetBool("isAttack", false);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     void UseRandomSkillWithCooldown()
     {
         if (Time.time >= nextSkillCooldown)
@@ -104,10 +151,17 @@ public class Annie : MonoBehaviour
 
             if (Vector3.Distance(transform.position, m_objTarget.transform.position) <= skillRange)
             {
+                LookAtPlayer();
                 UseSkill(randomSkill);
                 nextSkillCooldown = Time.time + skillCooldownInterval;
             }
         }
+    }
+    void LookAtPlayer()
+    {
+        Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
+        Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
+        m_rigidbody.MoveRotation(toRotation);
     }
     float GetSkillRange(Skill skill)
     {
@@ -164,7 +218,7 @@ public class Annie : MonoBehaviour
         
         Fireball fireBall = fireball.GetComponent<Fireball>();
 
-        fireBall.SetTarget(m_objTarget);
+        fireBall.SetTarget(m_objTarget, global::Fireball.TargetType.Player);
     }
     void Incineration()
     {
