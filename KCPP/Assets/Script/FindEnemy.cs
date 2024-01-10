@@ -22,11 +22,11 @@ public class FindEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(2))
+       /* if (Input.GetMouseButtonDown(2))
         {
             ToggleCam();
-        }
-        if (isCameraFixed)
+        }*/
+        //if (isCameraFixed)
         {
             FindAndLookAtEnemy();
         }
@@ -93,7 +93,7 @@ public class FindEnemy : MonoBehaviour
         return nearestEnemy;
     }
 
-    void ToggleCam()
+    /*void ToggleCam()
     {
         isCameraFixed = !isCameraFixed;
         if (isCameraFixed)
@@ -105,5 +105,5 @@ public class FindEnemy : MonoBehaviour
         {
             cameraFollow.EnableMouseRotation();
         }
-    }
+    }*/
 }

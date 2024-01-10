@@ -44,6 +44,7 @@ public class Enemycontroller : MonoBehaviour
     }
     private void Update()
     {
+
         UpdateAIState();
     }
 

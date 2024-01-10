@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireballSpeed: 3
-  target: {fileID: 0}
+  targets: []
   targetType: 0

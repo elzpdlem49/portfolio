@@ -74,13 +74,19 @@ public class Annie : MonoBehaviour
 
     private void Update()
     {
-        UpdateAIState();
+        if (AnPlayer.Instance.AIControl)
+        {
+            UpdateAIState();
+        }
     }
     // 매 프레임마다 호출되는 Update 메서드
     void FixedUpdate()
-    { 
+    {
         disToPlayer = Vector3.Distance(transform.position, m_objTarget.transform.position);
-        SetAIState();
+        if (AnPlayer.Instance.AIControl)
+        {
+            SetAIState();
+        }
     }
 
     void MoveTowardsPlayer()
@@ -207,6 +213,10 @@ public class Annie : MonoBehaviour
         {
             Stun();
         }
+        else if (stunStack == 4)
+        {
+            stunStack = 4;
+        }
         else
         {
             stunStack++;
@@ -218,7 +228,7 @@ public class Annie : MonoBehaviour
         
         Fireball fireBall = fireball.GetComponent<Fireball>();
 
-        fireBall.SetTarget(m_objTarget, global::Fireball.TargetType.Player);
+        fireBall.SetTarget(m_objTarget);
     }
     void Incineration()
     {
@@ -255,7 +265,6 @@ public class Annie : MonoBehaviour
                 Debug.DrawLine(vPos, vTargetPos, Color.green);
                 m_objTarget = collider.gameObject;
                 SetTarget(collider.gameObject);
-
             }
             else
             {

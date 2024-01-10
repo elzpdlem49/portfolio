@@ -39,24 +39,23 @@ public class Fireball : MonoBehaviour
         }
     }
 
-    public void SetTarget(GameObject newTarget, TargetType newTargetType)
+    public void SetTarget(GameObject newTarget)
     {
         target = newTarget;
-        targetType = newTargetType;
     }
 
     void OnCollisionEnter(Collision collider)
     {
         if (collider.gameObject == target)
         {
-            if (targetType == TargetType.Player)
+            if (target == PlayerMove.Instance.gameObject)
             {
-                PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
+                PlayerMove.Instance.m_cPlayer.m_nHp -= Annie.Instance.m_Annie.m_sStatus.nStr;
             }
-            else if (targetType == TargetType.Enemy)
+            else if (target == AnPlayer.Instance.m_objTarget)
             {
                 Enemycontroller enemy = collider.gameObject.GetComponent<Enemycontroller>();
-
+                Annie annie = collider.gameObject.GetComponent<Annie>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
@@ -67,17 +66,16 @@ public class Fireball : MonoBehaviour
                         Player.GetExp(3);
                     }
                 }
-            }
-            else if(targetType == TargetType.Annie)
-            {
-                Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
-                if (Annie.Instance.m_Annie.Death())
+                else if (annie != null)
                 {
-                    Destroy(collider.gameObject);
-                    Player.GetExp(5);
+                    Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
+                    if (Annie.Instance.m_Annie.Death())
+                    {
+                        Destroy(collider.gameObject);
+                        Player.GetExp(5);
+                    }
                 }
             }
-
             Destroy(gameObject);
         }
     }
@@ -96,4 +94,3 @@ public class Fireball : MonoBehaviour
         }
     }
 }
-

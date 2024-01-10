@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using TextRPG;
 using static PlayerMove;
+using static Fireball;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class AnPlayer : MonoBehaviour
 {
@@ -56,10 +58,13 @@ public class AnPlayer : MonoBehaviour
         Instance = this;
         m_anim = GetComponent<Animator>();
     }
-    // ¸Å ÇÁ·¹ÀÓ¸¶´Ù È£ÃâµÇ´Â Update ¸Ş¼­µå
     void Update()
     {
-        UseSkill();
+        if(Annie.Instance.controlEnabled)
+        {
+            UseSkill();
+        }
+        SetNearestTarget();
     }
     float GetSkillRange(Skill skill)
     {
@@ -83,31 +88,34 @@ public class AnPlayer : MonoBehaviour
         {
             Fireball();
             m_anim.SetTrigger("Fireball");
-            Debug.Log("Annie P: ÆÄÀÌ¾îº¼ ½ÃÀü Áß");
-            stunStack++;
+            Debug.Log("Annie P: íŒŒì´ì–´ë³¼");
+            IncrementSkillCounter();
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             Incineration();
             m_anim.SetTrigger("Incineration");
-            Debug.Log("Annie P: È­¿° ¼Ò°¢ ½ÃÀü Áß");
-            stunStack++;
+            Debug.Log("Annie P: í™”ì—¼ì†Œê°");
+            IncrementSkillCounter();
+
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             m_anim.SetTrigger("LavaShield");
+            IncrementSkillCounter();
             ActivateLavaShield();
-            stunStack++;
         }
-        if (stunStack == 4 != Input.GetKey(KeyCode.LeftShift))
+        if (stunStack == 4)
         {
             Stun();
         }
-        
     }
-    
+    void IncrementSkillCounter()
+    {
+        stunStack++;
+    }
     void Fireball()
     {
         float offset = 1f;
@@ -118,8 +126,7 @@ public class AnPlayer : MonoBehaviour
 
         Fireball fireBall = fireball.GetComponent<Fireball>();
 
-        fireBall.SetTarget(m_objTarget, global::Fireball.TargetType.Enemy);
-        fireBall.SetTarget(m_objTarget, global::Fireball.TargetType.Annie);
+        fireBall.SetTarget(m_objTarget);
     }
     void Incineration()
     {
@@ -140,7 +147,6 @@ public class AnPlayer : MonoBehaviour
         int nLayer = 1 << LayerMask.NameToLayer("Enemy");
         Collider[] colliders =
             Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
-
         foreach (Collider collider in colliders)
         {
             Vector3 vTargetPos = collider.transform.position;
@@ -149,8 +155,6 @@ public class AnPlayer : MonoBehaviour
             float fTargetAngle = Vector3.Angle(vForward, vToTarget);
             float fRightAngle = Vector3.Angle(vForward, vRight);
             float fLeftAngle = Vector3.Angle(vForward, vLeft);
-
-            //Debug.Log(collider.gameObject.name + " TargetAngle:" + fTargetAngle + "/" + fHalfAngle + "(" + fRightAngle + "/" + fLeftAngle + ")");
             if (fTargetAngle < fHalfAngle)
             {
                 float distanceToTarget = Vector3.Distance(transform.position, vTargetPos);
@@ -159,12 +163,32 @@ public class AnPlayer : MonoBehaviour
                     Debug.DrawLine(vPos, vTargetPos, Color.green);
                     m_objTarget = collider.gameObject;
                     SetTarget(collider.gameObject);
+                    Enemycontroller enemyController = collider.GetComponent<Enemycontroller>();
+                    Annie annie = collider.GetComponent<Annie>();
+                    if (enemyController != null)
+                    {
+                        enemyController.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
 
+                        if (enemyController.Death())
+                        {
+                            Destroy(collider.gameObject);
+                            Player.GetExp(3);
+                        }
+                    }
+                    if (annie != null)
+                    {
+                        Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
+                        if (Annie.Instance.m_Annie.Death())
+                        {
+                            Destroy(collider.gameObject);
+                            Player.GetExp(5);
+                        }
+                    }
                 }
                 else
                 {
-                    Debug.DrawLine(vPos, vTargetPos, Color.red); // Å¸°ÙÀÌ °ø°İ ¹üÀ§ ¹Û¿¡ ÀÖ´Â °æ¿ì
-                    m_objTarget = null; // °ø°İ ¹üÀ§ ¹Û¿¡ ÀÖÀ¸¸é Å¸°ÙÀ» ¸®¼ÂÇÕ´Ï´Ù.
+                    Debug.DrawLine(vPos, vTargetPos, Color.red);
+                    m_objTarget = null;
                 }
 
             }
@@ -174,21 +198,50 @@ public class AnPlayer : MonoBehaviour
                 m_isHit = false;
             }
 
-            Debug.DrawRay(vPos, vToTarget, Color.green);//¹æÇâÀÌ ¹İ´ë·Î ³ª¿È. ¿øÀÎ È®ÀÎ ÇÊ¿ä
+            Debug.DrawRay(vPos, vToTarget, Color.green);
         }
     }
-    public void SetTarget(GameObject target)
+    public void SetTarget(GameObject newTarget)
     {
-        m_objTarget = target;
+        m_objTarget = newTarget;
+    }
+    void SetNearestTarget()
+    {
+        GameObject nearestTarget = FindNearestEnemy();
+
+        if (nearestTarget != null)
+        {
+            SetTarget(nearestTarget);
+        }
+    }
+    GameObject FindNearestEnemy()
+    {
+        // ì°¸ì¡° ëŒ€ìƒ(owner) ì£¼ë³€ì—ì„œ ê°€ì¥ ê°€ê¹Œìš´ Enemyë¥¼ ì°¾ì•„ì„œ ë°˜í™˜
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRange, LayerMask.GetMask("Enemy", "Annie"));
+
+        GameObject nearestEnemy = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (var collider in colliders)
+        {
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestEnemy = collider.gameObject;
+            }
+        }
+
+        return nearestEnemy;
     }
     private void OnDrawGizmos()
     {
-        Incineration();
+        //Incineration();
         Gizmos.DrawWireSphere(transform.position, m_fRadius);
     }
     void ActivateLavaShield()
     {
-        Debug.Log("Annie P: ¶ó¹Ù ½Çµå È°¼ºÈ­ Áß");
+        Debug.Log("Annie P: ë¼ë°” ì‰´ë“œ");
 
         StartCoroutine(LavaShieldCoroutine());
     }
@@ -207,37 +260,50 @@ public class AnPlayer : MonoBehaviour
             elapsedTime += Time.deltaTime;
         }
 
-        Debug.Log("Annie P: ¶ó¹Ù ½Çµå ºñÈ°¼ºÈ­ Áß");
+        Debug.Log("Annie P: ë¼ë°” ì‰´ë“œ ì¢…ë£Œ");
         PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
     }
 
     void Summon()
     {
-        Debug.Log("Annie : ¼ÒÈ¯ Áß");
-        // ¼ÒÈ¯ ·ÎÁ÷À» ¿©±â¿¡ ±¸Çö
+        Debug.Log("Annie : ï¿½ï¿½È¯ ï¿½ï¿½");
+        // ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ï¿½ï¿½
     }
-    public bool controlEnabled = true;
+    public bool AIControl = true;
     void Stun()
     {
-        Debug.Log("Annie : ½ºÅÏ!");
+        Debug.Log("Annie : ê¸°ì ˆ");
         StartCoroutine(StunCoroutine());
         stunStack = 0;
     }
     IEnumerator StunCoroutine()
     {
-        controlEnabled = false;
+        AIControl = false;
         Enemycontroller.Instance.m_eCurrentState = Enemycontroller.EnemyState.Idle;
 
-        Debug.Log(": ½ºÅÏ Áß!");
-        stunEndTime = Time.time + stunDuration; // ½ºÅÏÀÌ ³¡³ª´Â ½Ã°£À» °è»êÇÕ´Ï´Ù.
+        Debug.Log(": ê¸°ì ˆ!");
+        stunEndTime = Time.time + stunDuration; 
 
         while (Time.time < stunEndTime)
         {
             yield return null;
         }
-        // ½ºÅÏ ±â°£ÀÌ ³¡³ª¸é ÇÃ·¹ÀÌ¾î ÄÁÆ®·ÑÀ» ´Ù½Ã È°¼ºÈ­ÇÕ´Ï´Ù.
-        controlEnabled = true;
 
-        Debug.Log(": ½ºÅÏ Á¾·á!");
+        AIControl = true;
+
+        Debug.Log(": ê¸°ì ˆ ì¢…ë£Œ!");
+    }
+    
+    public void OnGUI()
+    {
+        Vector3 vPos = this.transform.position;
+        Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos);
+        vPosToScreen.y = Screen.height - vPosToScreen.y; 
+        int h = 50;
+        int w = 100;
+
+        Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
+        //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
+        GUI.Box(rectGUI, string.Format(":{0}", stunStack));
     }
 }
