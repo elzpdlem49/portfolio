@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public StatusBar m_guiHPBar;
     public StatusBar m_guiEXPBar;
+    public ItemManager m_itemManager;
 
     public void EventStart()
     {
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
         if(player != null )
         {
             m_guiHPBar.SetBar(player.m_nHp, player.m_sStatus.nHP);
-
+            m_itemManager.gameObject.SetActive(true);
             m_guiEXPBar.SetBar(player.m_nExp, player.m_nNextExp[Math.Min(player.m_nLevel-1, player.m_nNextExp.Length -1)]);
         }
     }
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
     }
    
     public List<PlayerMove> m_listPlayer;
+    public List<Annie> m_listAnnie;
 
     static GameManager m_cInstance;
     public static GameManager GetInstance()
@@ -140,6 +142,13 @@ public class GameManager : MonoBehaviour
             if (player.m_cPlayer.Death())
             {
                 GameManager.GetInstance().EventGameOver();
+            }
+        }
+        foreach (var player in m_listAnnie)
+        {
+            if (player.m_Annie.Death())
+            {
+                GameManager.GetInstance().EventEnd();
             }
         }
     }
