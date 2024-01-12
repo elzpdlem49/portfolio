@@ -264,11 +264,6 @@ public class AnPlayer : MonoBehaviour
         PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
     }
 
-    void Summon()
-    {
-        Debug.Log("Annie : ��ȯ ��");
-        // ��ȯ ������ ���⿡ ����
-    }
     public bool AIControl = true;
     void Stun()
     {

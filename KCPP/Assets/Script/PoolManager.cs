@@ -20,23 +20,33 @@ public class PoolManager : MonoBehaviour
 
     public GameObject Get(int index)
     {
-        GameObject select = null;
+        GameObject selectedObject = FindInactiveObject(index);
 
+        if (selectedObject == null)
+        {
+            selectedObject = InstantiateAndAddToPool(index);
+        }
+
+        return selectedObject;
+    }
+
+    private GameObject FindInactiveObject(int index)
+    {
         foreach (GameObject item in pools[index])
         {
             if (!item.activeSelf)
             {
-                select = item;
-                select.SetActive(true);
-                break;
+                item.SetActive(true);
+                return item;
             }
         }
-        if (!select)
-        {
-            select = Instantiate(prefabs[index], transform);
-            pools[index].Add(select);
-        }
+        return null;
+    }
 
-        return select;
+    private GameObject InstantiateAndAddToPool(int index)
+    {
+        GameObject newInstance = Instantiate(prefabs[index], transform);
+        pools[index].Add(newInstance);
+        return newInstance;
     }
 }

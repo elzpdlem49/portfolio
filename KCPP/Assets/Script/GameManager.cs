@@ -15,7 +15,9 @@ public class GameManager : MonoBehaviour
 
     public StatusBar m_guiHPBar;
     public StatusBar m_guiEXPBar;
+    public StatusBar m_guiEnemyHPBar;
     public ItemManager m_itemManager;
+    
 
     public void EventStart()
     {
@@ -43,15 +45,26 @@ public class GameManager : MonoBehaviour
     public void EventUpdateStatus(int playerIdx = 0)
     {
         Player player = m_listPlayer[playerIdx].m_cPlayer;
-     
-        if(player != null )
+
+        if (player != null)
         {
             m_guiHPBar.SetBar(player.m_nHp, player.m_sStatus.nHP);
             m_itemManager.gameObject.SetActive(true);
             m_guiEXPBar.SetBar(player.m_nExp, player.m_nNextExp[Math.Min(player.m_nLevel-1, player.m_nNextExp.Length -1)]);
         }
+
     }
-    
+    public void EnemyUpdateStatus(int enemyIdx = 0)
+    {
+        Player enemy = m_listEnemycontroller[enemyIdx].m_Enemy;
+
+        if (enemy != null)
+        {
+            m_guiHPBar.SetBar(enemy.m_nHp, enemy.m_sStatus.nHP);
+        }
+
+    }
+
 
 
     public void EventChangeScene(int stateNumber)
@@ -100,6 +113,7 @@ public class GameManager : MonoBehaviour
                 break;
             case E_GUI_STATE.PLAY:
                 EventUpdateStatus();
+                EnemyUpdateStatus();
                 /* if (Input.GetKeyDown(KeyCode.I))
                  {
                      PopupIventroy();
@@ -110,6 +124,7 @@ public class GameManager : MonoBehaviour
    
     public List<PlayerMove> m_listPlayer;
     public List<Annie> m_listAnnie;
+    public List<Enemycontroller> m_listEnemycontroller;
 
     static GameManager m_cInstance;
     public static GameManager GetInstance()

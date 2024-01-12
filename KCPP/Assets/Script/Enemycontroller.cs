@@ -12,6 +12,7 @@ public class Enemycontroller : MonoBehaviour
     public static Enemycontroller Instance;
     [SerializeField] 
     public Player m_Enemy;
+    //public Player m_Annie;
     public float moveSpeed = 1f;
     public float serchRange = 5f;
     public float attackRange = 1f;
@@ -38,6 +39,7 @@ public class Enemycontroller : MonoBehaviour
     {
         enemyRigidbody = GetComponent<Rigidbody>();
         m_Enemy = new Player(name, 100, 100, 0, 10, 0);
+        //m_Annie = new Player(name, 100, 100, 0, 10, 0);
         Instance = this;
         anim = GetComponent<Animator>();
         m_eCurrentState = EnemyState.Patrol;
