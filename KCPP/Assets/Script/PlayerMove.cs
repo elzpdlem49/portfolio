@@ -148,7 +148,9 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                Vector3 direction = destination - transform.position;
+                Vector3 targetPosition = new Vector3(destination.x, transform.position.y, destination.z);
+
+                Vector3 direction = targetPosition - transform.position;
                 transform.forward = direction;
                 transform.position += direction.normalized * m_RunSpeed * Time.deltaTime;
                 anim.SetBool("isWalk", true);

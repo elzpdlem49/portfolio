@@ -83,7 +83,7 @@ public class AnPlayer : MonoBehaviour
             default:
                 return 0f;
         }
-    }
+    } 
     void RotatePlayerTowardsMouse()
     {
         Vector3 mousePosition = Input.mousePosition;
@@ -96,29 +96,38 @@ public class AnPlayer : MonoBehaviour
             transform.LookAt(targetPosition);
         }
     }
-    bool isCueActive = false;
+    bool isQActive = false;
+    bool isWActive = false;
     private void OnDrawGizmos()
     {
         // Q 키를 눌렀을 때 공격 범위 표시
-        if (isCueActive)
+        if (isQActive)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, AnPlayer.Instance.attackRange);
         }
-        //Gizmos.DrawWireSphere(transform.position, m_fRadius);
+        if (isWActive)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, AnPlayer.Instance.attackRange);
+        }
     }
+    float detectionRadius = 10f;
+
     bool IsEnemyAtMousePosition()
     {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
 
+        // Check if the ray hits a collider with the "Enemy" layer
         if (Physics.Raycast(ray, out hit, AnPlayer.Instance.detectionRange, LayerMask.GetMask("Enemy")))
         {
-            // 충돌한 오브젝트가 적인지 확인
+            // Check if the collided object is an enemy
             return hit.collider.CompareTag("Enemy");
         }
 
+        // No enemy found at the mouse position
         return false;
     }
     void UseSkill()
@@ -126,11 +135,11 @@ public class AnPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             // 공격 범위를 표시하도록 플래그 설정
-            isCueActive = true;
+            isQActive = true;
         }
-        if (Input.GetMouseButtonDown(0))
+        if (isQActive && IsEnemyAtMousePosition()) 
         {
-            if (isCueActive && IsEnemyAtMousePosition())
+            if (Input.GetMouseButtonDown(0))
             {
                 PlayerMove.Instance.isMove = false;
                 Fireball();
@@ -138,10 +147,9 @@ public class AnPlayer : MonoBehaviour
                 Debug.Log("Annie P: 파이어볼");
                 IncrementSkillCounter();
                 RotatePlayerTowardsMouse();
-                isCueActive = false;
+                isQActive = false;
             }
         }
-
 
         if (Input.GetKeyDown(KeyCode.W))
         {
