@@ -34,6 +34,7 @@ public class AnPlayer : MonoBehaviour
 
     public enum Skill
     {
+        Move,
         Fireball,
         Incineration,
         LavaShield,
@@ -65,6 +66,7 @@ public class AnPlayer : MonoBehaviour
             UseSkill();
         }
         SetNearestTarget();
+        
     }
     float GetSkillRange(Skill skill)
     {
@@ -82,30 +84,81 @@ public class AnPlayer : MonoBehaviour
                 return 0f;
         }
     }
-    void UseSkill()
+    void RotatePlayerTowardsMouse()
     {
-        if (Input.GetMouseButtonDown(0))
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
         {
-            Fireball();
-            m_anim.SetTrigger("Fireball");
-            Debug.Log("Annie P: 파이어볼");
-            IncrementSkillCounter();
+            Vector3 targetPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+            transform.LookAt(targetPosition);
+        }
+    }
+    bool isCueActive = false;
+    private void OnDrawGizmos()
+    {
+        // Q 키를 눌렀을 때 공격 범위 표시
+        if (isCueActive)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, AnPlayer.Instance.attackRange);
+        }
+        //Gizmos.DrawWireSphere(transform.position, m_fRadius);
+    }
+    bool IsEnemyAtMousePosition()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, AnPlayer.Instance.detectionRange, LayerMask.GetMask("Enemy")))
+        {
+            // 충돌한 오브젝트가 적인지 확인
+            return hit.collider.CompareTag("Enemy");
         }
 
-        if (Input.GetMouseButtonDown(1))
+        return false;
+    }
+    void UseSkill()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
         {
+            // 공격 범위를 표시하도록 플래그 설정
+            isCueActive = true;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (isCueActive && IsEnemyAtMousePosition())
+            {
+                PlayerMove.Instance.isMove = false;
+                Fireball();
+                m_anim.SetTrigger("Fireball");
+                Debug.Log("Annie P: 파이어볼");
+                IncrementSkillCounter();
+                RotatePlayerTowardsMouse();
+                isCueActive = false;
+            }
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            PlayerMove.Instance.isMove = false;
             Incineration();
             m_anim.SetTrigger("Incineration");
             Debug.Log("Annie P: 화염소각");
             IncrementSkillCounter();
-
+            RotatePlayerTowardsMouse();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             m_anim.SetTrigger("LavaShield");
             IncrementSkillCounter();
             ActivateLavaShield();
+
         }
         if (stunStack == 4)
         {
@@ -234,11 +287,7 @@ public class AnPlayer : MonoBehaviour
 
         return nearestEnemy;
     }
-    private void OnDrawGizmos()
-    {
-        //Incineration();
-        Gizmos.DrawWireSphere(transform.position, m_fRadius);
-    }
+
     void ActivateLavaShield()
     {
         Debug.Log("Annie P: 라바 쉴드");

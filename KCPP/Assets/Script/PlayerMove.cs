@@ -81,7 +81,7 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Annie.Instance.controlEnabled)
+        /*if (Annie.Instance.controlEnabled)
         {
             HandleInput();
             if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -90,17 +90,29 @@ public class PlayerMove : MonoBehaviour
             }
             isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
             isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
-        }
+        }*/
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
 
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+            {
+                //Debug.Log($"충돌된 물체 이름 : {hit.transform.name}, Position : {hit.point}");
+                destination = hit.point;
+                isMove = true;
+            }
+        }
+        Move();
+        
     }
     void ToggleRun()
     {
         isRunorWalk = !isRunorWalk;
     }
-    
+
     private void FixedUpdate()
     {
-        if (Annie.Instance.controlEnabled)
+        /*if (Annie.Instance.controlEnabled)
         {
             HandleMovement();
             hz = Input.GetAxis("Horizontal");
@@ -118,9 +130,34 @@ public class PlayerMove : MonoBehaviour
                     transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 10f);
                 }
             }
-        }
-        
+        }*/
     }
+    
+    //마우스 이동 로직
+    private Vector3 destination;
+    public bool isMove;
+    private void Move()
+    {
+        if (isMove)
+        {
+            bool isAlived = Vector3.Distance(destination, transform.position) <= 0.1f;
+            if (isAlived)
+            {
+                isMove = false;
+                anim.SetBool("isWalk", false);
+            }
+            else
+            {
+                Vector3 direction = destination - transform.position;
+                transform.forward = direction;
+                transform.position += direction.normalized * m_RunSpeed * Time.deltaTime;
+                anim.SetBool("isWalk", true);
+            }
+        }
+        else
+            anim.SetBool("isWalk", false);
+    }
+    
     void Walk()
     {
         m_Rigdbody.MovePosition(transform.position + m_Walk);
