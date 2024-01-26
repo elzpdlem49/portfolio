@@ -26,7 +26,8 @@ public class Annie : MonoBehaviour
     public float m_Range = 1;
     public float fireballRange = 5f;
     public float incinerationRange = 3f;
-    
+    public ParticleSystem ashieldParticleSystem;
+    public ParticleSystem aflameIncinerationParticleSystem;
     public LayerMask m_LayerMask;
     public GameObject m_objTarget = null;
     bool m_isHit;
@@ -197,6 +198,8 @@ public class Annie : MonoBehaviour
             case Skill.Incineration:
                 Incineration();
                 m_anim.SetTrigger("Incineration");
+                aflameIncinerationParticleSystem.Play();
+                StartCoroutine(StopFlameIncinerationEffect());
                 Debug.Log("Annie AI: 화염 소각 시전 중");
                 PlayerMove.Instance.m_cPlayer.m_nHp -= 5;
                 break;
@@ -232,6 +235,7 @@ public class Annie : MonoBehaviour
     }
     void Incineration()
     {
+        
         float fHalfAngle = m_fAngle / 2;
         Vector3 vPos = transform.position;
         Vector3 vForward = transform.forward;
@@ -275,6 +279,15 @@ public class Annie : MonoBehaviour
             Debug.DrawRay(vPos, vToTarget, Color.green);//방향이 반대로 나옴. 원인 확인 필요
         }
     }
+    IEnumerator StopFlameIncinerationEffect()
+    {
+        float effectDuration = 0.5f; // 필요에 따라 지속 시간을 조정하세요
+
+        yield return new WaitForSeconds(effectDuration);
+
+        // 화염 소각 효과 중지
+        aflameIncinerationParticleSystem.Stop();
+    }
     public void SetTarget(GameObject target)
     {
         m_objTarget = target;
@@ -294,7 +307,7 @@ public class Annie : MonoBehaviour
     IEnumerator LavaShieldCoroutine()
     {
         m_Annie.m_nHp += 10;
-
+        ashieldParticleSystem.Play();
         float shieldDuration = 3f;
         float elapsedTime = 0f;
 
@@ -310,7 +323,7 @@ public class Annie : MonoBehaviour
 
             elapsedTime += Time.deltaTime;
         }
-
+        ashieldParticleSystem.Stop();
         Debug.Log("Annie AI: 라바 실드 비활성화 중");
         m_Annie.m_nHp -= 10;
     }

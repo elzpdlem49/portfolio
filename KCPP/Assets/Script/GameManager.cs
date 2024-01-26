@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
-    public void EventUpdateStatus(int playerIdx = 0)
+    public void PlayerUpdateStatus(int playerIdx = 0)
     {
         Player player = m_listPlayer[playerIdx].m_cPlayer;
 
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
             case E_GUI_STATE.GAMEOVER:
                 break;
             case E_GUI_STATE.PLAY:
-                EventUpdateStatus();
+                PlayerUpdateStatus();
                 EnemyUpdateStatus();
                 /* if (Input.GetKeyDown(KeyCode.I))
                  {

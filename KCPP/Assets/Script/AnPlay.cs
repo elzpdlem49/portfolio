@@ -23,7 +23,8 @@ public class AnPlayer : MonoBehaviour
     public float m_Range = 1;
     public float fireballRange = 5f;
     public float incinerationRange = 3f;
-
+    public ParticleSystem shieldParticleSystem;
+    public ParticleSystem flameIncinerationParticleSystem;
     public LayerMask m_LayerMask;
     public GameObject m_objTarget = null;
     bool m_isHit;
@@ -52,12 +53,13 @@ public class AnPlayer : MonoBehaviour
 
     private void Awake()
     {
-
+        shieldParticleSystem.Stop();
     }
     private void Start()
     {
         Instance = this;
         m_anim = GetComponent<Animator>();
+        
     }
     void Update()
     {
@@ -121,7 +123,7 @@ public class AnPlayer : MonoBehaviour
         RaycastHit hit;
 
         // Check if the ray hits a collider with the "Enemy" layer
-        if (Physics.Raycast(ray, out hit, AnPlayer.Instance.detectionRange, LayerMask.GetMask("Enemy")))
+        if (Physics.Raycast(ray, out hit, AnPlayer.Instance.detectionRange, LayerMask.GetMask("Enemy","Annie")))
         {
             // Check if the collided object is an enemy
             return hit.collider.CompareTag("Enemy");
@@ -150,8 +152,12 @@ public class AnPlayer : MonoBehaviour
                 isQActive = false;
             }
         }
-
         if (Input.GetKeyDown(KeyCode.W))
+        {
+            // 공격 범위를 표시하도록 플래그 설정
+            isWActive = true;
+        }
+        if (isWActive && IsEnemyAtMousePosition())
         {
             PlayerMove.Instance.isMove = false;
             Incineration();
@@ -159,6 +165,7 @@ public class AnPlayer : MonoBehaviour
             Debug.Log("Annie P: 화염소각");
             IncrementSkillCounter();
             RotatePlayerTowardsMouse();
+            isWActive = false;
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -173,6 +180,8 @@ public class AnPlayer : MonoBehaviour
             Stun();
         }
     }
+    
+
     void IncrementSkillCounter()
     {
         stunStack++;
@@ -191,6 +200,10 @@ public class AnPlayer : MonoBehaviour
     }
     void Incineration()
     {
+        flameIncinerationParticleSystem.Play();
+
+        // 효과의 지속 시간을 제어하기 위한 코루틴 실행
+        StartCoroutine(StopFlameIncinerationEffect());
         float fHalfAngle = m_fAngle / 2;
         Vector3 vPos = transform.position;
         Vector3 vForward = transform.forward;
@@ -226,13 +239,16 @@ public class AnPlayer : MonoBehaviour
                     SetTarget(collider.gameObject);
                     Enemycontroller enemyController = collider.GetComponent<Enemycontroller>();
                     Annie annie = collider.GetComponent<Annie>();
+                    
                     if (enemyController != null)
                     {
                         enemyController.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
 
                         if (enemyController.Death())
                         {
-                            Destroy(collider.gameObject);
+                            collider.gameObject.SetActive(false);
+
+                            //Destroy(collider.gameObject);
                             Player.GetExp(3);
                         }
                     }
@@ -241,7 +257,7 @@ public class AnPlayer : MonoBehaviour
                         Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
                         if (Annie.Instance.m_Annie.Death())
                         {
-                            Destroy(collider.gameObject);
+                            collider.gameObject.SetActive(false);
                             Player.GetExp(5);
                         }
                     }
@@ -261,6 +277,15 @@ public class AnPlayer : MonoBehaviour
 
             Debug.DrawRay(vPos, vToTarget, Color.green);
         }
+    }
+    IEnumerator StopFlameIncinerationEffect()
+    {
+        float effectDuration = 0.5f; // 필요에 따라 지속 시간을 조정하세요
+
+        yield return new WaitForSeconds(effectDuration);
+
+        // 화염 소각 효과 중지
+        flameIncinerationParticleSystem.Stop();
     }
     public void SetTarget(GameObject newTarget)
     {
@@ -307,6 +332,7 @@ public class AnPlayer : MonoBehaviour
     {
         PlayerMove.Instance.m_cPlayer.m_nHp += 10;
 
+        shieldParticleSystem.Play();
         float shieldDuration = 3f;
         float elapsedTime = 0f;
 
@@ -317,6 +343,7 @@ public class AnPlayer : MonoBehaviour
             elapsedTime += Time.deltaTime;
         }
 
+        shieldParticleSystem.Stop();
         Debug.Log("Annie P: 라바 쉴드 종료");
         PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
     }

@@ -1,52 +1,45 @@
-using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public GameObject[] prefabs;
+    public GameObject enemyPrefab;
+    public int initialPoolSize = 5;
 
-    List<GameObject>[] pools;
+    private List<GameObject> enemyPool = new List<GameObject>();
 
     void Awake()
     {
-        pools = new List<GameObject>[prefabs.Length];
+        InitializePool();
+    }
 
-        for (int index = 0; index < pools.Length; index++)
+    void InitializePool()
+    {
+        for (int i = 0; i < initialPoolSize; i++)
         {
-            pools[index] = new List<GameObject>();
+            GameObject enemy = GetEnemyFromPool();
+            enemy.SetActive(false);
+            enemyPool.Add(enemy);
         }
     }
 
-    public GameObject Get(int index)
+    public GameObject GetEnemyFromPool()
     {
-        GameObject selectedObject = FindInactiveObject(index);
-
-        if (selectedObject == null)
+        foreach (GameObject enemy in enemyPool)
         {
-            selectedObject = InstantiateAndAddToPool(index);
-        }
-
-        return selectedObject;
-    }
-
-    private GameObject FindInactiveObject(int index)
-    {
-        foreach (GameObject item in pools[index])
-        {
-            if (!item.activeSelf)
+            if (!enemy.activeSelf)
             {
-                item.SetActive(true);
-                return item;
+                enemy.SetActive(true);
+                return enemy;
             }
         }
-        return null;
+
+        GameObject newEnemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity);
+        newEnemy.SetActive(true);
+        enemyPool.Add(newEnemy);
+        return newEnemy;
     }
 
-    private GameObject InstantiateAndAddToPool(int index)
-    {
-        GameObject newInstance = Instantiate(prefabs[index], transform);
-        pools[index].Add(newInstance);
-        return newInstance;
-    }
+    // 추가로 필요한 기능들을 구현할 수 있습니다.
 }

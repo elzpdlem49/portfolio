@@ -62,7 +62,7 @@ public class Fireball : MonoBehaviour
 
                     if (enemy.Death())
                     {
-                        Destroy(collider.gameObject);
+                        collider.gameObject.SetActive(false);
                         Player.GetExp(3);
                     }
                 }
@@ -71,7 +71,7 @@ public class Fireball : MonoBehaviour
                     Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
                     if (Annie.Instance.m_Annie.Death())
                     {
-                        Destroy(collider.gameObject);
+                        collider.gameObject.SetActive(false);
                         Player.GetExp(5);
                     }
                 }

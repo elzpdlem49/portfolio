@@ -35,7 +35,7 @@ public class Enemycontroller : MonoBehaviour
     public Transform[] patrolWaypoints;
     int currentWaypointIndex = 0;
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         enemyRigidbody = GetComponent<Rigidbody>();
         m_Enemy = new Player(name, 100, 100, 0, 10, 0);
@@ -43,6 +43,10 @@ public class Enemycontroller : MonoBehaviour
         Instance = this;
         anim = GetComponent<Animator>();
         m_eCurrentState = EnemyState.Patrol;
+    }
+    void Start()
+    {
+        
     }
     private void Update()
     {
