@@ -63,6 +63,7 @@ public class Fireball : MonoBehaviour
                     if (enemy.Death())
                     {
                         collider.gameObject.SetActive(false);
+                        PoolManager.instance.RemoveFromPool(collider.gameObject);
                         Player.GetExp(3);
                     }
                 }

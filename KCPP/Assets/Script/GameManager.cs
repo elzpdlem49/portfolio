@@ -4,6 +4,7 @@ using UnityEngine;
 using TextRPG;
 using static TextRPG.PlayerManager;
 using System;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,15 +16,26 @@ public class GameManager : MonoBehaviour
 
     public StatusBar m_guiHPBar;
     public StatusBar m_guiEXPBar;
-    public StatusBar m_guiEnemyHPBar;
+    public StatusBar m_guiAnnieHPBar;
     public ItemManager m_itemManager;
-    
 
+    public List<Transform> playerSpawnPoints;
+    public List<Transform> enemySpawnPoints;
     public void EventStart()
     {
         SetGUIScene(E_GUI_STATE.PLAY);
-    }
 
+       /* for (int i = 0; i < m_listPlayer.Count; i++)
+        {
+            SpawnPlayer(i);
+        }
+
+        for(int i=0; i< m_listAnnie.Count; i++)
+        {
+            SpawnEnemy(i);
+        }*/
+    }
+    
     public void EventGameOver()
     {
         SetGUIScene(E_GUI_STATE.GAMEOVER);
@@ -54,15 +66,15 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    public void EnemyUpdateStatus(int enemyIdx = 0)
+    public void AnnieUpdateStatus()
     {
-        Player enemy = m_listEnemycontroller[enemyIdx].m_Enemy;
-
-        if (enemy != null)
+        foreach (var player in m_listAnnie)
         {
-            m_guiHPBar.SetBar(enemy.m_nHp, enemy.m_sStatus.nHP);
+            if (player.m_Annie != null)
+            {
+                m_guiAnnieHPBar.SetBar(player.m_Annie.m_nHp, player.m_Annie.m_sStatus.nHP);
+            }
         }
-
     }
 
 
@@ -113,7 +125,8 @@ public class GameManager : MonoBehaviour
                 break;
             case E_GUI_STATE.PLAY:
                 PlayerUpdateStatus();
-                EnemyUpdateStatus();
+                
+                AnnieUpdateStatus();
                 /* if (Input.GetKeyDown(KeyCode.I))
                  {
                      PopupIventroy();
@@ -167,4 +180,27 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+   /* void SpawnPlayer(int playerIdx)
+    {
+        Player player = m_listPlayer[playerIdx].m_cPlayer;
+
+        if (player != null && playerSpawnPoints.Count > 0)
+        {
+            Transform spawnPoint = playerSpawnPoints[playerIdx % playerSpawnPoints.Count];
+            Instantiate(playerPrefab, spawnPoint.position, Quaternion.identity);
+            // 추가적인 초기화 로직 (예: 체력 설정 등)
+        }
+    }
+
+    void SpawnEnemy(int AnnieIdx)
+    {
+        Player Annie = m_listAnnie[AnnieIdx].m_Annie;
+
+        if (Annie != null && enemySpawnPoints.Count > 0)
+        {
+            Transform spawnPoint = enemySpawnPoints[AnnieIdx % enemySpawnPoints.Count];
+            Instantiate(AnniePrefab, spawnPoint.position, Quaternion.identity);
+            // 추가적인 초기화 로직 (예: 체력 설정 등)
+        }
+    }*/
 }

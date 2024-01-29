@@ -1,28 +1,43 @@
 using System.Collections.Generic;
 using UnityEditor.EditorTools;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PoolManager : MonoBehaviour
 {
+    static public PoolManager instance;
     public GameObject enemyPrefab;
+    public GameObject enemyTarget;
+    public GameObject hpBarPrefab;
     public int initialPoolSize = 5;
 
-    private List<GameObject> enemyPool = new List<GameObject>();
+    public List<GameObject> enemyPool = new List<GameObject>();
+
 
     void Awake()
     {
         InitializePool();
+        instance = this;
     }
 
     void InitializePool()
     {
         for (int i = 0; i < initialPoolSize; i++)
         {
-            GameObject enemy = GetEnemyFromPool();
-            enemy.SetActive(false);
-            enemyPool.Add(enemy);
+            GameObject newEnemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
+            newEnemy.SetActive(false);
+            GameObject hpBarObj = Instantiate(hpBarPrefab, newEnemy.transform);
+            Slider hpBarSlider = hpBarObj.GetComponentInChildren<Slider>();
+            Enemycontroller newEnemyController = newEnemy.GetComponent<Enemycontroller>();
+            if (newEnemyController != null)
+            {
+                newEnemyController.m_objTarget = enemyTarget;
+            }
+
+            enemyPool.Add(newEnemy);
         }
     }
+
 
     public GameObject GetEnemyFromPool()
     {
@@ -31,15 +46,32 @@ public class PoolManager : MonoBehaviour
             if (!enemy.activeSelf)
             {
                 enemy.SetActive(true);
+
+                
+                //hpBarSlider.value = (float)enemyPrefab
                 return enemy;
             }
         }
 
         GameObject newEnemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity);
         newEnemy.SetActive(true);
+
+        Enemycontroller newEnemyController = newEnemy.GetComponent<Enemycontroller>();
+        if (newEnemyController != null)
+        {
+            newEnemyController.m_objTarget = enemyTarget;
+        }
+
         enemyPool.Add(newEnemy);
         return newEnemy;
     }
-
-    // 추가로 필요한 기능들을 구현할 수 있습니다.
+    public void RemoveFromPool(GameObject enemy)
+    {
+        if (enemyPool.Contains(enemy))
+        {
+            enemyPool.Remove(enemy);
+        }
+    }
 }
+
+

@@ -6,7 +6,8 @@ public class Spawner : MonoBehaviour
     public PoolManager poolManager;
     public Transform[] spawnPoints;
     public float spawnInterval = 5.0f;
-
+    public int spawnCount = 0;
+    public int maxSpawnCount = 5;
     void Start()
     {
         StartCoroutine(SpawnEnemies());
@@ -14,20 +15,16 @@ public class Spawner : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
-        while (true)
+        while (spawnCount < maxSpawnCount)
         {
-            // Choose a random spawn point
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-            // Get an inactive enemy from the pool manager
             GameObject enemy = poolManager.GetEnemyFromPool();
 
-            // Set the enemy's position and activate it
             enemy.transform.position = spawnPoint.position;
             enemy.SetActive(true);
-
-            // Wait for the specified interval before spawning the next enemy
             yield return new WaitForSeconds(spawnInterval);
+            spawnCount++;
         }
     }
 }

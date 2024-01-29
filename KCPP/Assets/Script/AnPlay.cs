@@ -108,11 +108,7 @@ public class AnPlayer : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, AnPlayer.Instance.attackRange);
         }
-        if (isWActive)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, AnPlayer.Instance.attackRange);
-        }
+        
     }
     float detectionRadius = 10f;
 
@@ -153,11 +149,6 @@ public class AnPlayer : MonoBehaviour
             }
         }
         if (Input.GetKeyDown(KeyCode.W))
-        {
-            // 공격 범위를 표시하도록 플래그 설정
-            isWActive = true;
-        }
-        if (isWActive && IsEnemyAtMousePosition())
         {
             PlayerMove.Instance.isMove = false;
             Incineration();
@@ -248,7 +239,7 @@ public class AnPlayer : MonoBehaviour
                         {
                             collider.gameObject.SetActive(false);
 
-                            //Destroy(collider.gameObject);
+                            PoolManager.instance.RemoveFromPool(collider.gameObject);
                             Player.GetExp(3);
                         }
                     }

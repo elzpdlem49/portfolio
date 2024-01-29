@@ -243,6 +243,7 @@ namespace TextRPG
     {
         public enum E_PLAYER { P, minion, Annie  }
         List<Player> m_listPlayer = new List<Player>();
+        List<Annie> m_listAnnie = new List<Annie>();
 
         public void Init()
         {

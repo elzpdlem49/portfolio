@@ -67,7 +67,7 @@ public class Annie : MonoBehaviour
     }
     private void Start()
     {
-        m_Annie = new Player(name, 100, 100, 10, 0, 0);
+        m_Annie = new Player(name, 500, 100, 10, 0, 0);
         m_rigidbody = GetComponent<Rigidbody>();
         Instance = this;
         m_anim = GetComponent<Animator>();

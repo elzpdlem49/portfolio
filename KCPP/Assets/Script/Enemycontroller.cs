@@ -22,7 +22,7 @@ public class Enemycontroller : MonoBehaviour
     public bool isTouch;
     public bool isCooldown = false;
     public float disToPlayer;
-    public GameObject m_objTarget = null;
+    public GameObject m_objTarget;
     public enum EnemyState
     {
         Idle,
