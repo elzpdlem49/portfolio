@@ -8,6 +8,7 @@ TagManager:
   - Sword
   - Boss
   - Annie
+  - Plane
   layers:
   - Default
   - TransparentFX

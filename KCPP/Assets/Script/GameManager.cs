@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
 
     public List<Transform> playerSpawnPoints;
     public List<Transform> enemySpawnPoints;
+
+    public Transform playerTr;
+    public Transform annieTr;
+    public float displayDistance = 10f;
     public void EventStart()
     {
         SetGUIScene(E_GUI_STATE.PLAY);
@@ -75,9 +79,19 @@ public class GameManager : MonoBehaviour
                 m_guiAnnieHPBar.SetBar(player.m_Annie.m_nHp, player.m_Annie.m_sStatus.nHP);
             }
         }
+
+        float distance = Vector3.Distance(playerTr.position, annieTr.position);
+
+        if(distance <= displayDistance)
+        {
+            m_guiAnnieHPBar.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_guiAnnieHPBar.gameObject.SetActive(false);
+        }
+
     }
-
-
 
     public void EventChangeScene(int stateNumber)
     {
@@ -125,7 +139,6 @@ public class GameManager : MonoBehaviour
                 break;
             case E_GUI_STATE.PLAY:
                 PlayerUpdateStatus();
-                
                 AnnieUpdateStatus();
                 /* if (Input.GetKeyDown(KeyCode.I))
                  {

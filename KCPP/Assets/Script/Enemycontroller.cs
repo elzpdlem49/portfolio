@@ -23,6 +23,8 @@ public class Enemycontroller : MonoBehaviour
     public bool isCooldown = false;
     public float disToPlayer;
     public GameObject m_objTarget;
+    public EnemyHPBar m_guiEnemyHPBar;
+
     public enum EnemyState
     {
         Idle,
@@ -50,8 +52,8 @@ public class Enemycontroller : MonoBehaviour
     }
     private void Update()
     {
-
         UpdateAIState();
+        EnemeyUpdateStatus();
     }
 
     // Update is called once per frame
@@ -196,18 +198,6 @@ public class Enemycontroller : MonoBehaviour
             isTouch = false;
         }
     }*/
-    public void OnGUI()
-    {
-        //오브젝트의 3d좌표를 2d좌표(스크린좌표)로 변환하여 GUI를 그린다.
-        Vector3 vPos = this.transform.position;
-        Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos); //월드좌표를 스크린좌표로 변환한다.
-        vPosToScreen.y = Screen.height - vPosToScreen.y; //y좌표의 축이 하단을 기준으로 정렬되므로 상단으로 변환한다.
-        int h = 40;
-        int w = 100;
-        Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
-        //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
-        GUI.Box(rectGUI, string.Format("HP:{0}\n", m_Enemy.m_nHp));
-    }
     public void TakeDamage(int damage)
     {
         m_Enemy.m_nHp -= damage;
@@ -216,5 +206,9 @@ public class Enemycontroller : MonoBehaviour
     public bool Death()
     {
         return m_Enemy.m_nHp <= 0;
+    }
+    public void EnemeyUpdateStatus()
+    {
+        m_guiEnemyHPBar.SetSlider(m_Enemy.m_nHp, m_Enemy.m_sStatus.nHP);
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TextRPG;
 using UnityEngine.Playables;
+using Unity.AI;
+using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -30,6 +32,8 @@ public class PlayerMove : MonoBehaviour
     float hz;
     float vt;
     private bool m_isHit; // New variable to track if the player is hit
+
+    NavMeshAgent navMeshAgent;
 
     public bool IsHit
     {
@@ -76,6 +80,7 @@ public class PlayerMove : MonoBehaviour
         Instance = this;
         anim = GetComponent<Animator>();
         m_eCurrentState = PlayerState.Idle;
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -93,18 +98,63 @@ public class PlayerMove : MonoBehaviour
         }*/
         if (Input.GetMouseButtonDown(1))
         {
-            RaycastHit hit;
+            RaycastHit[] hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+            Vector3 closestHit = Vector3.zero;
+            float closestDistance = float.MaxValue;
+
+            foreach (var hit in hits)
             {
-                //Debug.Log($"충돌된 물체 이름 : {hit.transform.name}, Position : {hit.point}");
-                destination = hit.point;
+                if (hit.collider.CompareTag("Plane"))
+                {
+                    float distance = Vector3.Distance(transform.position, hit.point);
+                    if (distance < closestDistance)
+                    {
+                        closestHit = hit.point;
+                        closestDistance = distance;
+                    }
+                }
+            }
+
+            if (closestDistance < float.MaxValue)
+            {
+                destination = closestHit;
                 isMove = true;
             }
         }
+        //UpdateAnimation();
         Move();
         
     }
+    /*void MoveToDestination(Vector3 destination)
+    {
+        navMeshAgent.SetDestination(destination);
+        anim.SetBool("isWalk", true);
+        navMeshAgent.acceleration = 100.0f;
+        navMeshAgent.angularSpeed = 120.0f;
+        navMeshAgent.stoppingDistance = 0.1f;
+        navMeshAgent.speed = 3.0f;
+    }
+    void UpdateAnimation()
+    {
+        if (navMeshAgent.remainingDistance < 0.1f && !navMeshAgent.pathPending)
+        {
+            navMeshAgent.isStopped = true;
+            anim.SetBool("isWalk", false);
+            Quaternion targetRotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized);
+
+            transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized);
+        }
+        else
+        {
+            // 아직 도착하지 않은 경우
+            navMeshAgent.isStopped = false; // 이동 재개
+            anim.SetBool("isWalk", true);
+        }
+
+        anim.SetFloat("MoveSpeed", navMeshAgent.velocity.magnitude);
+
+    }*/
     void ToggleRun()
     {
         isRunorWalk = !isRunorWalk;
@@ -152,7 +202,7 @@ public class PlayerMove : MonoBehaviour
 
                 Vector3 direction = targetPosition - transform.position;
                 transform.forward = direction;
-                transform.position += direction.normalized * m_RunSpeed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, destination, m_RunSpeed * Time.deltaTime);
                 anim.SetBool("isWalk", true);
             }
         }

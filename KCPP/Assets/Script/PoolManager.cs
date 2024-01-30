@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PoolManager : MonoBehaviour
 {
     static public PoolManager instance;
+
     public GameObject enemyPrefab;
     public GameObject enemyTarget;
     public GameObject hpBarPrefab;
@@ -19,22 +20,24 @@ public class PoolManager : MonoBehaviour
         InitializePool();
         instance = this;
     }
-
+    
     void InitializePool()
     {
         for (int i = 0; i < initialPoolSize; i++)
         {
             GameObject newEnemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
             newEnemy.SetActive(false);
-            GameObject hpBarObj = Instantiate(hpBarPrefab, newEnemy.transform);
-            Slider hpBarSlider = hpBarObj.GetComponentInChildren<Slider>();
+            
+
             Enemycontroller newEnemyController = newEnemy.GetComponent<Enemycontroller>();
             if (newEnemyController != null)
             {
                 newEnemyController.m_objTarget = enemyTarget;
+                
             }
 
             enemyPool.Add(newEnemy);
+
         }
     }
 
@@ -46,9 +49,6 @@ public class PoolManager : MonoBehaviour
             if (!enemy.activeSelf)
             {
                 enemy.SetActive(true);
-
-                
-                //hpBarSlider.value = (float)enemyPrefab
                 return enemy;
             }
         }
