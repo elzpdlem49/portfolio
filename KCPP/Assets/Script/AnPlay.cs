@@ -67,7 +67,8 @@ public class AnPlayer : MonoBehaviour
         {
             UseSkill();
         }
-        SetNearestTarget();
+        //SetNearestTarget();
+        SetMouseTarget();
         
     }
     float GetSkillRange(Skill skill)
@@ -117,16 +118,12 @@ public class AnPlayer : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
         RaycastHit hit;
+        int layerMask = LayerMask.GetMask("Enemy", "Annie");
 
-        // Check if the ray hits a collider with the "Enemy" layer
-        if (Physics.Raycast(ray, out hit, AnPlayer.Instance.detectionRange, LayerMask.GetMask("Enemy","Annie")))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) ;
         {
-            // Check if the collided object is an enemy
-            return hit.collider.CompareTag("Enemy");
+            return hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie"));
         }
-
-        // No enemy found at the mouse position
-        return false;
     }
     void UseSkill()
     {
@@ -183,11 +180,24 @@ public class AnPlayer : MonoBehaviour
 
         Vector3 spawnPosition = transform.position + transform.forward * offset;
 
-        GameObject fireball = Instantiate(fireballPrefab, spawnPosition, Quaternion.identity);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-        Fireball fireBall = fireball.GetComponent<Fireball>();
+        int layerMask = LayerMask.GetMask("Enemy", "Annie");
 
-        fireBall.SetTarget(m_objTarget);
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {
+            // Check if the collided object is an enemy
+            if (hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie")))
+            {
+                GameObject fireball = Instantiate(fireballPrefab, spawnPosition, Quaternion.identity);
+
+                Fireball fireBall = fireball.GetComponent<Fireball>();
+
+                // Set the clicked enemy as the target
+                fireBall.SetTarget(hit.collider.gameObject);
+            }
+        }
     }
     void Incineration()
     {
@@ -282,9 +292,32 @@ public class AnPlayer : MonoBehaviour
     {
         m_objTarget = newTarget;
     }
-    void SetNearestTarget()
+    void SetMouseTarget()
     {
-        GameObject nearestTarget = FindNearestEnemy();
+        GameObject mouseTarget = GetClickedEnemy();
+
+        if (mouseTarget != null)
+        {
+            SetTarget(mouseTarget);
+        }
+    }
+    GameObject GetClickedEnemy()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+        int layerMask = LayerMask.GetMask("Enemy", "Annie");
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {
+            return hit.collider.gameObject;
+        }
+        return null;
+    }
+    //가장 가까운 적을 찾는 로직
+    /*void SetNearestTarget()
+    {
+        GameObject nearestTarget = GetClickedEnemy();
 
         if (nearestTarget != null)
         {
@@ -310,7 +343,7 @@ public class AnPlayer : MonoBehaviour
         }
 
         return nearestEnemy;
-    }
+    }*/
 
     void ActivateLavaShield()
     {
@@ -364,7 +397,7 @@ public class AnPlayer : MonoBehaviour
         Debug.Log(": 기절 종료!");
     }
     
-    public void OnGUI()
+    /*public void OnGUI()
     {
         Vector3 vPos = this.transform.position;
         Vector3 vPosToScreen = Camera.main.WorldToScreenPoint(vPos);
@@ -375,5 +408,5 @@ public class AnPlayer : MonoBehaviour
         Rect rectGUI = new Rect(vPosToScreen.x, vPosToScreen.y, w, h);
         //GUI.Box(rectGUI, "MoveBlock:" + isMoveBlock);
         GUI.Box(rectGUI, string.Format(":{0}", stunStack));
-    }
+    }*/
 }

@@ -29,8 +29,9 @@ public class Fireball : MonoBehaviour
     {
         if (target != null)
         {
-            // Rotate the fireball towards the target
-            Vector3 direction = (target.transform.position - transform.position).normalized;
+            Vector3 targetPosition = target.transform.position + Vector3.up * 1;
+
+            Vector3 direction = (targetPosition - transform.position).normalized;
             Quaternion toRotation = Quaternion.LookRotation(direction);
             rb.MoveRotation(toRotation);
 
@@ -44,7 +45,7 @@ public class Fireball : MonoBehaviour
         target = newTarget;
     }
 
-    void OnCollisionEnter(Collision collider)
+    /*void OnCollisionEnter(Collision collider)
     {
         if (collider.gameObject == target)
         {
@@ -79,8 +80,43 @@ public class Fireball : MonoBehaviour
             }
             Destroy(gameObject);
         }
-    }
+    }*/
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == target)
+        {
+            if (target == PlayerMove.Instance.gameObject)
+            {
+                PlayerMove.Instance.m_cPlayer.m_nHp -= Annie.Instance.m_Annie.m_sStatus.nStr;
+            }
+            else if (target == AnPlayer.Instance.m_objTarget)
+            {
+                Enemycontroller enemy = other.gameObject.GetComponent<Enemycontroller>();
+                Annie annie = other.gameObject.GetComponent<Annie>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
 
+                    if (enemy.Death())
+                    {
+                        other.gameObject.SetActive(false);
+                        PoolManager.instance.RemoveFromPool(other.gameObject);
+                        Player.GetExp(3);
+                    }
+                }
+                else if (annie != null)
+                {
+                    Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
+                    if (Annie.Instance.m_Annie.Death())
+                    {
+                        other.gameObject.SetActive(false);
+                        Player.GetExp(5);
+                    }
+                }
+            }
+            Destroy(gameObject);
+        }
+    }
     void Launch()
     {
         if (target != null)

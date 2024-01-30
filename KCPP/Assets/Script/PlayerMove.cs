@@ -120,13 +120,14 @@ public class PlayerMove : MonoBehaviour
             {
                 destination = closestHit;
                 isMove = true;
+                //MoveToDestination(destination);
             }
         }
         //UpdateAnimation();
-        Move();
+       Move();
         
     }
-    /*void MoveToDestination(Vector3 destination)
+    void MoveToDestination(Vector3 destination)
     {
         navMeshAgent.SetDestination(destination);
         anim.SetBool("isWalk", true);
@@ -154,7 +155,7 @@ public class PlayerMove : MonoBehaviour
 
         anim.SetFloat("MoveSpeed", navMeshAgent.velocity.magnitude);
 
-    }*/
+    }
     void ToggleRun()
     {
         isRunorWalk = !isRunorWalk;
