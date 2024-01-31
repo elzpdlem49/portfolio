@@ -15,6 +15,7 @@ public class AnPlayer : MonoBehaviour
     public float attackRange = 2f;
     public int damage = 10;
     public GameObject fireballPrefab;
+    public GameObject meteorPrefab;
     public float fireballSpeed = 10f;
     public float fireballDuration = 3f;
     public float m_fAngle = 90;
@@ -125,6 +126,7 @@ public class AnPlayer : MonoBehaviour
             return hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie"));
         }
     }
+    public bool isUsingSkill = false;
     void UseSkill()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -137,9 +139,10 @@ public class AnPlayer : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 PlayerMove.Instance.isMove = false;
+                isUsingSkill = true;
                 Fireball();
                 m_anim.SetTrigger("Fireball");
-                Debug.Log("Annie P: 파이어볼");
+                //Debug.Log("Annie P: 파이어볼");
                 IncrementSkillCounter();
                 RotatePlayerTowardsMouse();
                 isQActive = false;
@@ -148,9 +151,10 @@ public class AnPlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             PlayerMove.Instance.isMove = false;
+            isUsingSkill = true;
             Incineration();
             m_anim.SetTrigger("Incineration");
-            Debug.Log("Annie P: 화염소각");
+            //Debug.Log("Annie P: 화염소각");
             IncrementSkillCounter();
             RotatePlayerTowardsMouse();
             isWActive = false;
@@ -158,10 +162,19 @@ public class AnPlayer : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            isUsingSkill = true;
             m_anim.SetTrigger("LavaShield");
             IncrementSkillCounter();
             ActivateLavaShield();
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            PlayerMove.Instance.isMove = false;
+            isUsingSkill = true;
+            MeteorS();
+            
         }
         if (stunStack == 4)
         {
@@ -198,6 +211,7 @@ public class AnPlayer : MonoBehaviour
                 fireBall.SetTarget(hit.collider.gameObject);
             }
         }
+        isUsingSkill = false;
     }
     void Incineration()
     {
@@ -278,6 +292,7 @@ public class AnPlayer : MonoBehaviour
 
             Debug.DrawRay(vPos, vToTarget, Color.green);
         }
+        isUsingSkill = false;
     }
     IEnumerator StopFlameIncinerationEffect()
     {
@@ -347,7 +362,7 @@ public class AnPlayer : MonoBehaviour
 
     void ActivateLavaShield()
     {
-        Debug.Log("Annie P: 라바 쉴드");
+        //Debug.Log("Annie P: 라바 쉴드");
 
         StartCoroutine(LavaShieldCoroutine());
     }
@@ -368,9 +383,32 @@ public class AnPlayer : MonoBehaviour
         }
 
         shieldParticleSystem.Stop();
-        Debug.Log("Annie P: 라바 쉴드 종료");
+        //Debug.Log("Annie P: 라바 쉴드 종료");
         PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
     }
+
+    void MeteorS()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        int layerMask = LayerMask.GetMask("Enemy", "Annie");
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        {
+            if (hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie")))
+            {
+                Vector3 spawnPosition = hit.point;
+
+                GameObject meteor = Instantiate(meteorPrefab, spawnPosition, Quaternion.identity);
+
+                Meteor meteorScript = meteor.GetComponent<Meteor>();
+            }
+        }
+        isUsingSkill = false;
+    }
+
+
 
     public bool AIControl = true;
     void Stun()

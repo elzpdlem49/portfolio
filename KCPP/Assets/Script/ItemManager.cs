@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TextRPG;
 using UnityEngine.UI;
+using System.Globalization;
 
 public class ItemManager : MonoBehaviour
 {
@@ -27,8 +28,7 @@ public class ItemManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // 'R' 키를 누를 때 아이템을 사용합니다.
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             // 현재 선택된 아이템이 있는지 확인합니다.
             if (currentItem != null)

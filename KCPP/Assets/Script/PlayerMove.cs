@@ -5,6 +5,7 @@ using TextRPG;
 using UnityEngine.Playables;
 using Unity.AI;
 using UnityEngine.AI;
+using Unity.VisualScripting;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -44,7 +45,14 @@ public class PlayerMove : MonoBehaviour
         m_isHit = true;
     }
     public Animator anim;
+    public enum PlayerState_M
+    {
+        Idle,
+        Moving,
+        UsingSkill
+    }
 
+    private PlayerState_M currentState = PlayerState_M.Idle;
     public enum PlayerState
     {
         Idle,
@@ -124,8 +132,31 @@ public class PlayerMove : MonoBehaviour
             }
         }
         //UpdateAnimation();
-       Move();
-        
+        if (!AnPlayer.Instance.isUsingSkill)
+        {
+            currentState = PlayerState_M.Moving;
+        }
+        else
+        {
+            currentState = PlayerState_M.UsingSkill;
+        }
+        HandlePlayerState();
+    }
+    void HandlePlayerState()
+    {
+        switch (currentState)
+        {
+            case PlayerState_M.Idle:
+                break;
+            case PlayerState_M.Moving:
+                Move();
+                break;
+            case PlayerState_M.UsingSkill:
+                break;
+            default:
+                break;
+        }
+
     }
     void MoveToDestination(Vector3 destination)
     {
