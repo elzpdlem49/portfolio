@@ -114,7 +114,7 @@ public class Fireball : MonoBehaviour
                     }
                 }
             }
-            Destroy(gameObject);
+            Destroy(gameObject, 0.08f);
         }
     }
     void Launch()

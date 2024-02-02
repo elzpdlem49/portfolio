@@ -52,7 +52,8 @@ public class PlayerMove : MonoBehaviour
         UsingSkill
     }
 
-    private PlayerState_M currentState = PlayerState_M.Idle;
+    public PlayerState_M currentState = PlayerState_M.Moving;
+    AnPlayer skillScript;
     public enum PlayerState
     {
         Idle,
@@ -89,6 +90,7 @@ public class PlayerMove : MonoBehaviour
         anim = GetComponent<Animator>();
         m_eCurrentState = PlayerState.Idle;
         navMeshAgent = GetComponent<NavMeshAgent>();
+        skillScript = GetComponent<AnPlayer>();
     }
 
     // Update is called once per frame
@@ -104,6 +106,14 @@ public class PlayerMove : MonoBehaviour
             isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
             isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
         }*/
+        
+        MouseControl();
+        //UpdateAnimation();
+
+        HandlePlayerState();
+    }
+    void MouseControl()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit[] hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
@@ -131,16 +141,6 @@ public class PlayerMove : MonoBehaviour
                 //MoveToDestination(destination);
             }
         }
-        //UpdateAnimation();
-        if (!AnPlayer.Instance.isUsingSkill)
-        {
-            currentState = PlayerState_M.Moving;
-        }
-        else
-        {
-            currentState = PlayerState_M.UsingSkill;
-        }
-        HandlePlayerState();
     }
     void HandlePlayerState()
     {
@@ -150,13 +150,17 @@ public class PlayerMove : MonoBehaviour
                 break;
             case PlayerState_M.Moving:
                 Move();
+                if (AnPlayer.Instance.isUsingSkill)
+                    currentState = PlayerState_M.UsingSkill;
                 break;
             case PlayerState_M.UsingSkill:
+                skillScript.UseSkill();
+                if (isMove)
+                    currentState = PlayerState_M.Moving;
                 break;
             default:
                 break;
         }
-
     }
     void MoveToDestination(Vector3 destination)
     {

@@ -19,7 +19,7 @@ public class AnPlayer : MonoBehaviour
     public float fireballSpeed = 10f;
     public float fireballDuration = 3f;
     public float m_fAngle = 90;
-    public float m_fRadius = 3;
+    public float m_fRadius = 4;
     public float m_fSite = 3;
     public float m_Range = 1;
     public float fireballRange = 5f;
@@ -40,7 +40,7 @@ public class AnPlayer : MonoBehaviour
         Fireball,
         Incineration,
         LavaShield,
-        Summon
+        Meteor
     }
 
    
@@ -82,7 +82,7 @@ public class AnPlayer : MonoBehaviour
                 return incinerationRange;
             case Skill.LavaShield:
                 return fireballRange;
-            case Skill.Summon:
+            case Skill.Meteor:
                 return fireballRange;
             default:
                 return 0f;
@@ -127,7 +127,7 @@ public class AnPlayer : MonoBehaviour
         }
     }
     public bool isUsingSkill = false;
-    void UseSkill()
+    public void UseSkill()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -140,11 +140,12 @@ public class AnPlayer : MonoBehaviour
             {
                 PlayerMove.Instance.isMove = false;
                 isUsingSkill = true;
-                Fireball();
-                m_anim.SetTrigger("Fireball");
-                //Debug.Log("Annie P: 파이어볼");
-                IncrementSkillCounter();
                 RotatePlayerTowardsMouse();
+                m_anim.SetTrigger("Fireball");
+                Fireball();
+                //Debug.Log("Annie P: 파이어볼");s
+                IncrementSkillCounter();
+                
                 isQActive = false;
             }
         }
@@ -152,11 +153,12 @@ public class AnPlayer : MonoBehaviour
         {
             PlayerMove.Instance.isMove = false;
             isUsingSkill = true;
-            Incineration();
+            RotatePlayerTowardsMouse();
             m_anim.SetTrigger("Incineration");
+            Incineration();
             //Debug.Log("Annie P: 화염소각");
             IncrementSkillCounter();
-            RotatePlayerTowardsMouse();
+            
             isWActive = false;
         }
 
@@ -233,14 +235,12 @@ public class AnPlayer : MonoBehaviour
         Debug.DrawLine(vPos, vLeftPos, Color.red);
         Debug.DrawLine(vPos, vRightPos, Color.red);
         Debug.DrawRay(vPos, vForward * m_fSite, Color.yellow);
-        int nLayer = 1 << LayerMask.NameToLayer("Enemy");
-        Collider[] colliders =
-            Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
+
+        Collider[] colliders = Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
         foreach (Collider collider in colliders)
         {
             Vector3 vTargetPos = collider.transform.position;
             Vector3 vToTarget = vTargetPos - vPos;
-
             float fTargetAngle = Vector3.Angle(vForward, vToTarget);
             float fRightAngle = Vector3.Angle(vForward, vRight);
             float fLeftAngle = Vector3.Angle(vForward, vLeft);
