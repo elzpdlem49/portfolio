@@ -53,7 +53,7 @@ public class Meteor : MonoBehaviour
 
         Destroy(gameObject, 1f);
     }
-    /*//파티클 트리거는 파티클을 호출할때 사용하는 함수이기때문에 현재 구현에서는 사용할수 없다
+   /* //파티클 트리거는 파티클을 호출할때 사용하는 함수이기때문에 현재 구현에서는 사용할수 없다
     private void OnParticleTrigger()
     {
         Debug.Log("OnParticleTrigger");
