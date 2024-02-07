@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using TextRPG;
 using static PlayerMove;
 using static Fireball;
 using static UnityEngine.UI.GridLayoutGroup;
+using System;
 
 public class AnPlayer : MonoBehaviour
 {
@@ -34,6 +36,7 @@ public class AnPlayer : MonoBehaviour
     private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
     private float stunEndTime;
 
+
     public enum Skill
     {
         Move,
@@ -59,7 +62,7 @@ public class AnPlayer : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        m_anim = GetComponent<Animator>();
+        m_anim = GetComponent<Animator>(); 
         
     }
     void Update()
@@ -143,9 +146,8 @@ public class AnPlayer : MonoBehaviour
                 RotatePlayerTowardsMouse();
                 m_anim.SetTrigger("Fireball");
                 Fireball();
-                //Debug.Log("Annie P: 파이어볼");s
+                //Debug.Log("Annie P: 파이어볼");
                 IncrementSkillCounter();
-                
                 isQActive = false;
             }
         }
@@ -184,7 +186,6 @@ public class AnPlayer : MonoBehaviour
         }
     }
     
-
     void IncrementSkillCounter()
     {
         stunStack++;
