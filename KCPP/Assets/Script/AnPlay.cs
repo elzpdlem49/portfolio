@@ -36,24 +36,24 @@ public class AnPlayer : MonoBehaviour
     private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
     private float stunEndTime;
 
-
-    public enum Skill
+    public float fireballCooldown = 0f;
+    public float incinerationCooldown = 0f;
+    public float lavaShieldCooldown = 0f;
+    public float meteorCooldown = 0f;
+    public enum SkillType
     {
-        Move,
         Fireball,
         Incineration,
         LavaShield,
         Meteor
     }
 
-   
-   
+
+
     public int stunStack = 0;
 
 
-    private Dictionary<Skill, float> skillCooldowns = new Dictionary<Skill, float>();
-    public float skillCooldownInterval = 3f;
-    private float nextSkillCooldown;
+    public List<float> skillCooldowns = new List<float>();
 
     private void Awake()
     {
@@ -62,35 +62,27 @@ public class AnPlayer : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        m_anim = GetComponent<Animator>(); 
-        
+        m_anim = GetComponent<Animator>();
+        skillCooldowns.Add(fireballCooldown);
+        skillCooldowns.Add(incinerationCooldown);
+        skillCooldowns.Add(lavaShieldCooldown);
+        skillCooldowns.Add(meteorCooldown);
     }
     void Update()
     {
         if(Annie.Instance.controlEnabled)
         {
             UseSkill();
+            UpdateSkillCooldowns();
+            SkillUIManager.instance.UpdateSkillUI();
         }
+
+        
         //SetNearestTarget();
         SetMouseTarget();
         
     }
-    float GetSkillRange(Skill skill)
-    {
-        switch (skill)
-        {
-            case Skill.Fireball:
-                return fireballRange;
-            case Skill.Incineration:
-                return incinerationRange;
-            case Skill.LavaShield:
-                return fireballRange;
-            case Skill.Meteor:
-                return fireballRange;
-            default:
-                return 0f;
-        }
-    } 
+    
     void RotatePlayerTowardsMouse()
     {
         Vector3 mousePosition = Input.mousePosition;
@@ -132,12 +124,11 @@ public class AnPlayer : MonoBehaviour
     public bool isUsingSkill = false;
     public void UseSkill()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && skillCooldowns[0] <= 0)
         {
-            // 공격 범위를 표시하도록 플래그 설정
             isQActive = true;
         }
-        if (isQActive && IsEnemyAtMousePosition()) 
+        if (isQActive && IsEnemyAtMousePosition())
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -146,46 +137,54 @@ public class AnPlayer : MonoBehaviour
                 RotatePlayerTowardsMouse();
                 m_anim.SetTrigger("Fireball");
                 Fireball();
-                //Debug.Log("Annie P: 파이어볼");
                 IncrementSkillCounter();
                 isQActive = false;
+                skillCooldowns[0] = 3f;  // 파이어볼 쿨다운 설정
             }
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && skillCooldowns[1] <= 0)
         {
             PlayerMove.Instance.isMove = false;
             isUsingSkill = true;
             RotatePlayerTowardsMouse();
             m_anim.SetTrigger("Incineration");
             Incineration();
-            //Debug.Log("Annie P: 화염소각");
             IncrementSkillCounter();
-            
             isWActive = false;
+            skillCooldowns[1] = 5f;  // 화염소각 쿨다운 설정
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && skillCooldowns[2] <= 0)
         {
             isUsingSkill = true;
             m_anim.SetTrigger("LavaShield");
             IncrementSkillCounter();
             ActivateLavaShield();
-
+            skillCooldowns[2] = 7f;  // 라바 쉴드 쿨다운 설정
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && skillCooldowns[3] <= 0)
         {
             PlayerMove.Instance.isMove = false;
             isUsingSkill = true;
             MeteorS();
-            
+            skillCooldowns[3] = 10f;  // 메테오 쿨다운 설정
         }
         if (stunStack == 4)
         {
             Stun();
         }
     }
-    
+ 
+    void UpdateSkillCooldowns()
+    {
+        // 각 스킬에 대한 쿨다운 갱신
+        for (int i = 0; i < skillCooldowns.Count; i++)
+        {
+            skillCooldowns[i] -= Time.deltaTime;
+            skillCooldowns[i] = Mathf.Max(0f, skillCooldowns[i]);
+        }
+    }
     void IncrementSkillCounter()
     {
         stunStack++;
