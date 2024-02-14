@@ -25,6 +25,16 @@ public class Enemycontroller : MonoBehaviour
     public GameObject m_objTarget;
     public EnemyHPBar m_guiEnemyHPBar;
 
+    public Faction m_eFaction;
+    public enum Faction
+    {
+        Blue,
+        Red
+    }
+    public void SetFaction(Faction faction)
+    {
+        m_eFaction = faction;
+    }
     public enum EnemyState
     {
         Idle,
@@ -90,7 +100,11 @@ public class Enemycontroller : MonoBehaviour
         switch(m_eCurrentState)
         {
             case EnemyState.Patrol:
-                if (disToPlayer < serchRange)
+                if (m_eFaction == Faction.Red && disToPlayer < serchRange && m_objTarget.GetComponent<Enemycontroller>().m_eFaction == Faction.Blue)
+                {
+                    m_eCurrentState = EnemyState.FollowPlayer;
+                }
+                else if (m_eFaction == Faction.Blue && disToPlayer < serchRange && m_objTarget.GetComponent<Enemycontroller>().m_eFaction == Faction.Red)
                 {
                     m_eCurrentState = EnemyState.FollowPlayer;
                 }

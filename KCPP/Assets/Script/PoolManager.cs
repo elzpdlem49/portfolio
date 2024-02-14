@@ -5,8 +5,10 @@ public class PoolManager : MonoBehaviour
 {
     static public PoolManager instance;
 
-    public GameObject enemyPrefab;
-    public GameObject enemyTarget;
+    public GameObject redEnemyPrefab;
+    public GameObject blueEnemyPrefab;
+    public GameObject[] redEnemyTargets;
+    public GameObject[] blueEnemyTargets;
     public GameObject hpBarPrefab;
     public int initialPoolSize = 5;
 
@@ -23,24 +25,39 @@ public class PoolManager : MonoBehaviour
     {
         for (int i = 0; i < initialPoolSize; i++)
         {
-            GameObject newEnemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
-            newEnemy.SetActive(false);
+            GameObject redEnemy = Instantiate(redEnemyPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
+            redEnemy.SetActive(false);
             
+            GameObject blueEnemy = Instantiate(blueEnemyPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
+            blueEnemy.SetActive(false);
 
-            Enemycontroller newEnemyController = newEnemy.GetComponent<Enemycontroller>();
-            if (newEnemyController != null)
+            Enemycontroller newRedEnemyController = redEnemy.GetComponent<Enemycontroller>();
+            if (newRedEnemyController != null)
             {
-                newEnemyController.m_objTarget = enemyTarget;
-                
+                newRedEnemyController.m_objTarget = GetRandomTarget(redEnemyTargets);
+                newRedEnemyController.m_eFaction = Enemycontroller.Faction.Red;
             }
 
-            enemyPool.Add(newEnemy);
+            Enemycontroller newBlueEnemyController = blueEnemy.GetComponent<Enemycontroller>();
+            if (newBlueEnemyController != null)
+            {
+                newBlueEnemyController.m_objTarget = GetRandomTarget(blueEnemyTargets);
+                newBlueEnemyController.m_eFaction = Enemycontroller.Faction.Blue;
+            }
 
+            enemyPool.Add(redEnemy);
+            enemyPool.Add(blueEnemy);
         }
     }
 
+    GameObject GetRandomTarget(GameObject[] targets)
+    {
+        int randomIndex = Random.Range(0, targets.Length);
+        return targets[randomIndex];
+    }
 
-    public GameObject GetEnemyFromPool()
+
+    public GameObject GetEnemyFromPool(string minionType)
     {
         foreach (GameObject enemy in enemyPool)
         {
@@ -51,17 +68,19 @@ public class PoolManager : MonoBehaviour
             }
         }
 
-        GameObject newEnemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity);
-        newEnemy.SetActive(true);
+        GameObject minionPrefab = (minionType == "Red") ? redEnemyPrefab : blueEnemyPrefab;
+        GameObject newMinion = Instantiate(minionPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
+        newMinion.SetActive(false);
 
-        Enemycontroller newEnemyController = newEnemy.GetComponent<Enemycontroller>();
+        Enemycontroller newEnemyController = newMinion.GetComponent<Enemycontroller>();
         if (newEnemyController != null)
         {
-            newEnemyController.m_objTarget = enemyTarget;
+            // Set other properties based on minion type if needed
+            newEnemyController.m_objTarget = (minionType == "Red") ? redEnemyTarget : blueEnemyTarget;
         }
 
-        enemyPool.Add(newEnemy);
-        return newEnemy;
+        enemyPool.Add(newMinion);
+        return newMinion;
     }
     public void RemoveFromPool(GameObject enemy)
     {

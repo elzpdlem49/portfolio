@@ -272,7 +272,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.267
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -450,15 +450,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: RedMinion
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_Layer
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_TagString
-      value: Enemy
+      value: Undefined
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_Layer
@@ -718,15 +722,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -400.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -211.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -734,15 +738,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 500fbc4e67a5e6f4daa2940320584f3f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -829,7 +833,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -871,7 +875,7 @@ MonoBehaviour:
   disToPlayer: 0
   m_objTarget: {fileID: 0}
   m_guiEnemyHPBar: {fileID: 5388549645168914648}
+  m_eFaction: 1
   m_eCurrentState: 1
   patrolWaypoints:
-  - {fileID: 4996351142207739389, guid: 7d522eb57014aa04ab5b665df370d1b9, type: 3}
-  - {fileID: 799924468547740257, guid: 348e8f0802c68a34ab639aaad8944afd, type: 3}
+  - {fileID: 8981156758001565834, guid: 7d522eb57014aa04ab5b665df370d1b9, type: 3}

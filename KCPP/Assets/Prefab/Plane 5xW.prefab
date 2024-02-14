@@ -310,6 +310,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b06924d9cdbb1574983828a10340bf52, type: 3}
+    - target: {fileID: 6572006, guid: dee3db12ee2f57c41af34c16d2fde197, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -392,6 +396,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b06924d9cdbb1574983828a10340bf52, type: 3}
+    - target: {fileID: 6433940, guid: 287711fb95cdc004b814e53a055b4b1e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: b06924d9cdbb1574983828a10340bf52, type: 3}
+    - target: {fileID: 6433940, guid: 287711fb95cdc004b814e53a055b4b1e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -474,6 +486,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b06924d9cdbb1574983828a10340bf52, type: 3}
+    - target: {fileID: 6572006, guid: dee3db12ee2f57c41af34c16d2fde197, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -556,6 +572,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4300000, guid: b06924d9cdbb1574983828a10340bf52, type: 3}
+    - target: {fileID: 6433940, guid: 287711fb95cdc004b814e53a055b4b1e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: b06924d9cdbb1574983828a10340bf52, type: 3}
+    - target: {fileID: 6433940, guid: 287711fb95cdc004b814e53a055b4b1e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -698,6 +722,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 481908, guid: dee3db12ee2f57c41af34c16d2fde197, type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6572006, guid: dee3db12ee2f57c41af34c16d2fde197, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
