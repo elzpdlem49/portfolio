@@ -118,7 +118,7 @@ public class AnPlayer : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) ;
         {
-            return hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie"));
+            return hit.collider != null && (hit.collider.CompareTag("Red") || hit.collider.CompareTag("Annie"));
         }
     }
     public bool isUsingSkill = false;
@@ -203,7 +203,7 @@ public class AnPlayer : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
             // Check if the collided object is an enemy
-            if (hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie")))
+            if (hit.collider != null && (hit.collider.CompareTag("Red") || hit.collider.CompareTag("Annie")))
             {
                 GameObject fireball = Instantiate(fireballPrefab, spawnPosition, Quaternion.identity);
 
@@ -237,10 +237,12 @@ public class AnPlayer : MonoBehaviour
         Debug.DrawRay(vPos, vForward * m_fSite, Color.yellow);
 
         Collider[] colliders = Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
+
         foreach (Collider collider in colliders)
         {
             Vector3 vTargetPos = collider.transform.position;
             Vector3 vToTarget = vTargetPos - vPos;
+
             float fTargetAngle = Vector3.Angle(vForward, vToTarget);
             float fRightAngle = Vector3.Angle(vForward, vRight);
             float fLeftAngle = Vector3.Angle(vForward, vLeft);
@@ -254,26 +256,28 @@ public class AnPlayer : MonoBehaviour
                     SetTarget(collider.gameObject);
                     Enemycontroller enemyController = collider.GetComponent<Enemycontroller>();
                     Annie annie = collider.GetComponent<Annie>();
-                    
-                    if (enemyController != null)
+                    if (m_objTarget.CompareTag("Red"))
                     {
-                        enemyController.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
-
-                        if (enemyController.Death())
+                        if (enemyController != null)
                         {
-                            collider.gameObject.SetActive(false);
+                            enemyController.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
 
-                            PoolManager.instance.RemoveFromPool(collider.gameObject);
-                            Player.GetExp(3);
+                            if (enemyController.Death())
+                            {
+                                collider.gameObject.SetActive(false);
+
+                                PoolManager.instance.RemoveFromPool(collider.gameObject);
+                                Player.GetExp(3);
+                            }
                         }
-                    }
-                    if (annie != null)
-                    {
-                        Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
-                        if (Annie.Instance.m_Annie.Death())
+                        if (annie != null)
                         {
-                            collider.gameObject.SetActive(false);
-                            Player.GetExp(5);
+                            Annie.Instance.m_Annie.m_nHp -= PlayerMove.Instance.m_cPlayer.m_sStatus.nStr;
+                            if (Annie.Instance.m_Annie.Death())
+                            {
+                                collider.gameObject.SetActive(false);
+                                Player.GetExp(5);
+                            }
                         }
                     }
                 }
@@ -396,7 +400,7 @@ public class AnPlayer : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
-            if (hit.collider != null && (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Annie")))
+            if (hit.collider != null && (hit.collider.CompareTag("Red") || hit.collider.CompareTag("Annie")))
             {
                 Vector3 spawnPosition = hit.point;
 

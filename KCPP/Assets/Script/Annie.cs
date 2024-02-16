@@ -83,7 +83,8 @@ public class Annie : MonoBehaviour
     // 매 프레임마다 호출되는 Update 메서드
     void FixedUpdate()
     {
-        disToPlayer = Vector3.Distance(transform.position, m_objTarget.transform.position);
+        if (m_objTarget != null)
+            disToPlayer = Vector3.Distance(transform.position, m_objTarget.transform.position);
         if (AnPlayer.Instance.AIControl)
         {
             SetAIState();
@@ -110,6 +111,7 @@ public class Annie : MonoBehaviour
             case AnnieState.Idle:
                 break;
             case AnnieState.FollowPlayer:
+                SetClosestTarget();
                 MoveTowardsPlayer();
                 m_anim.SetBool("isWalk", true);
                 break;
@@ -130,15 +132,17 @@ public class Annie : MonoBehaviour
                 }
                 break;
             case AnnieState.FollowPlayer:
-                if (disToPlayer < attackRange)
+                if (m_objTarget == null || !m_objTarget.activeSelf || disToPlayer < attackRange)
                 {
+                    SetClosestTarget();
                     m_eCurrentState = AnnieState.Attack;
                     m_anim.SetBool("isWalk", false);
                 }
                 break;
             case AnnieState.Attack:
-                if (disToPlayer > attackRange)
+                if (m_objTarget == null || !m_objTarget.activeSelf || disToPlayer > attackRange)
                 {
+                    SetClosestTarget();
                     m_eCurrentState = AnnieState.FollowPlayer;
                     //m_anim.SetBool("isAttack", false);
                 }
@@ -201,7 +205,6 @@ public class Annie : MonoBehaviour
                 aflameIncinerationParticleSystem.Play();
                 StartCoroutine(StopFlameIncinerationEffect());
                 Debug.Log("Annie AI: 화염 소각 시전 중");
-                PlayerMove.Instance.m_cPlayer.m_nHp -= 5;
                 break;
             case Skill.LavaShield:
                 m_anim.SetTrigger("LavaShield");
@@ -225,6 +228,7 @@ public class Annie : MonoBehaviour
             stunStack++;
         }
     }
+   
     void Fireball()
     {
         GameObject fireball = Instantiate(fireballPrefab, transform.position, Quaternion.identity);
@@ -250,9 +254,7 @@ public class Annie : MonoBehaviour
         Debug.DrawLine(vPos, vLeftPos, Color.red);
         Debug.DrawLine(vPos, vRightPos, Color.red);
         Debug.DrawRay(vPos, vForward * m_fSite, Color.yellow);
-        int nLayer = 1 << LayerMask.NameToLayer("PlayerLayer");
-        Collider[] colliders =
-            Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
+        Collider[] colliders = Physics.OverlapSphere(vPos, m_fSite, m_LayerMask);
 
         foreach (Collider collider in colliders)
         {
@@ -263,12 +265,41 @@ public class Annie : MonoBehaviour
             float fRightAngle = Vector3.Angle(vForward, vRight);
             float fLeftAngle = Vector3.Angle(vForward, vLeft);
 
-            //Debug.Log(collider.gameObject.name + " TargetAngle:" + fTargetAngle + "/" + fHalfAngle + "(" + fRightAngle + "/" + fLeftAngle + ")");
             if (fTargetAngle < fHalfAngle)
             {
-                Debug.DrawLine(vPos, vTargetPos, Color.green);
-                m_objTarget = collider.gameObject;
-                SetTarget(collider.gameObject);
+                float distanceToTarget = Vector3.Distance(transform.position, vTargetPos);
+                if (distanceToTarget <= attackRange)
+                {
+                    Debug.DrawLine(vPos, vTargetPos, Color.green);
+                    //m_objTarget = collider.gameObject;
+                    //SetTarget(collider.gameObject);
+                    Enemycontroller enemyController = collider.GetComponent<Enemycontroller>();
+                    PlayerMove player = collider.GetComponent<PlayerMove>();
+                    if (m_objTarget.CompareTag("Blue"))
+                    {
+                        if (enemyController != null)
+                        {
+                            enemyController.TakeDamage(m_Annie.m_sStatus.nStr);
+
+                            if (enemyController.Death())
+                            {
+                                collider.gameObject.SetActive(false);
+
+                                PoolManager.instance.RemoveFromPool(collider.gameObject);
+                                //Player.GetExp(3);
+                            }
+                        }
+                        else if (player != null)
+                        {
+                            PlayerMove.Instance.m_cPlayer.m_nHp -= m_Annie.m_sStatus.nStr;
+                            if (PlayerMove.Instance.m_cPlayer.Death())
+                            {
+                                collider.gameObject.SetActive(false);
+                                //Player.GetExp(5);
+                            }
+                        }
+                    }
+                }
             }
             else
             {
@@ -294,7 +325,7 @@ public class Annie : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Incineration();
+        //Incineration();
         Gizmos.DrawWireSphere(transform.position, m_fRadius);
     }
     void ActivateLavaShield()
@@ -369,4 +400,65 @@ public class Annie : MonoBehaviour
             }
         }
     }
+    void SetClosestTarget()
+    {
+        GameObject[] blueMinions = GameObject.FindGameObjectsWithTag("Blue");
+        GameObject player = GameObject.FindGameObjectWithTag("Blue");
+
+        if (blueMinions.Length > 0)
+        {
+            GameObject closestMinion = FindClosestTarget(blueMinions);
+
+            if (closestMinion != null)
+            {
+                float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+                float distanceToMinion = Vector3.Distance(transform.position, closestMinion.transform.position);
+
+                if (distanceToPlayer < distanceToMinion)
+                {
+                    // Player is closer than the closest blue minion
+                    m_objTarget = player;
+                }
+                else
+                {
+                    // Set the closest blue minion as the target
+                    m_objTarget = closestMinion;
+                }
+            }
+            else
+            {
+                Debug.LogError("No closest minion found.");
+            }
+        }
+        else
+        {
+            Debug.LogError("No blue minions found.");
+        }
+    }
+
+    GameObject FindClosestTarget(GameObject[] targets)
+    {
+        if (targets.Length > 0)
+        {
+            GameObject closestTarget = null;
+            float closestDistance = Mathf.Infinity;
+
+            foreach (GameObject target in targets)
+            {
+                float distance = Vector3.Distance(transform.position, target.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestTarget = target;
+                    closestDistance = distance;
+                }
+            }
+
+            return closestTarget;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

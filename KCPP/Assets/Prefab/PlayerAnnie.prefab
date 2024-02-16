@@ -474,15 +474,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5.72
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_LocalRotation.w
@@ -678,7 +678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Blue
       objectReference: {fileID: 0}
     - target: {fileID: 1082271958561512970, guid: 606dc30fe7da74a48be29478723fbade, type: 3}
       propertyPath: m_Layer
@@ -1020,8 +1020,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 81920
   m_objTarget: {fileID: 0}
+  fireballCooldown: 0
+  incinerationCooldown: 0
+  lavaShieldCooldown: 0
+  meteorCooldown: 0
   stunStack: 0
-  skillCooldownInterval: 3
+  skillCooldowns: []
   isUsingSkill: 0
   AIControl: 1
 --- !u!114 &4694545618640058780

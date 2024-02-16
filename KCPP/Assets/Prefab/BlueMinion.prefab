@@ -437,7 +437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 7927661972054336715}
-  mainCamera: {fileID: 9154621379476275946, guid: 57689da6544b67b4ab241fa9d8c22b36, type: 3}
+  mainCamera: {fileID: 2731567610743247318, guid: da7294b4d93f13d48a43291ff605b226, type: 3}
   slider: {fileID: 846942976018098349}
   m_rectBackGround: {fileID: 8948238177027886942}
 --- !u!1001 &7927661972054474315
@@ -833,7 +833,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -869,13 +869,14 @@ MonoBehaviour:
   serchRange: 8
   attackRange: 2
   attackCool: 2
+  searchRadius: 10
   anim: {fileID: 0}
   isTouch: 0
   isCooldown: 0
   disToPlayer: 0
   m_objTarget: {fileID: 0}
   m_guiEnemyHPBar: {fileID: 5388549645168914648}
-  m_eFaction: 0
-  m_eCurrentState: 1
   patrolWaypoints:
   - {fileID: 8981156758001565834, guid: 4274808f753ffe646b4a99cd015bbda8, type: 3}
+  m_eFaction: 0
+  m_eCurrentState: 1

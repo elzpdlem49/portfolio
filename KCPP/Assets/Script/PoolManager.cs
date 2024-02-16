@@ -7,8 +7,6 @@ public class PoolManager : MonoBehaviour
 
     public GameObject redEnemyPrefab;
     public GameObject blueEnemyPrefab;
-    public GameObject[] redEnemyTargets;
-    public GameObject[] blueEnemyTargets;
     public GameObject hpBarPrefab;
     public int initialPoolSize = 5;
 
@@ -34,28 +32,19 @@ public class PoolManager : MonoBehaviour
             Enemycontroller newRedEnemyController = redEnemy.GetComponent<Enemycontroller>();
             if (newRedEnemyController != null)
             {
-                newRedEnemyController.m_objTarget = GetRandomTarget(redEnemyTargets);
-                newRedEnemyController.m_eFaction = Enemycontroller.Faction.Red;
+                newRedEnemyController.gameObject.tag = "Red";
             }
 
             Enemycontroller newBlueEnemyController = blueEnemy.GetComponent<Enemycontroller>();
             if (newBlueEnemyController != null)
             {
-                newBlueEnemyController.m_objTarget = GetRandomTarget(blueEnemyTargets);
-                newBlueEnemyController.m_eFaction = Enemycontroller.Faction.Blue;
+                newBlueEnemyController.gameObject.tag = "Blue";
             }
 
             enemyPool.Add(redEnemy);
             enemyPool.Add(blueEnemy);
         }
     }
-
-    GameObject GetRandomTarget(GameObject[] targets)
-    {
-        int randomIndex = Random.Range(0, targets.Length);
-        return targets[randomIndex];
-    }
-
 
     public GameObject GetEnemyFromPool(string minionType)
     {
@@ -72,12 +61,8 @@ public class PoolManager : MonoBehaviour
         GameObject newMinion = Instantiate(minionPrefab, Vector3.zero, Quaternion.identity, GameObject.Find("CanvasWorld").transform);
         newMinion.SetActive(false);
 
-        Enemycontroller newEnemyController = newMinion.GetComponent<Enemycontroller>();
-        if (newEnemyController != null)
-        {
-            // Set other properties based on minion type if needed
-            newEnemyController.m_objTarget = (minionType == "Red") ? redEnemyTarget : blueEnemyTarget;
-        }
+        // Remove the Faction setting and use tag instead
+        newMinion.tag = (minionType == "Red") ? "Red" : "Blue";
 
         enemyPool.Add(newMinion);
         return newMinion;

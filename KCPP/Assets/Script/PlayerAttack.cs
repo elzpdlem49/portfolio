@@ -42,7 +42,7 @@ public class PlayerAttack : MonoBehaviour
         m_Attack = true;
     }
 
-    void OnCollisionEnter(Collision collision)
+    /*void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -55,7 +55,7 @@ public class PlayerAttack : MonoBehaviour
                 enemyRigidbody.AddForce(pushDirection * attackForce, ForceMode.Impulse);
             }
         }
-    }
+    }*/
 
 
 }
