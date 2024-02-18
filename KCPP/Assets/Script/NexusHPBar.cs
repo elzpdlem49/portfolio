@@ -7,7 +7,7 @@ public class NexusHealth : MonoBehaviour
     public Camera mainCamera; // 메인 카메라를 여기에 할당
     public Slider healthSlider;
     public float maxHealth = 100f;
-    private float currentHealth;
+    public float currentHealth;
 
     void Start()
     {
@@ -44,7 +44,7 @@ public class NexusHealth : MonoBehaviour
         if (currentHealth <= 0f)
         {
             // Nexus destroyed, perform necessary actions
-            DestroyNexus();
+            GameManager.GetInstance().EventEnd();
         }
     }
 

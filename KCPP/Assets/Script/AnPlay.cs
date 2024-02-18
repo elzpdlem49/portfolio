@@ -76,14 +76,42 @@ public class AnPlayer : MonoBehaviour
             UpdateSkillCooldowns();
             SkillUIManager.instance.UpdateSkillUI();
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            // 마우스 위치에 있는 적을 타겟으로 설정
+            GameObject mouseTarget = GetClickedEnemy();
 
-        
+            // 타겟이 존재하면 기본 공격 수행
+            if (mouseTarget != null)
+            {
+                SetTarget(mouseTarget);
+                PerformBasicAttack();
+            }
+        }
+
         //SetNearestTarget();
         SetMouseTarget();
         
     }
-    
-    void RotatePlayerTowardsMouse()
+    void PerformBasicAttack()
+    {
+        // Check if the target is not null
+        if (m_objTarget != null)
+        {
+            // Get the NexusHealth component from the target (assuming Nexus has NexusHealth script attached)
+            NexusHealth nexusHealth = m_objTarget.GetComponent<NexusHealth>();
+
+            // Check if NexusHealth component exists
+            if (nexusHealth != null)
+            {
+                // Deal damage to the Nexus using the TakeDamage method
+                nexusHealth.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
+
+                // Add any additional logic for effects or behavior after dealing damage
+            }
+        }
+    }
+        void RotatePlayerTowardsMouse()
     {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -116,10 +144,11 @@ public class AnPlayer : MonoBehaviour
         RaycastHit hit;
         int layerMask = LayerMask.GetMask("Enemy", "Annie");
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask)) ;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
             return hit.collider != null && (hit.collider.CompareTag("Red") || hit.collider.CompareTag("Annie"));
         }
+        return false;
     }
     public bool isUsingSkill = false;
     public void UseSkill()
