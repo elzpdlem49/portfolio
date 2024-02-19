@@ -16,6 +16,7 @@ public class Enemycontroller : MonoBehaviour
     public float moveSpeed = 1f;
     public float serchRange = 5f;
     public float attackRange = 1f;
+    public float nexusAttackRange = 3;
     public float attackCool = 2f;
     public float searchRadius = 10f;
     Rigidbody enemyRigidbody;
@@ -122,14 +123,14 @@ public class Enemycontroller : MonoBehaviour
                     SetTargetBasedOnFaction();
                     m_eCurrentState = EnemyState.Patrol;
                 }
-                else if (disToPlayer < attackRange)
+                else if (disToPlayer < attackRange || disToPlayer < nexusAttackRange)
                 {
                     m_eCurrentState = EnemyState.Attack;
                     anim.SetBool("isWalk", false);
                 }
                 break;
             case EnemyState.Attack:
-                if (m_objTarget == null || !m_objTarget.activeSelf || disToPlayer > attackRange)
+                if (m_objTarget == null || !m_objTarget.activeSelf || disToPlayer > nexusAttackRange)
                 {
                     // If the target is null, inactive, or out of range, find a new target
                     SetTargetBasedOnFaction();
@@ -199,7 +200,20 @@ public class Enemycontroller : MonoBehaviour
             }
             else if (m_objTarget.CompareTag("Blue"))
             {
-                PlayerMove.Instance.m_cPlayer.m_nHp -= 10;
+                PlayerMove player = m_objTarget.GetComponent<PlayerMove>();
+                if (player != null)
+                {
+                    player.m_cPlayer.m_nHp -= m_Enemy.m_sStatus.nStr;
+                }
+                else
+                {
+                    // If not a Player Nexus, assume it's an Animation Nexus
+                    NexusHealth blueNexus = m_objTarget.GetComponent<NexusHealth>();
+                    if (blueNexus != null)
+                    {
+                        blueNexus.TakeDamage(m_Enemy.m_sStatus.nStr);
+                    }
+                }
             }
         }
         else if (m_eFaction == Faction.Blue)
@@ -212,7 +226,20 @@ public class Enemycontroller : MonoBehaviour
             }
             else if (m_objTarget.CompareTag("Red"))
             {
-                Annie.Instance.m_Annie.m_nHp -= 10;
+                Annie annie = m_objTarget.GetComponent<Annie>();
+                if (annie != null)
+                {
+                    annie.m_Annie.m_nHp -= m_Enemy.m_sStatus.nStr;
+                }
+                else
+                {
+                    // If not a Player Nexus, assume it's an Animation Nexus
+                    NexusHealth redNexus = m_objTarget.GetComponent<NexusHealth>();
+                    if (redNexus != null)
+                    {
+                        redNexus.TakeDamage(m_Enemy.m_sStatus.nStr);
+                    }
+                }
             }
         }
 

@@ -3,12 +3,17 @@ using UnityEngine.UI;
 
 public class NexusHealth : MonoBehaviour
 {
+    public static NexusHealth Instance;
     public Transform target; // 적의 Transform을 여기에 할당
     public Camera mainCamera; // 메인 카메라를 여기에 할당
     public Slider healthSlider;
     public float maxHealth = 100f;
     public float currentHealth;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         currentHealth = maxHealth;

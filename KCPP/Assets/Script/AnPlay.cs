@@ -36,10 +36,10 @@ public class AnPlayer : MonoBehaviour
     private float stunDuration = 2f; // Set the stun duration (in seconds) as needed
     private float stunEndTime;
 
-    public float fireballCooldown = 0f;
-    public float incinerationCooldown = 0f;
-    public float lavaShieldCooldown = 0f;
-    public float meteorCooldown = 0f;
+    public float fireballCooldown = 1f;
+    public float incinerationCooldown = 3f;
+    public float lavaShieldCooldown = 5f;
+    public float meteorCooldown = 7f;
     public enum SkillType
     {
         Fireball,
@@ -63,10 +63,11 @@ public class AnPlayer : MonoBehaviour
     {
         Instance = this;
         m_anim = GetComponent<Animator>();
-        skillCooldowns.Add(fireballCooldown);
-        skillCooldowns.Add(incinerationCooldown);
-        skillCooldowns.Add(lavaShieldCooldown);
-        skillCooldowns.Add(meteorCooldown);
+        skillCooldowns.Add(0);
+        skillCooldowns.Add(0);
+        skillCooldowns.Add(0);
+        skillCooldowns.Add(0);
+
     }
     void Update()
     {
@@ -76,7 +77,7 @@ public class AnPlayer : MonoBehaviour
             UpdateSkillCooldowns();
             SkillUIManager.instance.UpdateSkillUI();
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             // 마우스 위치에 있는 적을 타겟으로 설정
             GameObject mouseTarget = GetClickedEnemy();
@@ -84,8 +85,11 @@ public class AnPlayer : MonoBehaviour
             // 타겟이 존재하면 기본 공격 수행
             if (mouseTarget != null)
             {
+                RotatePlayerTowardsMouse();
+                m_anim.SetTrigger("Attack");
                 SetTarget(mouseTarget);
                 PerformBasicAttack();
+                PlayerMove.Instance.isMove = false;
             }
         }
 
@@ -98,16 +102,20 @@ public class AnPlayer : MonoBehaviour
         // Check if the target is not null
         if (m_objTarget != null)
         {
-            // Get the NexusHealth component from the target (assuming Nexus has NexusHealth script attached)
-            NexusHealth nexusHealth = m_objTarget.GetComponent<NexusHealth>();
+            // Calculate the distance between the player and the target
+            float distanceToTarget = Vector3.Distance(transform.position, m_objTarget.transform.position);
 
-            // Check if NexusHealth component exists
-            if (nexusHealth != null)
+            // Check if the distance is within the attack range
+            if (distanceToTarget <= attackRange)
             {
-                // Deal damage to the Nexus using the TakeDamage method
-                nexusHealth.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
+                // Get the NexusHealth component from the target (assuming Nexus has NexusHealth script attached)
+                NexusHealth nexusHealth = m_objTarget.GetComponent<NexusHealth>();
 
-                // Add any additional logic for effects or behavior after dealing damage
+                // Check if NexusHealth component exists
+                if (nexusHealth != null)
+                {
+                    nexusHealth.TakeDamage(PlayerMove.Instance.m_cPlayer.m_sStatus.nStr);
+                }
             }
         }
     }
@@ -153,51 +161,58 @@ public class AnPlayer : MonoBehaviour
     public bool isUsingSkill = false;
     public void UseSkill()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && skillCooldowns[0] <= 0)
+        /*if (Input.GetKeyDown(KeyCode.Q) && skillCooldowns[0] <= 0)
         {
             isQActive = true;
-        }
-        if (isQActive && IsEnemyAtMousePosition())
+        }*/
+        if (Input.GetKeyDown(KeyCode.Q) && skillCooldowns[0] <= 0)
         {
-            if (Input.GetMouseButtonDown(0))
+            //if (Input.GetMouseButtonDown(0))
             {
-                PlayerMove.Instance.isMove = false;
-                isUsingSkill = true;
                 RotatePlayerTowardsMouse();
                 m_anim.SetTrigger("Fireball");
+                skillCooldowns[0] = 1f;  // 파이어볼 쿨다운 설정
+                PlayerMove.Instance.isMove = false;
+                isUsingSkill = true;
                 Fireball();
                 IncrementSkillCounter();
                 isQActive = false;
-                skillCooldowns[0] = 3f;  // 파이어볼 쿨다운 설정
+                
             }
         }
         if (Input.GetKeyDown(KeyCode.W) && skillCooldowns[1] <= 0)
         {
-            PlayerMove.Instance.isMove = false;
-            isUsingSkill = true;
             RotatePlayerTowardsMouse();
             m_anim.SetTrigger("Incineration");
+            skillCooldowns[1] = 3f;  // 화염소각 쿨다운 설정
+            PlayerMove.Instance.isMove = false;
+            isUsingSkill = true;
             Incineration();
             IncrementSkillCounter();
             isWActive = false;
-            skillCooldowns[1] = 5f;  // 화염소각 쿨다운 설정
+            
         }
 
         if (Input.GetKeyDown(KeyCode.E) && skillCooldowns[2] <= 0)
         {
-            isUsingSkill = true;
             m_anim.SetTrigger("LavaShield");
+            skillCooldowns[2] = 5f;  // 라바 쉴드 쿨다운 설정
+            isUsingSkill = true;
+            
             IncrementSkillCounter();
             ActivateLavaShield();
-            skillCooldowns[2] = 7f;  // 라바 쉴드 쿨다운 설정
+            
         }
 
         if (Input.GetKeyDown(KeyCode.R) && skillCooldowns[3] <= 0)
         {
+            RotatePlayerTowardsMouse();
+            m_anim.SetTrigger("Meteor");
+            skillCooldowns[3] = 7f;  // 메테오 쿨다운 설정
             PlayerMove.Instance.isMove = false;
             isUsingSkill = true;
             MeteorS();
-            skillCooldowns[3] = 10f;  // 메테오 쿨다운 설정
+            
         }
         if (stunStack == 4)
         {
