@@ -210,9 +210,6 @@ public class Annie : MonoBehaviour
                 m_anim.SetTrigger("LavaShield");
                 ActivateLavaShield();
                 break;
-            /*case Skill.Summon:
-                Summon();
-                break;*/
         }
 
         if (stunStack == 4 && skill != Skill.LavaShield)

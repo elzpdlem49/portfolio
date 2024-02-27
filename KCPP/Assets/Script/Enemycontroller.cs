@@ -172,7 +172,7 @@ public class Enemycontroller : MonoBehaviour
     }
     void FollowTarget()
     {
-        //if (!isTouch)
+        if(m_objTarget != null)
         {
             Vector3 direction = (m_objTarget.transform.position - transform.position).normalized;
             enemyRigidbody.MovePosition(transform.position + direction * moveSpeed * Time.deltaTime);

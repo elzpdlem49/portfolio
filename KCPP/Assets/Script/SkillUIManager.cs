@@ -11,6 +11,7 @@ public class SkillUIManager : MonoBehaviour
     public List<Image> skillImages;
     public List<Text> text;
 
+
     public static SkillUIManager instance;
 
     private void Awake()

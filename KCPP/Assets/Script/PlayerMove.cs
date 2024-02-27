@@ -106,7 +106,7 @@ public class PlayerMove : MonoBehaviour
             isRolling = FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
             isSprinting = !FindEnemy.Instance.isCameraFixed && Input.GetKeyDown(KeyCode.Space);
         }*/
-        
+
         MouseControl();
         //UpdateAnimation();
 

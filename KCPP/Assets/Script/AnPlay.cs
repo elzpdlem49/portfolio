@@ -67,15 +67,14 @@ public class AnPlayer : MonoBehaviour
         skillCooldowns.Add(0);
         skillCooldowns.Add(0);
         skillCooldowns.Add(0);
-
     }
     void Update()
     {
-        if(Annie.Instance.controlEnabled)
+        if (Annie.Instance.controlEnabled)
         {
             UseSkill();
             UpdateSkillCooldowns();
-            SkillUIManager.instance.UpdateSkillUI();
+
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -95,7 +94,12 @@ public class AnPlayer : MonoBehaviour
 
         //SetNearestTarget();
         SetMouseTarget();
-        
+
+    }
+    private void LateUpdate()
+    {
+
+
     }
     void PerformBasicAttack()
     {
@@ -119,7 +123,7 @@ public class AnPlayer : MonoBehaviour
             }
         }
     }
-        void RotatePlayerTowardsMouse()
+    void RotatePlayerTowardsMouse()
     {
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -141,7 +145,7 @@ public class AnPlayer : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, AnPlayer.Instance.attackRange);
         }
-        
+
     }
     float detectionRadius = 10f;
 
@@ -177,7 +181,7 @@ public class AnPlayer : MonoBehaviour
                 Fireball();
                 IncrementSkillCounter();
                 isQActive = false;
-                
+
             }
         }
         if (Input.GetKeyDown(KeyCode.W) && skillCooldowns[1] <= 0)
@@ -190,7 +194,7 @@ public class AnPlayer : MonoBehaviour
             Incineration();
             IncrementSkillCounter();
             isWActive = false;
-            
+
         }
 
         if (Input.GetKeyDown(KeyCode.E) && skillCooldowns[2] <= 0)
@@ -198,10 +202,10 @@ public class AnPlayer : MonoBehaviour
             m_anim.SetTrigger("LavaShield");
             skillCooldowns[2] = 5f;  // 라바 쉴드 쿨다운 설정
             isUsingSkill = true;
-            
+
             IncrementSkillCounter();
             ActivateLavaShield();
-            
+
         }
 
         if (Input.GetKeyDown(KeyCode.R) && skillCooldowns[3] <= 0)
@@ -212,14 +216,14 @@ public class AnPlayer : MonoBehaviour
             PlayerMove.Instance.isMove = false;
             isUsingSkill = true;
             MeteorS();
-            
+
         }
         if (stunStack == 4)
         {
             Stun();
         }
     }
- 
+
     void UpdateSkillCooldowns()
     {
         // 각 스킬에 대한 쿨다운 갱신
@@ -471,7 +475,7 @@ public class AnPlayer : MonoBehaviour
         Enemycontroller.Instance.m_eCurrentState = Enemycontroller.EnemyState.Idle;
 
         Debug.Log(": 기절!");
-        stunEndTime = Time.time + stunDuration; 
+        stunEndTime = Time.time + stunDuration;
 
         while (Time.time < stunEndTime)
         {
@@ -482,7 +486,7 @@ public class AnPlayer : MonoBehaviour
 
         Debug.Log(": 기절 종료!");
     }
-    
+
     /*public void OnGUI()
     {
         Vector3 vPos = this.transform.position;
